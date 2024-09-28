@@ -1,0 +1,94 @@
+rooms
+	- String roomtype(single, double)
+	- int amount of toilets
+	- int price
+	- int available
+	- String picture_urls
+	- String HotelName
+	- String Address
+	- primary key room ID
+
+Comments
+	- primary key ID
+	- int stars
+	- room ID(collab)
+	- String message
+	- user
+
+Users
+	- String username
+	- String email
+	- Search for rooms
+	- Reserve / cancel reservations
+	- int amountOfPeople
+	- check-in
+	- check-out
+	- int permissionLevel
+
+Manager
+	- generate report
+	- add/delete rooms
+	- manage user information
+	- int permissionLevel
+
+func Reserve Rooms
+	- reserve room
+
+func Search for rooms
+	- list of rooms
+
+func Cancel rooms
+	- cancel a room reservation
+
+func createRoom
+	- create a room
+
+func deleteRoom
+	- delete a room
+
+func writeReview
+	- create a review
+
+func generateReport
+	- make a report and send to manager
+
+func sendConfirmation
+	- send a confirmation email to the users email
+
+func changeReservation
+	- change reservation date
+
+
+
+
+
+
+
+Databases:
+	rooms:
+		- String roomtype(single, double)
+		- int amount of toilets
+		- int price
+		- int available
+		- String picture_urls
+		- String location
+		- check-in
+		- check-out
+		- primary key room ID
+
+	Users:
+		- String username
+		- String email
+		- room ID
+		- comment ID
+
+	Managers:
+		- primary key ID
+		- String username
+		- String password
+		 
+	Comments:
+		- primary key ID 
+		- int stars 
+		- room ID(collab)
+		- String message
