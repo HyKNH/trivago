@@ -10,17 +10,18 @@ export const metadata = {
   description: "Reserve a room now! ",
 };
 
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className='light'>
+    <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <NavBar>
-            {children}
-          </NavBar>
+          <main>
+            <NavBar>
+            </NavBar>
+              {children}
+          </main>
         </Providers>
       </body>
     </html>
-  );
+  )
 }

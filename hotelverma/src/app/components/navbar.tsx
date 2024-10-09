@@ -1,9 +1,12 @@
+// app/components/providers.tsx
+'use client';
+
 import { Navbar,   NavbarBrand,   NavbarContent,   NavbarItem } from "@nextui-org/navbar";
 import { Link } from "@nextui-org/link";
 import { Button } from "@nextui-org/button";
 import {Logo} from "./Logo";
 
-export default function NavBar({ children }: { children: React.ReactNode }) {
+export default function NavBar() {
     return (
         <Navbar>
             <NavbarBrand>
@@ -12,17 +15,17 @@ export default function NavBar({ children }: { children: React.ReactNode }) {
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link underline="active" href="/pages/index">
+                    <Link underline="active" href="/">
                     Home
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link color="foreground" href="/pages/Hotels">
+                    <Link color="foreground" href="/hotels">
                     Hotels
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link color="foreground" href="/pages/History">
+                    <Link color="foreground" href="/history">
                     History
                     </Link>
                 </NavbarItem>
@@ -38,5 +41,5 @@ export default function NavBar({ children }: { children: React.ReactNode }) {
                 </NavbarItem>
             </NavbarContent>
         </Navbar>
-    )
+    );
 }
