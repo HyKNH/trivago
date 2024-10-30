@@ -14,17 +14,23 @@ export default function SearchBar() {
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
   );
+    type DateRange = {
+      start: Date;
+      end: Date;
+    };
 
-    const [dateRange, setDateRange] = React.useState(null);
+    const [dateRange, setDateRange] = React.useState<DateRange | null>(null);
 
-    const handelChange = (range: any) => {
+    const handelChange = (range: DateRange) => {
       setDateRange(range);
     };
 
-    const formatDate = (range: any) => {
-      if (!range || !range.start || !range.end) {return "Stay Duration"}
-      return `${range.start.toDate(getLocalTimeZone()).toLocaleDateString()} - ${range.end.toDate(getLocalTimeZone()).toLocaleDateString()}`
-    }
+    const formatDate = (range: DateRange | null) => {
+      if (!range || !range.start || !range.end) {
+        return "Stay Duration";
+      }
+      return `${range.start.toLocaleString()} - ${range.end.toLocaleString()}`;
+    };
 
     return (
     <main>
