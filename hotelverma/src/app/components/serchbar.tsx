@@ -15,20 +15,16 @@ export default function SearchBar() {
     [selectedKeys]
   );
 
-  
     const [dateRange, setDateRange] = React.useState(null);
 
-    const handelChange = (range) => {
+    const handelChange = (range: any) => {
       setDateRange(range);
     };
 
-    const formatDate = (range) => {
+    const formatDate = (range: any) => {
       if (!range || !range.start || !range.end) {return "Stay Duration"}
       return `${range.start.toDate(getLocalTimeZone()).toLocaleDateString()} - ${range.end.toDate(getLocalTimeZone()).toLocaleDateString()}`
     }
-
-
-  
 
     return (
     <main>
