@@ -17,10 +17,10 @@ export default function SearchBar() {
     [selectedKeys]
   );
 
-    let [value, setValue] = React.useState<RangeValue<DateValue>>({
-      start: today(getLocalTimeZone()),
-      end: today(getLocalTimeZone()).add({weeks: 1}),
-    });
+  const [value, setValue] = React.useState<RangeValue<DateValue>>({
+    start: today(getLocalTimeZone()),
+    end: today(getLocalTimeZone()).add({weeks: 1}),
+  });
   
     return (
     <main>
