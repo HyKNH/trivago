@@ -3,12 +3,10 @@ import React from "react";
 import {RangeCalendar} from "@nextui-org/react";
 import type {DateValue} from "@react-types/calendar";
 import type {RangeValue} from "@react-types/shared";
-import {today, getLocalTimeZone} from "@internationalized/date";
 import {Button} from "@nextui-org/button";
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/popover";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react"
 import type {Selection} from "@nextui-org/react";
-import { createInitialRouterState } from "../../../node_modules/next/dist/client/components/router-reducer/create-initial-router-state";
 
 export default function SearchBar() {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["Travelers"]));
