@@ -34,7 +34,7 @@ export default function SearchBar() {
             <Button className="w-[280px] " color="secondary" variant="bordered">Where to?</Button>
           </PopoverTrigger>
           <PopoverContent>
-            <p className="text-black">hello</p>
+            <p className="text-black">he</p>
           </PopoverContent>
         </Popover>
           
