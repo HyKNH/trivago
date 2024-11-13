@@ -7,5 +7,6 @@ export default function listings() {
   <div>
      <SearchBar/>
   </div>
+  
   );
 }

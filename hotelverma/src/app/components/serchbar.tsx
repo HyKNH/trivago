@@ -8,7 +8,7 @@ import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/popover";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Selection} from "@nextui-org/react";
 import {Autocomplete,AutocompleteItem} from "@nextui-org/autocomplete";
 import {destination} from "./locationData";
-import {Link} from "@nextui-org/react";
+
 
 
 export default function SearchBar() {
@@ -59,14 +59,7 @@ export default function SearchBar() {
           </Autocomplete>
         ))}
              
-        <Popover placement="bottom">
-          <PopoverTrigger>
-            <Button className="w-[280px] " color="secondary" variant="bordered">Where to?</Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <p className="text-black">hell0</p>
-          </PopoverContent>
-        </Popover>
+        
         <Popover placement="bottom">
           <PopoverTrigger>
             <Button className="w-[280px]" variant="bordered" color="secondary">{selectedRange}</Button>
@@ -83,7 +76,7 @@ export default function SearchBar() {
         </Popover>
         <Dropdown>
           <DropdownTrigger>
-            <Button className="w-[280px]" color="secondary" variant="bordered">{selectedValue}</Button>
+            <Button className="w-[280px]"  variant="bordered">{selectedValue}</Button>
           </DropdownTrigger>
           <DropdownMenu
            variant="flat"
