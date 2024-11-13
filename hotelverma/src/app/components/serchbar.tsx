@@ -27,7 +27,9 @@ export default function SearchBar() {
 
   const selectedRange = val ? `${formatDate(val.start)} - ${formatDate(val.end)}` : "Stay Duration";
 
-  const autoColor = ["secondary"];
+  const colors = [
+    "warning",
+  ];
 
     return (
    
@@ -36,32 +38,10 @@ export default function SearchBar() {
       <div className="flex flex-wrap gap-4 items-center justify-center w-full px-1">
         <h1 className="w-full text-xl font-bold flex-1">Quick Search</h1>
         <hr className="w-full border-t-2 border-gray-300 my-2 flex-initial"/>
-        
-             {autoColor.map((color) =>(
-             <Autocomplete 
-              className="text-orange-700 flex-initial ms-1 w-80" 
-              color = {"warning"}
-              key = {"warning"}
-              placeholder=""
-              label="Destination"
-              variant="faded"
-              defultItems={destination}
-              size="sm"
-            >
-            {destination.map((location) => (
-            <AutocompleteItem 
-            className="text-black mt-2"
-            key={location.value} 
-            value={location.value}>
-            {location.label}
-            </AutocompleteItem>
-          ))}
-          </Autocomplete>
-        ))}
              
         <Popover>
           <PopoverTrigger>
-            <Button className="w-72 flex-initial" variant="bordered" color="secondary">{selectedRange}</Button>
+            <Button className="w-72 flex-initial" variant="bordered" color="warning">{selectedRange}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">
@@ -72,26 +52,7 @@ export default function SearchBar() {
             />
             </div>
           </PopoverContent>
-        </Popover>
-        <Dropdown>
-          <DropdownTrigger>
-            <Button className="flex-initial w-72"  variant="bordered">{selectedValue}</Button>
-          </DropdownTrigger>
-          <DropdownMenu
-           variant="flat"
-           disallowEmptySelection
-           selectionMode="single"
-           selectedKeys={selectedKeys}
-           onSelectionChange={setSelectedKeys}
-           color="secondary"
-           className="text-black"
-          >
-            <DropdownItem key="Travelers: 1">Number of poeple: 1</DropdownItem>
-            <DropdownItem key="Travelers: 2">Number of People: 2</DropdownItem>
-            <DropdownItem key="Travelers: 3">Number of People: 3</DropdownItem>
-            <DropdownItem key="Travelers: 4">Number of People: 4</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>     
+        </Popover>   
         <Button className="flex-initial w-32 border ml-[20px]" radius="full" color="primary">Search</Button>
       </div>
     </center>
