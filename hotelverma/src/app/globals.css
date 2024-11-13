@@ -26,36 +26,9 @@ body {
   }   
   
 }
-footer{
-  flex-direction: row;
-  margin-top: 500px;
-}
-
-.container{
-  background-color: rgb(248, 237, 237);
-  color: black;
-  margin-top: 50px;
-  margin-left: 10px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  flex-wrap: wrap;
-  padding-bottom: 15px;
-}
-
-.container > :first-child{
-  flex-basis: 100%;
-}
-
-.header{
+html,body{
+  height: 100%;
   
-  align-self: center;
-  text-align: center;
+  
 }
-button{
-  border-width: 1px;
-  border-color: black;
-}
+

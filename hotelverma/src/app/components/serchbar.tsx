@@ -5,8 +5,11 @@ import type {DateValue} from "@react-types/calendar";
 import type {RangeValue} from "@react-types/shared";
 import {Button} from "@nextui-org/button";
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/popover";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react"
-import type {Selection} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Selection} from "@nextui-org/react";
+import {Autocomplete,AutocompleteItem} from "@nextui-org/autocomplete";
+import {destination} from "./locationData";
+import {Link} from "@nextui-org/react";
+
 
 export default function SearchBar() {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["Travelers"]));
@@ -18,29 +21,53 @@ export default function SearchBar() {
 
   let [val, setVal] = React.useState<RangeValue<DateValue> | null>(null);
     
-  const formatDate = (date: DateValue) =>
-  `${date.month}/${date.day}/${date.year}`;
+  const formatDate = (date: DateValue) =>{
+     return `${date.month}/${date.day}/${date.year}`;
+  }
 
   const selectedRange = val ? `${formatDate(val.start)} - ${formatDate(val.end)}` : "Stay Duration";
 
+  const autoColor = ["secondary"];
+
     return (
-    <main>
-    <div className="border ml-[150px] mr-[150px] rounded-lg pb-[12px] pt-[20px] mt-[200px] ">
+   
+    <div className="border mx-40 rounded-lg pb-[12px] pt-[20px] mt-[50px] ">
     <center>
-      <div className="flex flex-wrap gap-4 items-center justify-center">
-        <h1 className="w-full text-xl font-bold">Quick Search</h1>
-        <hr className="w-full border-t-2 border-gray-300 my-2"/>
+      <div className="flex flex-wrap gap-4 items-center justify-center w-full px-1">
+        <h1 className="w-full text-xl font-bold flex-1">Quick Search</h1>
+        <hr className="w-full border-t-2 border-gray-300 my-2 flex-initial"/>
+        
+             {autoColor.map((color) =>(
+             <Autocomplete 
+              className="text-purple-700 flex-initial ms-1 w-80" 
+              color = {color}
+              key = {color}
+              placeholder=""
+              label="Destination"
+              variant="faded"
+              defultItems={destination}
+              size="sm"
+            >
+            {destination.map((location) => (
+            <AutocompleteItem 
+            className="text-black mt-2"
+            key={location.value} 
+            value={location.value}>
+            {location.label}
+            </AutocompleteItem>
+          ))}
+          </Autocomplete>
+        ))}
+             
         <Popover placement="bottom">
           <PopoverTrigger>
-            <Button className="w-[280px] " color="secondary" variant="bordered">Where to?</Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <p className="text-black">hell0</p>
-          </PopoverContent>
-        </Popover>
-        <Popover placement="bottom">
-          <PopoverTrigger>
-            <Button className="w-[280px]" variant="bordered" color="secondary">{selectedRange}</Button>
+            <Button 
+              className="flex-initial w-72" 
+              variant="faded" 
+              color="secondary" 
+              size="lg"
+              >{selectedRange}
+              </Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">
@@ -54,7 +81,7 @@ export default function SearchBar() {
         </Popover>
         <Dropdown>
           <DropdownTrigger>
-            <Button className="w-[280px]" color="secondary" variant="bordered">{selectedValue}</Button>
+            <Button className="flex-inital w-72" color="secondary" variant="faded" size="lg">{selectedValue}</Button>
           </DropdownTrigger>
           <DropdownMenu
            variant="flat"
@@ -63,6 +90,7 @@ export default function SearchBar() {
            selectedKeys={selectedKeys}
            onSelectionChange={setSelectedKeys}
            color="secondary"
+           className="text-black"
           >
             <DropdownItem key="Travelers: 1">Number of poeple: 1</DropdownItem>
             <DropdownItem key="Travelers: 2">Number of People: 2</DropdownItem>
@@ -70,11 +98,21 @@ export default function SearchBar() {
             <DropdownItem key="Travelers: 4">Number of People: 4</DropdownItem>
           </DropdownMenu>
         </Dropdown>     
-        <Button className="w-[100px] border ml-[20px] w-[130px]" radius="full" color="primary">Search</Button>
+        <Button 
+        className="w-32 flex-initial me-1" 
+        radius="full" 
+        color="secondary"
+        href = "http://localhost:3000/hotels"
+        as={Link}
+        size="lg"
+        
+        >
+          Search
+        </Button>
       </div>
     </center>
     </div>
-    </main>
   );
 }
    
+

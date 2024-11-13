@@ -1,11 +1,11 @@
 // app/pages/Hotels/page.tsx
-import React from "react";
 
-export default function Page() {
+
+export default function listings() {
   return ( 
-  <div style={{ padding: "2rem", textAlign: "center" }}>
-      Hello world!, this is page about hotels.
-      <p>So will this paragraph.</p>
-  </div>
+   <div className="flex">
+      <div>filter menu ---</div>
+      <div>contnet</div>
+   </div>
   );
 }
