@@ -19,7 +19,7 @@ export default function SearchBar() {
     [selectedKeys]
   );
 
-  let [val, setVal] = React.useState<RangeValue<DateValue> | null>(null);
+  const [val, setVal] = React.useState<RangeValue<DateValue> | null>(null);
     
   const formatDate = (date: DateValue) =>{
      return `${date.month}/${date.day}/${date.year}`;
@@ -59,10 +59,9 @@ export default function SearchBar() {
           </Autocomplete>
         ))}
              
-        
-        <Popover placement="bottom">
+        <Popover>
           <PopoverTrigger>
-            <Button className="w-[280px]" variant="bordered" color="secondary">{selectedRange}</Button>
+            <Button className="w-72 flex-initial" variant="bordered" color="secondary">{selectedRange}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">
@@ -76,7 +75,7 @@ export default function SearchBar() {
         </Popover>
         <Dropdown>
           <DropdownTrigger>
-            <Button className="w-[280px]"  variant="bordered">{selectedValue}</Button>
+            <Button className="flex-initial w-72"  variant="bordered">{selectedValue}</Button>
           </DropdownTrigger>
           <DropdownMenu
            variant="flat"
@@ -93,7 +92,7 @@ export default function SearchBar() {
             <DropdownItem key="Travelers: 4">Number of People: 4</DropdownItem>
           </DropdownMenu>
         </Dropdown>     
-        <Button className="w-[100px] border ml-[20px] w-[130px]" radius="full" color="primary">Search</Button>
+        <Button className="flex-initial w-32 border ml-[20px]" radius="full" color="primary">Search</Button>
       </div>
     </center>
     </div>
