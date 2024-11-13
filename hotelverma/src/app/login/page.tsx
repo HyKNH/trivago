@@ -6,7 +6,7 @@ export default function Page() {
   return ( 
   <div>
     <NavBar/>
-    Hello world!, this is page about hotels.
+    Hello world!, this is page about log in.
     <p>So will this paragraph.</p>
   </div>
   );

@@ -7,7 +7,7 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -32,16 +32,12 @@ footer{
 }
 
 .container{
-  background-color: rgb(248, 237, 237);
   color: black;
   margin-top: 50px;
   margin-left: 10px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
   flex-wrap: wrap;
   padding-bottom: 15px;
 }
@@ -51,10 +47,22 @@ footer{
 }
 
 .header{
-  
   align-self: center;
   text-align: center;
 }
+
+.headerFeatured{
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #ff8c00, #ff4500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 button{
   border-width: 1px;
   border-color: black;
