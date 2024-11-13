@@ -39,9 +39,9 @@ export default function SearchBar() {
         
              {autoColor.map((color) =>(
              <Autocomplete 
-              className="text-purple-700 flex-initial ms-1 w-80" 
-              color = {color}
-              key = {color}
+              className="text-orange-700 flex-initial ms-1 w-80" 
+              color = {"warning"}
+              key = {"warning"}
               placeholder=""
               label="Destination"
               variant="faded"
