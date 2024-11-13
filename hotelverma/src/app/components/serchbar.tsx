@@ -61,13 +61,15 @@ export default function SearchBar() {
              
         <Popover placement="bottom">
           <PopoverTrigger>
-            <Button 
-              className="flex-initial w-72" 
-              variant="faded" 
-              color="secondary" 
-              size="lg"
-              >{selectedRange}
-              </Button>
+            <Button className="w-[280px] " color="secondary" variant="bordered">Where to?</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <p className="text-black">hell0</p>
+          </PopoverContent>
+        </Popover>
+        <Popover placement="bottom">
+          <PopoverTrigger>
+            <Button className="w-[280px]" variant="bordered" color="secondary">{selectedRange}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">
@@ -81,7 +83,7 @@ export default function SearchBar() {
         </Popover>
         <Dropdown>
           <DropdownTrigger>
-            <Button className="flex-inital w-72" color="secondary" variant="faded" size="lg">{selectedValue}</Button>
+            <Button className="w-[280px]" color="secondary" variant="bordered">{selectedValue}</Button>
           </DropdownTrigger>
           <DropdownMenu
            variant="flat"
@@ -98,17 +100,7 @@ export default function SearchBar() {
             <DropdownItem key="Travelers: 4">Number of People: 4</DropdownItem>
           </DropdownMenu>
         </Dropdown>     
-        <Button 
-        className="w-32 flex-initial me-1" 
-        radius="full" 
-        color="secondary"
-        href = "http://localhost:3000/hotels"
-        as={Link}
-        size="lg"
-        
-        >
-          Search
-        </Button>
+        <Button className="w-[100px] border ml-[20px] w-[130px]" radius="full" color="primary">Search</Button>
       </div>
     </center>
     </div>

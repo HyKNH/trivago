@@ -15,7 +15,7 @@ export default function NavBar() {
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link underline="active" href="/">
+                    <Link underline="active" color="warning" href="/">
                     Home
                     </Link>
                 </NavbarItem>
@@ -32,10 +32,10 @@ export default function NavBar() {
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">
-                    <Link href="#">Login</Link>
+                    <Link href="/login" color="warning">Login</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                    <Button as={Link} color="warning" href="/signup" variant="flat">
                         Sign Up
                     </Button>
                 </NavbarItem>
