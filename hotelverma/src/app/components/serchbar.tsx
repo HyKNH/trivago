@@ -3,7 +3,6 @@ import React from "react";
 import {RangeCalendar} from "@nextui-org/react";
 import type {DateValue} from "@react-types/calendar";
 import type {RangeValue} from "@react-types/shared";
-import {today, getLocalTimeZone} from "@internationalized/date";
 import {Button} from "@nextui-org/button";
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/popover";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react"
@@ -17,11 +16,13 @@ export default function SearchBar() {
     [selectedKeys]
   );
 
-  const [value, setValue] = React.useState<RangeValue<DateValue>>({
-    start: today(getLocalTimeZone()),
-    end: today(getLocalTimeZone()).add({weeks: 1}),
-  });
-  
+  let [val, setVal] = React.useState<RangeValue<DateValue> | null>(null);
+    
+  const formatDate = (date: DateValue) =>
+  `${date.month}/${date.day}/${date.year}`;
+
+  const selectedRange = val ? `${formatDate(val.start)} - ${formatDate(val.end)}` : "Stay Duration";
+
     return (
     <main>
     <div className="border ml-[150px] mr-[150px] rounded-lg pb-[12px] pt-[20px] mt-[200px] ">
@@ -34,20 +35,19 @@ export default function SearchBar() {
             <Button className="w-[280px] " color="secondary" variant="bordered">Where to?</Button>
           </PopoverTrigger>
           <PopoverContent>
-            <p className="text-black">hello</p>
+            <p className="text-black">hell0</p>
           </PopoverContent>
         </Popover>
-          
         <Popover placement="bottom">
           <PopoverTrigger>
-            <Button className="w-[280px]" variant="bordered" color="secondary"></Button>
+            <Button className="w-[280px]" variant="bordered" color="secondary">{selectedRange}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">
               <RangeCalendar 
-              aria-label="Date (Controlled)" 
-              value={value} 
-              onChange={setValue} 
+              visibleMonths={2}
+              value={val} 
+              onChange={setVal} 
             />
             </div>
           </PopoverContent>
