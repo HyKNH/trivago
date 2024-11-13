@@ -30,8 +30,8 @@ const FeaturedPage = () => {
                     isZoomed
                     width={300}
                     height={300}
-                    alt="Venice"
-                    src="https://images.pexels.com/photos/7245101/pexels-photo-7245101.jpeg"
+                    alt="Paris"
+                    src="https://images.pexels.com/photos/352519/pexels-photo-352519.jpeg"
                 />
                 </div>
 
