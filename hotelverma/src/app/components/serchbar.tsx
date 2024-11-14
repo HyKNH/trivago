@@ -9,8 +9,6 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Selection} from "
 import {Autocomplete,AutocompleteItem} from "@nextui-org/autocomplete";
 import {destination} from "./locationData";
 
-
-
 export default function SearchBar() {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["Travelers"]));
 

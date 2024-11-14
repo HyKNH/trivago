@@ -1,18 +1,32 @@
 // app/components/providers.tsx
 'use client';
 
-import { Navbar,   NavbarBrand,   NavbarContent,   NavbarItem } from "@nextui-org/navbar";
-import { Link } from "@nextui-org/link";
-import { Button } from "@nextui-org/button";
+import React from "react";
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link } from "@nextui-org/react";
 import {Logo} from "./Logo";
 
 export default function NavBar() {
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+    const menuItems = [
+        "Home",
+        "Hotels",
+        "History",
+    ];
+
     return (
-        <Navbar>
+        <Navbar onMenuOpenChange={setIsMenuOpen}>
+            <NavbarContent>
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="sm:hidden"
+            />
             <NavbarBrand>
                 <Logo />
                 <p className="font-bold text-inherit">Hotel Verma</p>
             </NavbarBrand>
+            </NavbarContent>
+            
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
                     <Link underline="active" color="warning" href="/">
@@ -40,6 +54,20 @@ export default function NavBar() {
                     </Button>
                 </NavbarItem>
             </NavbarContent>
+            <NavbarMenu>
+                {menuItems.map((item, index) => (
+                <NavbarMenuItem key={`${item}-${index}`}>
+                <Link
+                className="w-full"
+                href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                size="lg"
+                color="foreground"
+                >
+                {item}
+                </Link>
+                </NavbarMenuItem>
+                ))}
+            </NavbarMenu>
         </Navbar>
     );
 }
