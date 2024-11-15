@@ -1,4 +1,6 @@
 import {Popover, PopoverTrigger, PopoverContent, Button,RangeCalendar} from "@nextui-org/react"
+import type {DateValue} from "@react-types/calendar";
+import type {RangeValue} from "@react-types/shared";
 import React from "react"
 
 
@@ -28,5 +30,5 @@ export default function Calendar () {
           </PopoverContent>
         </Popover>
     );
-    
+
 }
