@@ -69,7 +69,7 @@ const LoginPage = () => {
                         Forgot password?
                     </Link>
                     <span>
-                        Don't have an account?{' '}
+                        Don't have an account?
                         <Link href="/signup" color="warning">
                             Sign up
                         </Link>
