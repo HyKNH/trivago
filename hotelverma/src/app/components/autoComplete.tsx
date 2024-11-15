@@ -9,7 +9,7 @@ export default function SeachSelect() {
             variant="bordered"
             className="w-72 flex-initial"
         >
-            <AutocompleteItem></AutocompleteItem>
+            <AutocompleteItem>hello</AutocompleteItem>
 
         </Autocomplete>
     );

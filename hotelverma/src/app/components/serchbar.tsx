@@ -6,10 +6,6 @@ import Menu from "./dropdownMenu";
 import Calendar from "./Calendar"
 
 export default function SearchBar() {
-  const colors = [
-    "warning",
-  ];
-
     return (
    
     <div className="border mx-40 rounded-lg pb-[12px] pt-[20px] mt-[50px] ">

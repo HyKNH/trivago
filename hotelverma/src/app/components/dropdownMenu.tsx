@@ -3,7 +3,6 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@ne
 
 
 export default function Menu (){
-
     return (
         <Dropdown>
         <DropdownTrigger>
