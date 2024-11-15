@@ -73,7 +73,7 @@ const SignupPage = () => {
                     </Button>
                 </div>
                 <p className="text-center text-gray-500">
-                    Already have an account?{' '}
+                    Already have an account?
                     <Link href="/login" color="warning">
                         Log in
                     </Link>
