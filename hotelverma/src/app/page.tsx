@@ -4,9 +4,6 @@ import FeaturedPage from "./components/featured";
 
 export default function Page() {
   return (
-    <div className="">
       <FeaturedPage/>
-    </div>
-    
   );
 }

@@ -5,7 +5,7 @@ import { Link } from "@nextui-org/link";
 
 const FeaturedPage = () => {
     return (
-        <section className='move-right flex px-4 items-center gap-12 container mx-auto'>
+        <section className='mx-auto flex flex-col md:flex-row items-center justify-center gap-12 py-40'>
             <div className='py-10 h-full'>
                 <h1 className='header-featured font-heading mb-6'>Find and <span className="gradient-text">reserve</span> your <br/>dream vacation</h1>
                 <p className='para-featured text-[#000000] mb-12 max-w-lg'>
