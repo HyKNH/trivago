@@ -6,7 +6,7 @@ import { Link } from "@nextui-org/link";
 const FeaturedPage = () => {
     return (
         <section className='mx-auto flex flex-col md:flex-row items-center justify-center gap-12 py-40'>
-            <div className='py-10 h-full'>
+            <div className='py-10 h-full px-4'>
                 <h1 className='header-featured font-heading mb-6'>Find and <span className="gradient-text">reserve</span> your <br/>dream vacation</h1>
                 <p className='para-featured text-[#000000] mb-12 max-w-lg'>
                     Experience luxury and comfort at unbeatable prices, reserved just for you.
@@ -15,7 +15,7 @@ const FeaturedPage = () => {
             </div>
 
             <div className='md:grid grid-cols-2 gap-12'>
-                <div className='rounded-2xl overflow-hidden h-48'>
+                <div className='rounded-2xl overflow-hidden h-48 py-4'>
                 <Image
                     isZoomed
                     width={300}
@@ -25,7 +25,7 @@ const FeaturedPage = () => {
                 />
                 </div>
 
-                <div className='rounded-2xl overflow-hidden h-48'>
+                <div className='rounded-2xl overflow-hidden h-48 py-4'>
                 <Image
                     isZoomed
                     width={300}
@@ -35,7 +35,7 @@ const FeaturedPage = () => {
                 />
                 </div>
 
-                <div className='rounded-2xl overflow-hidden h-48'>
+                <div className='rounded-2xl overflow-hidden h-48 py-4'>
                 <Image
                     isZoomed
                     width={300}
@@ -45,7 +45,7 @@ const FeaturedPage = () => {
                 />
                 </div>
 
-                <div className='rounded-2xl overflow-hidden h-48'>
+                <div className='rounded-2xl overflow-hidden h-48 py-4'>
                 <Image
                     isZoomed
                     width={300}

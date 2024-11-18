@@ -65,7 +65,7 @@ const LoginPage = () => {
                     </Button>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
-                    <Link href="/forgot-password" color="warning">
+                    <Link href="/forget" color="warning">
                         Forgot password?
                     </Link>
                     <span>
