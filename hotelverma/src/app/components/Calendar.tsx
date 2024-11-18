@@ -17,7 +17,7 @@ export default function Calendar () {
     return (
         <Popover>
           <PopoverTrigger>
-            <Button className="w-72 flex-initial" variant="bordered" color="warning">{selectedRange}</Button>
+            <Button className="w-52  flex-initial border-amber-500 text-black " variant="bordered" color="warning">{selectedRange}</Button>
           </PopoverTrigger>
           <PopoverContent>
             <div className="flex gap-x-4">

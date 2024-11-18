@@ -1,25 +1,25 @@
-import React from "@nextui-org/react"
+import React from "react"
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 
 
 export default function Menu (){
     return (
-        <Dropdown>
+
+
+        <Dropdown closeOnSelect>
         <DropdownTrigger>
           <Button 
             variant="bordered" 
-            className="w-72 flex-inital"
+            className="w-52 text-black"
+            color="warning"
           >
-            Open Menu
+            Travelers
           </Button>
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
-          <DropdownItem key="new">New file</DropdownItem>
-          <DropdownItem key="copy">Copy link</DropdownItem>
-          <DropdownItem key="edit">Edit file</DropdownItem>
-          <DropdownItem key="delete" className="text-danger" color="danger">
-            Delete file
-          </DropdownItem>
+          <DropdownItem key="1">1 Traveler</DropdownItem>
+          <DropdownItem key="2">2 Travelers</DropdownItem>
+          <DropdownItem key="3">3 Travelers</DropdownItem>
         </DropdownMenu>
       </Dropdown>
 

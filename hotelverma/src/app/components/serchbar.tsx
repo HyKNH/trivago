@@ -4,21 +4,17 @@ import {Button} from "@nextui-org/button";
 import SearchSelect from "./autoComplete"
 import Menu from "./dropdownMenu";
 import Calendar from "./Calendar"
+import { SearchIcon } from "./SearchIcon";
 
 export default function SearchBar() {
     return (
-   
-    <div className="border mx-40 rounded-lg pb-[12px] pt-[20px] mt-[50px] ">
-    <center>
-      <div className="flex flex-wrap gap-4 items-center justify-center w-full px-1">
-        <h1 className="w-full text-xl font-bold flex-1">Quick Search</h1>
-        <hr className="w-full border-t-2 border-gray-300 my-2 flex-initial"/>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 justify-start ml-5 mt-8">
+        <h1 className="w-full text-xl font-semibold pl-3">Quick Search</h1>
         <SearchSelect/>
         <Calendar/>
         <Menu/>
-        <Button className="flex-initial w-32 border mr-[20px]" radius="full" color="primary" size ="lg">Search</Button>
+        <button className="border border-solid rounded-full border-2 p-1.5 border-yellow-500"><SearchIcon/></button>
       </div>
-    </center>
-    </div>
+    
   );
 }
