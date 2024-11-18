@@ -9,7 +9,7 @@ export default function SeachSelect() {
             variant="bordered"
             className="w-52 h-11 border-amber-500 border rounded-2xl border-2"
         >
-            <AutocompleteItem ClassName=""key = "1">hello</AutocompleteItem>
+            <AutocompleteItem>hello</AutocompleteItem>
 
         </Autocomplete>
     );
