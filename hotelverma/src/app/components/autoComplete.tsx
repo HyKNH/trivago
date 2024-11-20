@@ -5,7 +5,7 @@ export default function SeachSelect() {
     return (
         <Autocomplete
             label = "Destiantion"
-            color="warning"
+           
             variant="bordered"
             className="w-52 h-11 border-amber-500 border rounded-2xl border-2"
         >

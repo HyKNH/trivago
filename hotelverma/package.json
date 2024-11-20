@@ -15,6 +15,7 @@
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
+    "@react-oauth/google": "^0.12.1",
     "framer-motion": "^11.11.4",
     "navbar": "^3.0.0",
     "next": "14.2.12",

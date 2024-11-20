@@ -21,7 +21,7 @@ export default function SideMenu(){
                                     width={400}
                                     src="https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww"
                                 />
-                            </div>
+                            </div>  
                             <div className="w-3/5 relative">
                                 <h1 className="font-semibold">Title</h1>
                                 <h2>location</h2>

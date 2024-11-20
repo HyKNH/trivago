@@ -4,7 +4,7 @@ import {Button} from "@nextui-org/button";
 import SearchSelect from "./autoComplete"
 import Menu from "./dropdownMenu";
 import Calendar from "./Calendar"
-import { SearchIcon } from "./SearchIcon";
+import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar() {
     return (
@@ -13,7 +13,7 @@ export default function SearchBar() {
         <SearchSelect/>
         <Calendar/>
         <Menu/>
-        <button className="border border-solid rounded-full border-2 p-1.5 border-yellow-500"><SearchIcon/></button>
+        <button className="border-solid rounded-full border-2 p-1.5 border-yellow-500"><FaSearch className="size-6" /></button>
       </div>
     
   );

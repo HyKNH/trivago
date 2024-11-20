@@ -1,10 +1,17 @@
+'use client';
+
 import React from 'react';
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import { FaGoogle, FaGithub } from 'react-icons/fa';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
+    const login = useGoogleLogin({
+        onSuccess: tokenResponse => console.log(tokenResponse),
+      });
+      
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
@@ -51,8 +58,9 @@ const LoginPage = () => {
                         radius="full" 
                         startContent={<FaGoogle />} 
                         className="bg-white text-black shadow-md border border-gray-200 hover:bg-gray-100"
-                    >
-                        Log in with Google
+                        onClick={() => login()}
+                        >
+                            Log in with Google
                     </Button>
                     <Button 
                         fullWidth 
