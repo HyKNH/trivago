@@ -1,3 +1,5 @@
+
+// an array of objects with fields label and value 
 export const destination = [
  {label: "Los Angeles", value: "los angeles"},
  {label: "Santa Monica", value: "santa monica"},
