@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotel.dao.CommentMapper">
+
+    <insert id="save" parameterType="Comment">
+        insert into comment(user, message, rating, room_id)
+        values(#{user},#{message}, #{rating}, #{room_id}
+    </insert>
+
+    <!--<insert id="save" parameterType="int">
+        insert into room(rating)
+        values=(#{rating})
+        where room_id = #{room_id}
+    </insert>-->
+
+    <delete id="deleteComment" parameterType="int">
+        delete from comment
+        where room_id=#{id}
+    </delete>
+
+    <update id="updateComment" parameterType="Comment">
+        !-- fix the update method
+        update comment
+        set user=#{user}, message=#{message}, rating=#{rating}, room_id=#{room_id}
+        where id=#{id};
+    </update>
+
+    <select id="getComments" parameterType="int">
+        select * from Comments
+        where room_id=#{room_id}
+    </select>
+</mapper>

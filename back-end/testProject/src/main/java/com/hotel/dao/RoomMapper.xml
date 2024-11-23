@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotel.dao.RoomMapper">
+
+    <insert id="addRoom" parameterType="Room">
+        insert into room(price, available, location, pictures, room_type, capacity)
+        values(#{price},1, #{location}, #{pictures}, #{room_type}, #{capacity})
+    </insert>
+
+    <delete id="deleteRoom" parameterType="int">
+        delete from room
+        where room_id=#{room_id}
+    </delete>
+
+    <update id="updateRoom" parameterType="Room">
+        update room
+        set price=#{price}, available=#{available}, location=#{location}, pictures=#{pictures}, room_type=#{room_type, avg_rating=#(avg_rating}
+        where room_id=#{room_id};
+    </update>
+
+    <select id="getAllRooms" resultType="Room">
+        select room_id, price, available, location, pictures, room_type, capacity from room
+    </select>
+
+    <select id="getRoomByLocation" resultType="Room">
+        select * from room
+        where location=#{location};
+    </select>
+
+    <select id="getRoomsByTravelers" resultType="Room">
+        select * from room
+        where capacity=#{capacity}
+    </select>
+</mapper>
