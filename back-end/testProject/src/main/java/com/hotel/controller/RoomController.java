@@ -53,4 +53,9 @@ public class RoomController {
     public List<Room> getRoomByTravelers(int travelers) {
         return roomService.getRoomsByTravelers(travelers);
     }
+
+    @RequestMapping(value = "/book")
+    public void Book(int id) {
+
+    }
 }

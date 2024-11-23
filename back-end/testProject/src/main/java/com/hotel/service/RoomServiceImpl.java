@@ -38,4 +38,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getRoomsByTravelers(int travelers) { return Collections.emptyList(); }
+
+    @Override
+    public void Book(int id) {
+
+    }
 }

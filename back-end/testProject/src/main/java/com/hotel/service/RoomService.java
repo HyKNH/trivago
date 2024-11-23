@@ -11,4 +11,5 @@ public interface RoomService {
     List<Room> getRoomByLocation(String location);
     List<Room> getAllRooms();
     List<Room> getRoomsByTravelers(int travelers);
+    void book(int id);
 }
