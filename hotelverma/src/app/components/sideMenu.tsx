@@ -32,7 +32,9 @@ export default function SideMenu(){
                                 <h1 className="font-semibold">Title</h1>
                                 <h2>location</h2>
                                 <h3>ameninites</h3>
+                                <a href="http://localhost:3000/reservation">
                                 <button className="absolute bottom-0 right-0 py-2 px-4 border border-soloid rounded-lg border-red-300 text-red-300">Book Now</button>
+                                </a>
                             </div>
                         </div>
 
