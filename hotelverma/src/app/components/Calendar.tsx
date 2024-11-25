@@ -3,8 +3,6 @@ import type {DateValue} from "@react-types/calendar";
 import type {RangeValue} from "@react-types/shared";
 import React from "react"
 
-
-
 export default function Calendar () {
     // creating a useState hook that will be used for assigning a date val 
     const [val, setVal] = React.useState<RangeValue<DateValue> | null>(null);
