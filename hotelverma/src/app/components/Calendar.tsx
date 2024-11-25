@@ -13,14 +13,21 @@ export default function Calendar () {
         return `${date.month}/${date.day}/${date.year}`;
      }
   //if true call formatDate on val if false then set val to string "stay duration"
-    const selectedRange = val ? `${formatDate(val.start)} - ${formatDate(val.end)}` : "Stay Duration";
+    const selectedRange = val ? `${formatDate(val.start)} - ${formatDate(val.end)}` : "11/12/24-11/30/24";
 
     return (
         //Popover used for redering component
-        <Popover>
+        <Popover className="mt-0" placement="bottom" >
           {/* used to set the item used to make menu popup*/}
           <PopoverTrigger>
-            <Button className="w-52  flex-initial border-amber-500 text-black " variant="bordered" color="warning">{selectedRange}</Button>
+            <Button 
+            className="w-3/4  flex-initial  text-black mt" 
+            variant="flat" 
+            color="default"
+
+            >
+              {selectedRange}
+            </Button>
           </PopoverTrigger>
             {/* this is were the content for popup goes*/}
           <PopoverContent>

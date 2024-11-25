@@ -1,13 +1,13 @@
 // app/pages/Hotels/page.tsx
 import React from "react";
 import SearchBar from "../components/serchbar";
-import SideMenu from "../components/sideMenu"
+import Content from "../components/mainHotels";
 
 export default function listings() {
   return ( 
   <div>
-     <SearchBar/>
-     <SideMenu/>
+    <SearchBar/>
+    <Content/>
   </div>
   
   );

@@ -1,6 +1,8 @@
+"use client";
 import {Image} from "@nextui-org/image";
 import {Input} from "@nextui-org/input"
 import { RiStarSFill } from "react-icons/ri";
+import Calendar from "../components/Calendar";
 
 
 export default function reservation() {
@@ -42,7 +44,11 @@ export default function reservation() {
       </div>
       <div className="pt-5 flex flex-wrap">
          <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
-         <form className="space-y-12 px-20 pt-5 w-2/4">
+         <form className="space-y-9 px-20  w-2/4">
+         <div>
+            <h2 className="mb-5">Date for reservation</h2>
+            <Calendar/>
+         </div>
          <h2>Name for reservation</h2>   
          <Input 
             isRequired
@@ -83,11 +89,19 @@ export default function reservation() {
             startContent={<span>+1</span>}
          />
          <h2>Payment</h2>
+         <p className="h-44">/* Payment Content */</p>
          </form>
 
-      <div className="border w-2/4 flex">
-        <h1>Price details</h1>
-         
+      <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p">
+         <h1 className="text-xl text-semibold w-full">Price Details</h1>
+         <h2 className="w-1/2 pt-5">1 night:</h2>
+         <h2 className="pr-2 pt-5">168.00</h2>
+         <h3 className="w-full pl-3">$168 per night</h3>
+         <h2 className="pt-5 w-1/2">Taxes and Fees:</h2>
+         <h2 className="pr-2 pt-5">22.00</h2>
+         <hr className="w-full border-black mt-5"/>
+         <h1 className="w-1/2">Total: </h1>
+         <h1>$190.00</h1>
       </div>
       </div>
     </div>
