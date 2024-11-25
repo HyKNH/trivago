@@ -89,7 +89,7 @@ export default function reservation() {
             startContent={<span>+1</span>}
          />
          <h2>Payment</h2>
-         <p className="h-44">/* Payment Content */</p>
+         <p className="h-44"> Payment Content</p>
          </form>
 
       <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p">
