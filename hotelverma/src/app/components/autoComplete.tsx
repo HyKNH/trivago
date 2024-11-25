@@ -1,6 +1,5 @@
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react"
 
-
 export default function SeachSelect() {
     return (
         // Autocomplete is used to get the component to render 

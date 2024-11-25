@@ -1,7 +1,6 @@
 import React from "react"
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 
-
 export default function Menu (){
     return (
         <Dropdown closeOnSelect>

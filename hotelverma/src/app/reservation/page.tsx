@@ -4,7 +4,6 @@ import {Input} from "@nextui-org/input"
 import { RiStarSFill } from "react-icons/ri";
 import Calendar from "../components/Calendar";
 
-
 export default function reservation() {
    const rating = 2;  // For now, set to a fixed value. Later, will fetch this from the database.
 

@@ -1,7 +1,5 @@
 import {Slider} from "@nextui-org/react";
 
-
-
 export default function PriceSlider () {
     return (
       <div className="flex justify-center">
