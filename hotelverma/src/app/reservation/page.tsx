@@ -6,7 +6,7 @@ import Calendar from "../components/Calendar";
 
 
 export default function reservation() {
-   const rating = 2;  // For now, set to a fixed value. Later, will fetch this from the database.
+   const rating = 3;  // For now, set to a fixed value. Later, will fetch this from the database.
 
 
    // Create an array of size 'rating' using the Array constructor.
