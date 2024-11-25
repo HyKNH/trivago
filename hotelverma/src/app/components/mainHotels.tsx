@@ -16,9 +16,9 @@ export default function Content(){
             <div
             className="ml-5 w-1/4 h-screen mb-52 shadow-2xl rounded-lg border"
             >
-            <h1 className="w-full font-semibold text-lg mb-2">Rating</h1>
+            <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Rating</h1>
                 <Checkbox/>
-            <h1 className="w-full font-semibold text-lg mb-2">Price</h1>
+            <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
             <PriceSlider/>
             </div>
             {/* div for the card listing*/}
