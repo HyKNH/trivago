@@ -14,7 +14,7 @@ export default function Content(){
         <div className="flex gap-4 mt-12">
          {/* Div for the filter menu*/}
             <div
-            className="ml-5 w-1/4 h-screen mb-52 shadow-2xl rounded-lg border"
+            className="ml-5 w-1/4 p-5 mb-52 shadow-2xl rounded-lg border"
             >
             <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
                 <Checkbox/>
@@ -26,7 +26,7 @@ export default function Content(){
                 <Card >
                     <CardBody>
                         {/* Div for the items inside of the card*/}
-                        <div className="flex gap-x-4 h-auto">
+                        <div className="flex gap-x-4 ">
                             {/* div for the imgage*/}
                             <div className="w-2/5">
                                 <Image
@@ -39,13 +39,13 @@ export default function Content(){
                                 <h1 className="font-semibold">Title</h1>
                                 <h2>location</h2>
                                 <h3>ameninites</h3>
-                                
+                                <a href="http://localhost:3000/reservation">
                                 <button 
                                 className="absolute bottom-0 right-0 py-2 px-4 border border-soloid rounded-lg border-red-400 
                                            text-red-300 active:transition-all active:-translate-y-1 active:scale-110 hover:transition-all hover:bg-red-400 hover:text-white">
                                     Book Now
                                 </button>
-                                
+                                </a>
                             </div>
                         </div>
 
