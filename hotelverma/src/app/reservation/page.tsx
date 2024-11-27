@@ -7,7 +7,6 @@ import Calendar from "../components/Calendar";
 export default function reservation() {
    const rating = 3;  // For now, set to a fixed value. Later, will fetch this from the database.
 
-
    // Create an array of size 'rating' using the Array constructor.
    // Then, use .fill() to assign a star icon to each element in the array.
    // This means, if 'rating' is 2, the array will contain two <RiStarSFill/> components.
