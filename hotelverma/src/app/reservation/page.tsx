@@ -31,7 +31,7 @@ export default function reservation() {
     };
   
     //fucntion to handel submission of form 
-   const handleSubmit = (e : React.ChangeEvent<HTMLInputElement>) => {
+   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault(); // Prevent form from reloading the page
   
         const firstSixDigits = cardNumber.slice(0, 6);
