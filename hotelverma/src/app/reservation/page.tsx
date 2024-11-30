@@ -1,12 +1,38 @@
 "use client";
 import {Image} from "@nextui-org/image";
 import {Input} from "@nextui-org/input"
+import { totalmem } from "os";
 import { useState } from "react";
 import { RiStarSFill } from "react-icons/ri";
 import Calendar from "../components/Calendar";
 
-
-
+export class PricingRoom {
+   private tax: number = 0;
+   private total: number = 0;
+   constructor ( public name: string, public price:number){}
+   outPutDetails () {
+      console.log(`Room: ${this.name}`);
+      console.log(`Price: ${this.price.toFixed(2)}`);
+   }
+   calculateTotal (saleTax:number){
+       if (saleTax >= 0) {
+       this.tax = this.price * saleTax;
+       this.total = this.price + this.tax;
+       return this.tax;
+       } else {
+          return console.log("not valid tax")
+       }
+   }
+   displayTotal(){
+       if (this.tax <= 0){
+           return console.log("tax is not valid")
+       } 
+       else {
+          return  console.log(`Tax: $${this.tax.toFixed(2)}`),
+           console.log(`Total: $${this.total.toFixed(2)}`);
+       }
+   }
+ }
 
 export default function reservation() {
    const rating = 3;  // For now, set to a fixed value. Later, will fetch this from the database.
@@ -44,9 +70,9 @@ export default function reservation() {
       setShowMessage(true); // Show the message after clicking submit
     };
   
- 
- 
-  
+    
+   
+    
 
     return ( 
       //parent div 
@@ -158,7 +184,7 @@ export default function reservation() {
          <button  type="submit" className="border-1 border-stone-600 p-2 rounded-xl">Finish</button>
          </form>
         
-      <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p">
+      <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p-5">
          <h1 className="text-xl text-semibold w-full">Price Details</h1>
          <h2 className="w-1/2 pt-5">1 night:</h2>
          <h2 className="pr-2 pt-5">168.00</h2>
@@ -169,7 +195,7 @@ export default function reservation() {
          <h1 className="w-1/2">Total: </h1>
          <h1>$190.00</h1>
       </div>
-      { showMessage && <div className="text-green-500">{message}</div>}
+      { showMessage && <div className="text-green-500 mt-5">{message}</div>}
       </div>
     </div>
     
