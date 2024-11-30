@@ -71,9 +71,9 @@ export default function Content() {
   }
 
   return (
-    <div className="flex gap-4 mt-12">
+    <div className="flex flex-col md:flex-row gap-4 mt-12">
       {/* Filter Menu */}
-      <div className="ml-5 w-1/4 p-5 mb-52 shadow-2xl rounded-lg border">
+      <div className="ml-5 w-full md:w-1/4 p-5 mb-8 md:mb-52 shadow-2xl rounded-lg border">
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
         <Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} />
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
@@ -81,18 +81,18 @@ export default function Content() {
       </div>
 
       {/* Cards Listing */}
-      <div className="w-3/4 pr-52">
+      <div className="w-full md:w-3/4 pr-0 md:pr-52">
         {filteredHotels.length > 0 ? (
           filteredHotels.map((hotel) => (
             <Card key={hotel._id} className="mb-6">
               <CardBody>
-                <div className="flex gap-x-4">
+                <div className="flex flex-col md:flex-row gap-x-4">
                   {/* Image */}
-                  <div className="w-2/5">
+                  <div className="w-full md:w-2/5">
                     <Image width={400} src={hotel.image || "/default-image.jpg"} alt={hotel.title} />
                   </div>
                   {/* Details */}
-                  <div className="w-3/5 relative">
+                  <div className="w-full md:w-3/5 relative">
                     <h1 className="font-semibold">{hotel.title}</h1>
                     <h2>{hotel.location}</h2>
                     <h3>{hotel.amenities.join(", ")}</h3>
