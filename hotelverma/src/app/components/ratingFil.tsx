@@ -22,7 +22,7 @@ export default function Checkbox({ selectedRatings, onChange }: RatingFilterProp
             onChange={() => handleRatingChange(rating)}
           />
           <label htmlFor={`option${rating}`} className="flex pl-1">
-            {rating} <RiStarSFill className="mt-1" />
+            {rating} <RiStarSFill className="mt-1 text-yellow-400" />
           </label>
         </div>
       ))}
