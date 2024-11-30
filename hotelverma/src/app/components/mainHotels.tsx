@@ -13,13 +13,11 @@ export default function Content(){
          //div for putting filter menu and card listing into flex
         <div className="flex gap-4 mt-12">
          {/* Div for the filter menu*/}
-            <div
-            className="ml-5 w-1/4 p-5 mb-52 shadow-2xl rounded-lg border"
-            >
-            <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
+            <div className="ml-5 w-1/4 p-5 mb-52 shadow-2xl rounded-lg border">
+                <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
                 <Checkbox/>
-            <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
-            <PriceSlider/>
+                <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
+                <PriceSlider/>
             </div>
             {/* div for the card listing*/}
             <div className="w-3/4 pr-52">
@@ -48,11 +46,9 @@ export default function Content(){
                                 </a>
                             </div>
                         </div>
-
                     </CardBody>
                 </Card>
             </div>
         </div>
-
     );
 }

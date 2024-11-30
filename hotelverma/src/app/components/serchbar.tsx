@@ -16,6 +16,5 @@ export default function SearchBar() {
           <FaSearch className="size-6" /> 
           </button>
       </div>
-    
   );
 }

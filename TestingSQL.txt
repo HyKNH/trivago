@@ -1,0 +1,29 @@
+CREATE TABLE `vip` (
+   `id` int NOT NULL,
+   `Account` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+   `Password` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+   `Name` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `Sex` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `Email` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `Phone` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `V_Type` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `StartTime` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `EndTime` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   `roomid` varchar(45) COLLATE utf8mb3_bin DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+
+
+CREATE TABLE `home` (
+   `id` int NOT NULL,
+   `Price` int DEFAULT NULL,
+   `H_Type` int DEFAULT NULL,
+   `State` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+   `Img` varchar(1000) COLLATE utf8mb3_bin DEFAULT NULL,
+   `Text` varchar(200) COLLATE utf8mb3_bin DEFAULT NULL,
+   `Num` int DEFAULT NULL,
+   `ROOM_TYPE` int DEFAULT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
