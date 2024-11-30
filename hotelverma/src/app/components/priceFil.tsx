@@ -22,6 +22,7 @@ export default function PriceSlider({ onChange }: PriceSliderProps) {
         formatOptions={{ style: "currency", currency: "USD" }}
         className="w-3/4 pr-2"
         onChange={handleonchange}
+        color="warning"
       />
     </div>
   );
