@@ -1,21 +1,28 @@
-import {Slider} from "@nextui-org/react";
+import { Slider } from "@nextui-org/react";
 
-export default function PriceSlider () {
-    const handleonchange = (value: number | number[])=> {
-        console.log(value) // [0, 450] prints like this
+interface PriceSliderProps {
+  onChange: (newRange: [number, number]) => void;
+}
+
+export default function PriceSlider({ onChange }: PriceSliderProps) {
+  const handleonchange = (value: number | number[]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      onChange(value as [number, number]); 
     }
-    return (
-        <div className="flex justify-center">
-            <Slider
-            label="Price"
-            step={50}
-            minValue={0}
-            maxValue={1000}
-            defaultValue={[0, 500]}
-            formatOptions={{style: "currency", currency: "USD"}}
-            className="w-3/4 pr-2"
-            onChange={handleonchange}
-            />
-        </div>
-    );
+  };
+
+  return (
+    <div className="flex justify-center">
+      <Slider
+        label="Price"
+        step={10}
+        minValue={0}
+        maxValue={1000}
+        defaultValue={[0, 500]}
+        formatOptions={{ style: "currency", currency: "USD" }}
+        className="w-3/4 pr-2"
+        onChange={handleonchange}
+      />
+    </div>
+  );
 }
