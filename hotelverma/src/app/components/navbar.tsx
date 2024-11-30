@@ -57,7 +57,7 @@ export default function NavBar() {
     const menuItems = [
         "Home",
         "Hotels",
-        "History",
+        "Bookings",
     ];
 
     return (
@@ -86,8 +86,8 @@ export default function NavBar() {
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link color="foreground" href="/history">
-                    History
+                    <Link color="foreground" href="/bookings">
+                    Bookings
                     </Link>
                 </NavbarItem>
             </NavbarContent>
