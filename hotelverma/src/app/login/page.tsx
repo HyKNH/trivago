@@ -1,40 +1,82 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
+import axios from 'axios';
+import { useRouter } from 'next/navigation'; 
 
 const LoginPage = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+
+    const [message, setMessage] = useState<string | null>(null);
+    const router = useRouter();
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('login/api/auth', formData);
+            setMessage(response.data.message);
+
+            if (response.data.token) {
+                localStorage.setItem('authToken', response.data.token);
+            }
+
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 5000); 
+
+        } catch (error: any) {
+            setMessage(error.response?.data?.message || 'An error occurred');
+        }
+    };
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
                 <h1 className="text-2xl font-semibold text-center text-gray-800">
                     Log In to Your Account
                 </h1>
-                <form className="space-y-4">
-                    <Input 
+                {message && (
+                    <p className={`text-center ${message.includes('error') ? 'text-red-500' : 'text-green-500'}`}>
+                        {message}
+                    </p>
+                )}
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    <Input
                         isRequired
-                        label="Email" 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        required 
-                        fullWidth 
-                        aria-label="Email" 
+                        label="Email"
+                        name="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        required
+                        fullWidth
+                        aria-label="Email"
+                        onChange={handleChange}
                     />
-                    <Input 
+                    <Input
                         isRequired
-                        label="Password" 
-                        type="password" 
-                        placeholder="Enter your password" 
-                        required 
-                        fullWidth 
-                        aria-label="Password" 
+                        label="Password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        required
+                        fullWidth
+                        aria-label="Password"
+                        onChange={handleChange}
                     />
-                    <Button 
-                        type="submit" 
-                        fullWidth 
-                        radius="full" 
+                    <Button
+                        type="submit"
+                        fullWidth
+                        radius="full"
                         className="bg-gradient-to-tr from-orange-500 to-yellow-500 text-white shadow-lg"
                     >
                         Log In
@@ -59,6 +101,6 @@ const LoginPage = () => {
             </div>
         </div>
     );
-}
+};
 
 export default LoginPage;

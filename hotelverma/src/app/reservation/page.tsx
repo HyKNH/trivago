@@ -30,10 +30,10 @@ export default function Reservation() {
 
   
   // Function to handle form submission
-  const submitForm = (e) => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
     const payload = Object.fromEntries(formData);
 
     console.log(payload);
