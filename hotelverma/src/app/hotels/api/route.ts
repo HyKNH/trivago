@@ -20,6 +20,7 @@ export async function GET() {
       amenities: hotel.amenities || [],
       image: hotel.image || "/default-image.jpg", 
       price: hotel.price,
+      rating: hotel.rating,
     }));
 
     return new Response(JSON.stringify({ hotels }), { status: 200 });

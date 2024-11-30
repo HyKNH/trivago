@@ -12,19 +12,19 @@ type Hotel = {
   amenities: string[];
   image: string;
   price: number;
+  rating: number;
 };
 
 export default function Content() {
-  const [hotels, setHotels] = useState<Hotel[] | undefined>(undefined); // Initialize as undefined
+  const [hotels, setHotels] = useState<Hotel[] | undefined>(undefined);
 
-  // Fetch hotels data from the backend
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await fetch("/hotels/api"); // Adjust endpoint if needed
+        const response = await fetch("/hotels/api");
         const data = await response.json();
         if (data.hotels) {
-          setHotels(data.hotels); // Only set state if data.hotels is available
+          setHotels(data.hotels);
         }
       } catch (error) {
         console.error("Error fetching hotels:", error);
@@ -34,7 +34,6 @@ export default function Content() {
     fetchHotels();
   }, []);
 
-  // Render the component, including a loading spinner if hotels are undefined
   if (hotels === undefined) {
     return <Spinner className="flex items-center justify-center w-full py-35" color="warning" />;
   }
@@ -69,6 +68,12 @@ export default function Content() {
                     <h1 className="font-semibold">{hotel.title}</h1>
                     <h2>{hotel.location}</h2>
                     <h3>{hotel.amenities.join(", ")}</h3>
+                    <div className="flex items-center gap-2">
+                      {/* Display price */}
+                      <span className="text-xl font-bold">${hotel.price}</span>
+                      {/* Display rating */}
+                      <span className="text-yellow-400">{'★'.repeat(hotel.rating)}</span>
+                    </div>
                     <a href="http://localhost:3000/reservation">
                       <button
                         className="absolute bottom-0 right-0 py-2 px-4 border rounded-lg border-red-400 text-red-300 active:transition-all active:-translate-y-1 active:scale-110 hover:transition-all hover:bg-red-400 hover:text-white"
