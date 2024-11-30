@@ -1,17 +1,35 @@
 import { MongoClient } from "mongodb";
 
 const uri = process.env.REACT_APP_MONGODB_URI || "your-default-uri-here";
+const datab = process.env.REACT_APP_DB || "your-default-here";
+const collectionHotels = process.env.REACT_APP_HOTELS || "your-default-here";
+
+let cachedClient: MongoClient | null = null;
+let cachedDb: any = null;
+
+if (!uri) {
+  throw new Error("MongoDB URI is not defined in environment variables.");
+}
+
+async function connectToDatabase() {
+  if (cachedClient && cachedDb) {
+    return { client: cachedClient, db: cachedDb };
+  }
+
+  const client = new MongoClient(uri);
+  await client.connect();
+  const db = client.db(datab);
+
+  cachedClient = client;
+  cachedDb = db;
+
+  return { client, db };
+}
 
 export async function GET() {
   try {
-    const client = new MongoClient(uri);
-    await client.connect();
-
-    const data = await client
-      .db("hotelverma")
-      .collection("hotels")
-      .find({})
-      .toArray();
+    const { db } = await connectToDatabase();
+    const data = await db.collection(collectionHotels).find({}).toArray();
 
     const hotels = data.map((hotel: any) => ({
       _id: hotel._id.toString(),
