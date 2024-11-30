@@ -1,8 +1,10 @@
 "use client";
 import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
+import {DateRangePicker} from "@nextui-org/react";
 import { useState } from "react";
 import { RiStarSFill } from "react-icons/ri";
+import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
 import Calendar from "../components/Calendar"; // Make sure you import the Calendar component
 
 const BIN = ['434256', '481592', '483312'];
@@ -19,17 +21,24 @@ export default function Reservation() {
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
 
+  
   // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCardNumber(e.target.value);
     setMessage(""); // Reset message while typing
   };
 
+  
   // Function to handle form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = (e) => {
     e.preventDefault(); // Prevent form from reloading the page
 
-    const firstSixDigits = cardNumber.slice(0, 6);
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData);
+
+    console.log(payload);
+
+    /*const firstSixDigits = cardNumber.slice(0, 6);
     if (BIN.includes(firstSixDigits)) {
       setMessage("Payment success");
     } else {
@@ -37,7 +46,8 @@ export default function Reservation() {
     }
 
     setShowMessage(true); // Show the message after clicking submit
-  };
+    */
+  }
 
   return (
     <div className="px-6">
@@ -57,11 +67,26 @@ export default function Reservation() {
       </div>
       <div className="pt-5 flex flex-wrap">
         <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
-        <form className="space-y-9 px-20 w-2/4" onSubmit={handleSubmit}>
-          <div>
-            <h2 className="mb-5">Date for reservation</h2>
-            <Calendar />
-          </div>
+        <form className="space-y-9 px-20 w-2/4" onSubmit={submitForm}>
+          <h2>Date for reservation</h2>
+          <Input 
+            isRequired
+            label="Check In"
+            type="date"
+            labelPlacement="outside"
+            required
+            size="md"
+            name="checkIn"
+          />
+          <Input 
+            isRequired
+            label="Check out"
+            type="date"
+            labelPlacement="outside"
+            required
+            size="md"
+            name="checkOut"
+          />
           <h2>Name for reservation</h2>
           <Input
             isRequired
@@ -71,6 +96,7 @@ export default function Reservation() {
             required
             labelPlacement="outside"
             size="md"
+            name="fname"
           />
           <Input
             isRequired
@@ -79,6 +105,7 @@ export default function Reservation() {
             placeholder="ex: Jones"
             required
             labelPlacement="outside"
+            name="lname"
           />
           <h2>Contact info</h2>
           <Input
@@ -90,6 +117,7 @@ export default function Reservation() {
             fullWidth
             aria-label="Email"
             labelPlacement="outside"
+            name="email"
           />
           <Input
             isRequired
@@ -99,6 +127,7 @@ export default function Reservation() {
             labelPlacement="outside"
             required
             startContent={<span>+1</span>}
+            name="tel"
           />
           <h2>Payment</h2>
           <Input
