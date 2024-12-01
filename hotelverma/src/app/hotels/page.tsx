@@ -4,6 +4,7 @@
 import { Card, CardBody, Image, Spinner } from "@nextui-org/react";
 import Checkbox from "../components/ratingFil";
 import PriceSlider from "../components/priceFil";
+import SearchBar from "../components/serchbar"
 import { useState, useEffect } from "react";
 
 type Hotel = {
@@ -21,6 +22,7 @@ export default function Content() {
   const [filteredHotels, setFilteredHotels] = useState<Hotel[] | undefined>(undefined);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -55,17 +57,23 @@ export default function Content() {
     });
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+
   useEffect(() => {
     if (hotels) {
       const filtered = hotels.filter(hotel => {
         const isInPriceRange = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
         const matchesRating = selectedRatings.size === 0 || selectedRatings.has(hotel.rating);
-        return isInPriceRange && matchesRating;
+        const matchesLocation = hotel.location.toLowerCase().includes(searchQuery); // Location match
+        return isInPriceRange && matchesRating && matchesLocation;
       });
 
       setFilteredHotels(filtered);
     }
-  }, [priceRange, selectedRatings, hotels]);
+  }, [priceRange, selectedRatings,searchQuery, hotels]);
 
   if (filteredHotels === undefined) {
     return <Spinner className="flex items-center justify-center w-full py-35" color="warning" />;
@@ -74,11 +82,13 @@ export default function Content() {
   return (
     <div className="flex flex-col md:flex-row gap-4 mt-12">
       {/* Filter Menu */}
-      <div className="ml-5 w-full md:w-1/4 p-5 mb-8 md:mb-52 shadow-2xl rounded-lg border">
+      <div className="ml-5 w-full md:w-1/4 p-5 mb-8 md:mb-52 shadow-2xl rounded-lg border h-fit">
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
         <Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} />
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
         <PriceSlider onChange={handlePriceChange} />
+        <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
+        <SearchBar onSearch={handleSearch} />
       </div>
 
       {/* Cards Listing */}
