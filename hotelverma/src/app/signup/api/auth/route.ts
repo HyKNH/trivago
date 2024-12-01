@@ -25,13 +25,21 @@ export async function POST(req: NextRequest) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
+
+    const userCount = await User.countDocuments();
+    const role = userCount === 0 ? 'admin' : 'user';
+
+    const newUser = new User({ name, email, password: hashedPassword, role });
+    console.log("New user data before saving:", newUser);
+
     await newUser.save();
 
+    console.log("User saved:", newUser); 
+
     return NextResponse.json(
-      { message: "User created successfully" },
+      { message: "User created successfully", user: newUser },
       { status: 201 }
-    );
+    );  
   } catch (error) {
     console.error("Error creating user:", error);
 
