@@ -200,7 +200,7 @@ export default function Reservation() {
             <h1 className="text-xl text-semibold w-full">Price Details</h1>
             <h2 className="w-1/2 pt-5">1 night:</h2>
             <h2 className="pr-2 pt-5">168.00</h2>
-            <h3 className="w-full pl-3">$168 per night</h3>
+            <h3 className="w-full pl-3">${hotel?.price} per night</h3>
             <h2 className="pt-5 w-1/2">Taxes and Fees:</h2>
             <h2 className="pr-2 pt-5">22.00</h2>
             <hr className="w-full border-black mt-5" />
