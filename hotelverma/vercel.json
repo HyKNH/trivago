@@ -1,0 +1,20 @@
+{
+    "rewrites": [
+      {
+        "source": "/hotels/api",
+        "destination": "/hotels/api"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/hotels/api",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ]
+  }
+  
