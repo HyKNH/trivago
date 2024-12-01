@@ -87,10 +87,7 @@ const LoginPage = () => {
                     <span className="text-sm text-gray-400">or</span>
                     <span className="h-px w-16 bg-gray-300"></span>
                 </div>
-                <div className="flex justify-between text-sm text-gray-500">
-                    <Link href="/forget" color="warning">
-                        Forgot password?
-                    </Link>
+                <div className="flex justify-center text-sm text-gray-500">
                     <span>
                         Don&apos;t have an account?{' '}
                         <Link href="/signup" color="warning">

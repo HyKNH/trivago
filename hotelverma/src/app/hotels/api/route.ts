@@ -1,56 +1,17 @@
-import { MongoClient } from "mongodb";
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from '../utils/db';
+import Hotel from '../models/Hotels';
 
-const uri = process.env.REACT_APP_MONGODB_URI || "your-default-uri-here";
-const datab = process.env.REACT_APP_DB || "your-default-here";
-const collectionHotels = process.env.REACT_APP_HOTELS || "your-default-here";
+export const dynamic = 'force-dynamic';
 
-let cachedClient: MongoClient | null = null;
-let cachedDb: any = null;
-
-if (!uri) {
-  throw new Error("MongoDB URI is not defined in environment variables.");
-}
-
-async function connectToDatabase() {
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
-  }
-
-  const client = new MongoClient(uri);
-  await client.connect();
-  const db = client.db(datab);
-
-  cachedClient = client;
-  cachedDb = db;
-
-  return { client, db };
-}
-
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const { db } = await connectToDatabase();
-    const data = await db.collection(collectionHotels).find({}).toArray();
+    await connectToDatabase();
 
-    const hotels = data.map((hotel: any) => ({
-      _id: hotel._id.toString(),
-      title: hotel.title,
-      location: hotel.location,
-      amenities: hotel.amenities || [],
-      image: hotel.image || "/default-image.jpg",
-      price: hotel.price,
-      rating: hotel.rating,
-    }));
-
-    return new Response(JSON.stringify({ hotels }), {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0', 
-        'Pragma': 'no-cache',  
-        'Expires': '0',
-      },
-    });
+    const hotels = await Hotel.find();
+    return NextResponse.json({ hotels });
   } catch (error) {
-    console.error("Error fetching hotels:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+    console.error('Error fetching hotels:', error);
+    return NextResponse.json({ message: 'Error fetching hotels' }, { status: 500 });
   }
 }
