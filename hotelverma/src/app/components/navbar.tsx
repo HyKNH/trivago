@@ -75,7 +75,7 @@ export default function NavBar() {
         {isLoggedIn ? (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button as={Link} href="/profile" color="warning" variant="flat">
+              <Button as={Link} href="/dashboard" color="warning" variant="flat">
                 Profile
               </Button>
             </NavbarItem>
@@ -118,12 +118,12 @@ export default function NavBar() {
         {isLoggedIn ? (
           <>
             <NavbarMenuItem>
-              <Link className="w-full" href="/profile" size="lg" color="foreground">
+              <Link className="w-full" href="/dashboard" size="lg" color="foreground">
                 Profile
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Button color="warning" onClick={handleLogout} className="w-full">
+              <Button color="danger" onClick={handleLogout} className="w-full">
                 Logout
               </Button>
             </NavbarMenuItem>
