@@ -43,6 +43,7 @@ export async function GET() {
       rating: hotel.rating,
     }));
 
+    console.log("bruh:", fetchCache);
     return new Response(JSON.stringify({ hotels }), {
       status: 200,
       headers: {
