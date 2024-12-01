@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Spinner } from '@nextui-org/react';
+import { Spinner, Spacer, Button, Divider } from '@nextui-org/react';
+import { FaHotel } from "react-icons/fa";
+import { MdPostAdd } from "react-icons/md";
 
 const ProfilePage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -111,9 +113,9 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
-      <h1 style={{ color: '#333' }}>Profile Page</h1>
-
+    <div style={{ fontFamily: 'Inter, sans-serif', padding: '20px' }}>
+      <h1 className="text-3xl" style={{  color: '#333' }}>Profile Page</h1>
+      <Divider className="my-4" />
       {role === 'user' ? (
         <div style={{ marginTop: '20px' }}>
           <h2>Your Reservations</h2>
@@ -131,7 +133,7 @@ const ProfilePage: React.FC = () => {
         </div>
       ) : role === 'admin' ? (
         <div style={{ marginTop: '20px' }}>
-          <h2>Admin Dashboard</h2>
+          <h2 className="text-2xl">Admin Dashboard</h2>
           <h3 style={{ marginBottom: '10px' }}>Manage Hotels</h3>
 
           <form onSubmit={handleHotelSubmit} style={{ marginBottom: '20px' }}>
@@ -177,12 +179,12 @@ const ProfilePage: React.FC = () => {
               onChange={(e) => setNewHotel({ ...newHotel, rating: e.target.value })}
               style={{ display: 'block', width: '100%', padding: '10px', margin: '10px 0', border: '1px solid #ccc', borderRadius: '4px' }}
             />
-            <button type="submit" style={{ backgroundColor: '#007BFF', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '16px' }}>
+            <Button type="submit" color="warning" variant="bordered" startContent={<MdPostAdd />}>
               Add Hotel
-            </button>
+            </Button>
           </form>
-
-          <h3>Existing Hotels</h3>
+          <Divider className="my-4" />
+          <h3 className="text-2xl">Existing Hotels</h3>
           <ul style={{ listStyleType: 'none', padding: '0' }}>
             {hotels.length > 0 ? (
               hotels.map((hotel) => (
@@ -195,9 +197,10 @@ const ProfilePage: React.FC = () => {
                     <p>Rating: {hotel.rating} stars</p>
                     <img src={hotel.image} alt={hotel.title} style={{ maxWidth: '200px', marginTop: '10px', borderRadius: '4px' }} />
                   </div>
-                  <button onClick={() => handleDeleteHotel(hotel._id)} style={{ backgroundColor: '#f44336', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                    Delete
-                  </button>
+                  <Spacer y={4} />
+                  <Button onClick={() => handleDeleteHotel(hotel._id)} color="danger" variant="bordered" startContent={<FaHotel />}>
+                    Delete Hotel
+                  </Button>
                 </li>
               ))
             ) : (
