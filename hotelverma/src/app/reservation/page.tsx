@@ -1,53 +1,16 @@
 "use client";
 import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
-import React, { useState, useEffect} from "react";
+import {DateRangePicker} from "@nextui-org/react";
+import { useState } from "react";
 import { RiStarSFill } from "react-icons/ri";
-import axios from "axios";
-import {MongoClient, ObjectId} from "mongodb";
-import net from 'net'
+import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
+import Calendar from "../components/Calendar"; // Make sure you import the Calendar component
 
 const BIN = ['434256', '481592', '483312'];
 
-type Hotel = {
-  _id: string;
-  title: string;
-  location: string;
-  amenities: string[];
-  image: string;
-  price: number;
-  rating: number;
-};
-
 export default function Reservation() {
   const rating = 3; // For now, set to a fixed value. Later, will fetch this from the database.
-  const [hotels, setHotels] = useState<Hotel | undefined>(undefined);
-  const [url, setUrl] = useState<string | undefined>(undefined);
-  
-  //importing room data
-  //const router = useRouter();
-  //const { hotelId } = router.query;
-  //const [hotel, setHotel] = useState<Hotel | null>(null);
-
-  useEffect(() => {
-     const url = window.location.href;
-     const newurl = url.slice(42);
-     setUrl(newurl)
-
-     const fetchItem= async() => {
-       try {
-         const response = await axios.get(`/reservation/api?id=${newurl}`)
-         const data = response.data
-         setHotels(data.hotels[0])
-       } catch (e) {
-
-       }
-     }
-     fetchItem();
-  }, []);
-
-  
-
 
   // Create an array of size 'rating' using the Array constructor.
   // Then, use .fill() to assign a star icon to each element in the array.
@@ -61,20 +24,10 @@ export default function Reservation() {
   
   // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setCardNumber(inputValue);
-    
-    //check to see if card is 16 digits long
-    if (inputValue.length <16){
-      setMessage("Card Number must be 16-digits long")
-      setShowMessage(true);
-    }
-
-    else if (inputValue.length === 16){
-      setMessage("");//
-    }
-
+    setCardNumber(e.target.value);
+    setMessage(""); // Reset message while typing
   };
+
   
   // Function to handle form submission
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,22 +36,17 @@ export default function Reservation() {
     const formData = new FormData(e.target as HTMLFormElement);
     const payload = Object.fromEntries(formData);
 
-   // console.log(payload);// to check all data from form was extracted correctly 
+    console.log(payload);
 
-    const firstSixDigits = cardNumber.slice(0, 6);
-    if (!BIN.includes(firstSixDigits)) {
-      setMessage("Payment failure. Please Try Again");
-      setShowMessage(true);
-      return;
-    } 
-     //generates a random number from 10,000 - 90,000
-    const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-    console.log(conFirNum);
-     
-    //add conFirNum to payload for sending to back end
-    payload.conFirmNum = conFirNum.toString();
+    /*const firstSixDigits = cardNumber.slice(0, 6);
+    if (BIN.includes(firstSixDigits)) {
+      setMessage("Payment success");
+    } else {
+      setMessage("Payment failure! Please try again.");
+    }
 
-    //console.log(payload);
+    setShowMessage(true); // Show the message after clicking submit
+    */
   }
 
   return (
@@ -107,11 +55,11 @@ export default function Reservation() {
         <Image
           width="full"
           height={300}
-          src={hotels?.image}
+          src="https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww"
         />
       </div>
       <hr className="w-full border-black mt-5" />
-      <h1 className="mt-2 text-4xl">{hotels?.title}</h1>
+      <h1 className="mt-2 text-4xl">Conrad Las Vegas at Resorts World</h1>
       <div className="flex pt-3 pl-3">
         {stars.map((star, index) => (
           <div key={index}>{star}</div>
@@ -192,12 +140,7 @@ export default function Reservation() {
             size="md"
             value={cardNumber}
             onChange={handleCardInput}
-            maxLength={16}
-            pattern="\d{16}"
-            inputMode="numeric"
           />
-          {showMessage && <div className="text-red-500">{message}</div>}
-
           <div className="flex gap-2">
             <Input
               isRequired
@@ -234,6 +177,7 @@ export default function Reservation() {
           <h1 className="w-1/2">Total: </h1>
           <h1>$190.00</h1>
         </div>
+        {showMessage && <div className="text-green-500">{message}</div>}
       </div>
     </div>
   );

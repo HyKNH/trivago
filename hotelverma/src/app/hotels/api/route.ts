@@ -36,15 +36,21 @@ export async function GET() {
       title: hotel.title,
       location: hotel.location,
       amenities: hotel.amenities || [],
-      image: hotel.image || "/default-image.jpg", 
+      image: hotel.image || "/default-image.jpg",
       price: hotel.price,
       rating: hotel.rating,
     }));
 
-    return new Response(JSON.stringify({ hotels }), { status: 200 });
+    return new Response(JSON.stringify({ hotels }), {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0', 
+        'Pragma': 'no-cache',  
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     console.error("Error fetching hotels:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
-
   }
 }
