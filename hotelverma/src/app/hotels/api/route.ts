@@ -26,6 +26,8 @@ async function connectToDatabase() {
   return { client, db };
 }
 
+export const fetchCache = 'force-no-store';
+
 export async function GET() {
   try {
     const { db } = await connectToDatabase();
