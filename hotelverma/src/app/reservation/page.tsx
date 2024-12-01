@@ -1,16 +1,36 @@
 "use client";
 import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
-import {DateRangePicker} from "@nextui-org/react";
-import { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { RiStarSFill } from "react-icons/ri";
-import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
-import Calendar from "../components/Calendar"; // Make sure you import the Calendar component
+import { useRouter } from 'next/router';
+
+
 
 const BIN = ['434256', '481592', '483312'];
 
+type Hotel = {
+  _id: string;
+  title: string;
+  location: string;
+  amenities: string[];
+  image: string;
+  price: number;
+  rating: number;
+};
+
 export default function Reservation() {
   const rating = 3; // For now, set to a fixed value. Later, will fetch this from the database.
+  
+  //importing room data
+  const router = useRouter();
+  const { hotelId } = router.query;
+  const [hotel, setHotel] = useState<Hotel | null>(null);
+
+  
+ 
+  
+
 
   // Create an array of size 'rating' using the Array constructor.
   // Then, use .fill() to assign a star icon to each element in the array.
@@ -24,29 +44,44 @@ export default function Reservation() {
   
   // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(e.target.value);
-    setMessage(""); // Reset message while typing
-  };
-
-  
-  // Function to handle form submission
-  const submitForm = (e) => {
-    e.preventDefault(); // Prevent form from reloading the page
-
-    const formData = new FormData(e.target);
-    const payload = Object.fromEntries(formData);
-
-    console.log(payload);
-
-    /*const firstSixDigits = cardNumber.slice(0, 6);
-    if (BIN.includes(firstSixDigits)) {
-      setMessage("Payment success");
-    } else {
-      setMessage("Payment failure! Please try again.");
+    const inputValue = e.target.value;
+    setCardNumber(inputValue);
+    
+    //check to see if card is 16 digits long
+    if (inputValue.length <16){
+      setMessage("Card Number must be 16-digits long")
+      setShowMessage(true);
     }
 
-    setShowMessage(true); // Show the message after clicking submit
-    */
+    else if (inputValue.length === 16){
+      setMessage("");//
+    }
+
+  };
+  
+  // Function to handle form submission
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent form from reloading the page
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const payload = Object.fromEntries(formData);
+
+   // console.log(payload);// to check all data from form was extracted correctly 
+
+    const firstSixDigits = cardNumber.slice(0, 6);
+    if (!BIN.includes(firstSixDigits)) {
+      setMessage("Payment failure. Please Try Again");
+      setShowMessage(true);
+      return;
+    } 
+     //generates a random number from 10,000 - 90,000
+    const conFirNum = Math.floor(Math.random() * 90000) + 10000;
+    console.log(conFirNum);
+     
+    //add conFirNum to payload for sending to back end
+    payload.conFirmNum = conFirNum.toString();
+
+    //console.log(payload);
   }
 
   return (
@@ -140,7 +175,12 @@ export default function Reservation() {
             size="md"
             value={cardNumber}
             onChange={handleCardInput}
+            maxLength={16}
+            pattern="\d{16}"
+            inputMode="numeric"
           />
+          {showMessage && <div className="text-red-500">{message}</div>}
+
           <div className="flex gap-2">
             <Input
               isRequired
@@ -177,7 +217,6 @@ export default function Reservation() {
           <h1 className="w-1/2">Total: </h1>
           <h1>$190.00</h1>
         </div>
-        {showMessage && <div className="text-green-500">{message}</div>}
       </div>
     </div>
   );
