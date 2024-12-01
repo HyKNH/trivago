@@ -26,7 +26,7 @@ async function connectToDatabase() {
     return { client, db };
 }
 
-// The GET function is now accepting an `id` as a parameter.
+// The GET function is now accepting an `id` as a parameter
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");  // Extract the hotel ID from the query string
