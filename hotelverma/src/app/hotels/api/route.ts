@@ -1,39 +1,18 @@
-import { MongoClient } from "mongodb";
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from '../utils/db';
+import Hotel from '../models/Hotels';
 
-const uri = process.env.REACT_APP_MONGODB_URI || "your-default-uri-here";
-const datab = process.env.REACT_APP_DB || "your-default-here";
-const collectionHotels = process.env.REACT_APP_HOTELS || "your-default-here";
-
-let cachedClient: MongoClient | null = null;
-let cachedDb: any = null;
-
-if (!uri) {
-  throw new Error("MongoDB URI is not defined in environment variables.");
-}
-
-async function connectToDatabase() {
-  if (cachedClient && cachedDb) {
-    return { client: cachedClient, db: cachedDb };
-  }
-
-  const client = new MongoClient(uri);
-  await client.connect();
-  const db = client.db(datab);
-
-  cachedClient = client;
-  cachedDb = db;
-
-  return { client, db };
-}
-
-export const fetchCache = 'force-no-store';
-
-export async function GET() {
+// Fetch all hotels
+export async function GET(req: NextRequest) {
   try {
-    const { db } = await connectToDatabase();
-    const data = await db.collection(collectionHotels).find({}).toArray();
+    // Connect to the database
+    await connectToDatabase();
 
-    const hotels = data.map((hotel: any) => ({
+    // Query all hotels from the database
+    const hotels = await Hotel.find();
+
+    // Map hotels to a cleaner format if necessary
+    const formattedHotels = hotels.map((hotel) => ({
       _id: hotel._id.toString(),
       title: hotel.title,
       location: hotel.location,
@@ -43,16 +22,15 @@ export async function GET() {
       rating: hotel.rating,
     }));
 
-    return new Response(JSON.stringify({ hotels }), {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0', 
-        'Pragma': 'no-cache',  
-        'Expires': '0',
-      },
-    });
+    // Return the response
+    return NextResponse.json({ hotels: formattedHotels }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching hotels:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+    console.error('Error fetching hotels:', error);
+
+    // Handle errors with a 500 response
+    return NextResponse.json(
+      { message: 'Error fetching hotels' },
+      { status: 500 }
+    );
   }
 }
