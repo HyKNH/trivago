@@ -3,9 +3,9 @@ import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
 import React, { useState, useEffect} from "react";
 import { RiStarSFill } from "react-icons/ri";
-import { useRouter } from 'next/router';
-
-
+import axios from "axios";
+import {MongoClient, ObjectId} from "mongodb";
+import net from 'net'
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -21,14 +21,31 @@ type Hotel = {
 
 export default function Reservation() {
   const rating = 3; // For now, set to a fixed value. Later, will fetch this from the database.
+  const [hotels, setHotels] = useState<Hotel | undefined>(undefined);
+  const [url, setUrl] = useState<string | undefined>(undefined);
   
   //importing room data
-  const router = useRouter();
-  const { hotelId } = router.query;
-  const [hotel, setHotel] = useState<Hotel | null>(null);
+  //const router = useRouter();
+  //const { hotelId } = router.query;
+  //const [hotel, setHotel] = useState<Hotel | null>(null);
 
-  
- 
+  useEffect(() => {
+     const url = window.location.href;
+     const newurl = url.slice(42);
+     setUrl(newurl)
+
+     const fetchItem= async() => {
+       try {
+         const response = await axios.get(`/reservation/api?id=${newurl}`)
+         const data = response.data
+         setHotels(data.hotels[0])
+       } catch (e) {
+
+       }
+     }
+     fetchItem();
+  }, []);
+
   
 
 
@@ -90,11 +107,11 @@ export default function Reservation() {
         <Image
           width="full"
           height={300}
-          src="https://plus.unsplash.com/premium_photo-1661964402307-02267d1423f5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww"
+          src={hotels?.image}
         />
       </div>
       <hr className="w-full border-black mt-5" />
-      <h1 className="mt-2 text-4xl">Conrad Las Vegas at Resorts World</h1>
+      <h1 className="mt-2 text-4xl">{hotels?.title}</h1>
       <div className="flex pt-3 pl-3">
         {stars.map((star, index) => (
           <div key={index}>{star}</div>
