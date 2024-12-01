@@ -3,8 +3,6 @@ import { connectToDatabase } from '../../../signup/utils/db';
 import User from '../../../signup/models/User'; 
 import { getSession } from '../../utils/auth';
 
-export const runtime = 'edge'; 
-
 export async function GET(req: NextRequest) {
   try {
     const session = await getSession(req);
