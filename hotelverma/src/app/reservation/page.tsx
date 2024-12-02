@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/input";
 import { useEffect, useState } from "react";
 import { RiStarSFill } from "react-icons/ri";
 import axios from "axios";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -28,6 +28,8 @@ export default function Reservation() {
   const [numNights, setNights] = useState(1);
   const [dateError, setDateError] = useState("");
   const [showError, setShowError] = useState(false);
+
+  const router = useRouter();
 
   const getAuthToken = () => {
     return localStorage.getItem('authToken');
@@ -273,9 +275,8 @@ export default function Reservation() {
               className="w-1/2"
             />
           </div>
-          <button type="submit" className="w-full bg-green-500 p-2 rounded-md mt-5 text-white">
-            Book Now
-          </button>
+          <h2>Total: {hotel ? `$${calculateTotal().toFixed(2)}` : 'Loading total...'}</h2>
+          <button type="submit" className="w-full mt-6 bg-blue-500 text-white py-2 px-4 rounded">Confirm Reservation</button>
         </form>
       </div>
     </div>
