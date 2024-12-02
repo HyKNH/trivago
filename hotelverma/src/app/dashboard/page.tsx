@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Spinner, Spacer, Button, Divider, Image, Input } from '@nextui-org/react';
 import { FaHotel } from "react-icons/fa";
 import { MdPostAdd } from "react-icons/md";
+import { FaDownload } from "react-icons/fa";
 
 const ProfilePage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -129,20 +130,34 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleDownloadReport = () => {
+    const dataStr = JSON.stringify(reservations, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'reservations-report.json';
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ fontFamily: 'Inter, sans-serif', padding: '20px' }}>
       <h1 className="text-3xl font-bold" style={{ color: '#333' }}>Profile Page</h1>
       <Divider className="my-4" />
       {role === 'user' ? (
         <div style={{ marginTop: '20px' }}>
-          <h2>Your Reservations</h2>
+          <h2 className="text-2xl font-bold">Your Reservations</h2>
           <ul style={{ listStyleType: 'none', padding: '0' }}>
             {reservations.length > 0 ? (
               reservations.map((reservation) => (
                 <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
                   <div>
-                    <p><strong>Room:</strong> {reservation.roomName}</p>
-                    <p><strong>Date:</strong> {reservation.date}</p>
+                    <p><strong>Room:</strong> {reservation.hotelName}</p>
+                    <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
+                    <p><strong>Price:</strong> ${reservation.price}</p>
                   </div>
                   <Button
                     color="danger"
@@ -211,29 +226,15 @@ const ProfilePage: React.FC = () => {
             </Button>
           </form>
           <Divider className="my-4" />
-          <h3 className="text-2xl font-bold">Existing Hotels</h3>
-          <ul style={{ listStyleType: 'none', padding: '0' }}>
-            {hotels.length > 0 ? (
-              hotels.map((hotel) => (
-                <li key={hotel._id} style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '6px', marginBottom: '20px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <h4 className="text-xl font-bold">{hotel.title}</h4>
-                    <p>Location: {hotel.location}</p>
-                    <p>Amenities: {hotel.amenities.join(", ")}</p>
-                    <p>Price: ${hotel.price}</p>
-                    <p>Rating: {hotel.rating} stars</p>
-                    <Image src={hotel.image} alt={hotel.title} width={200}></Image>
-                  </div>
-                  <Spacer y={4} />
-                  <Button onClick={() => handleDeleteHotel(hotel._id)} color="danger" variant="bordered" startContent={<FaHotel />}>
-                    Delete Hotel
-                  </Button>
-                </li>
-              ))
-            ) : (
-              <p>No hotels available.</p>
-            )}
-          </ul>
+          <h3 className="text-2xl font-bold">Reservation Report</h3>
+          <Button
+            color="primary"
+            variant="bordered"
+            onClick={handleDownloadReport}
+            startContent={<FaDownload />}
+          >
+            Download Reservations Report
+          </Button>
         </div>
       ) : (
         <Spinner className="flex items-center justify-center w-full py-35" color="warning" />

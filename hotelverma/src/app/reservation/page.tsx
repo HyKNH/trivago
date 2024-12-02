@@ -86,6 +86,7 @@ export default function Reservation() {
               width="full"
               height={300}
               src={hotel?.image}
+              alt="Hotel Verma"
           />
         </div>
         <hr className="w-full border-black mt-5" />

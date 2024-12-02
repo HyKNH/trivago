@@ -12,7 +12,13 @@ export const getSession = async (req: any) => {
 
     const decoded = jwt.verify(token, JWT_SECRET) as { email: string; role: string; userId: string };
 
-    return { user: { email: decoded.email, role: decoded.role } };
+    return {
+      user: {
+        email: decoded.email,
+        role: decoded.role,
+        _id: decoded.userId,
+      },
+    };
   } catch (error) {
     console.error('Error getting session:', error);
     return null;
