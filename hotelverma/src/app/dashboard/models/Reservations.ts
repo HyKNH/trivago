@@ -22,18 +22,6 @@ const reservationSchema = new mongoose.Schema({
     ref: 'Hotel',  
     required: true,
   },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  telephone: {
-    type: String,
-    required: true,
-  },
   checkInDate: {
     type: Date,
     required: true,
@@ -46,6 +34,18 @@ const reservationSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  telephone: {
+    type: String,
+    required: true,
   },
 });
 
