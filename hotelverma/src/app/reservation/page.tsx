@@ -36,7 +36,7 @@ export default function Reservation() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const reservationId = params.get('id'); // Get 'id' query parameter from the URL
+      const reservationId = params.get('hotelId'); // Get 'id' query parameter from the URL
   
       const fetchroom = async () => {
         try {
