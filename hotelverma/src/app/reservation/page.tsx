@@ -77,10 +77,20 @@ export default function Reservation() {
       const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
       const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-      payload.conFirNum = conFirNum.toString()
-      payload.title = hotel?.title
+      payload.confirmationNumber = conFirNum.toString()
+      payload.hotelId = hotel?._id;
+      try {
+        const response = await axios.post(
+          "/reservation/api",
+          payload,
+          { headers: { Authorization: `Bearer ${authToken}` } }
+        );
+        console.log(response);
+      } catch (e) {
+        console.log("error:", e);
+      }
 
-      router.push(`/confirmation?confirmationNumber=${conFirNum}`);
+      //router.push(`/confirmation?confirmationNumber=${conFirNum}`);
     } else {
       setMessage("Sorry BIN number is invalid");
       setShowMessage(true);
@@ -142,7 +152,7 @@ export default function Reservation() {
                 labelPlacement="outside"
                 required
                 size="md"
-                name="checkIn"
+                name="checkInDate"
                 value={startDate}
                 onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
             />
@@ -153,7 +163,7 @@ export default function Reservation() {
                 labelPlacement="outside"
                 required
                 size="md"
-                name="checkOut"
+                name="checkOutDate"
                 value={endDate}
                 onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
             />
@@ -166,7 +176,7 @@ export default function Reservation() {
                 required
                 labelPlacement="outside"
                 size="md"
-                name="fname"
+                name="firstname"
             />
             <Input
                 isRequired
@@ -175,7 +185,7 @@ export default function Reservation() {
                 placeholder="ex: Jones"
                 required
                 labelPlacement="outside"
-                name="lname"
+                name="lastname"
             />
             <h2>Contact info</h2>
             <Input
@@ -197,7 +207,7 @@ export default function Reservation() {
                 labelPlacement="outside"
                 required
                 startContent={<span>+1</span>}
-                name="tel"
+                name="telephone"
             />
             <h2>Payment</h2>
             <Input
