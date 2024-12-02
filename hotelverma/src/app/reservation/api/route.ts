@@ -28,15 +28,17 @@ export async function GET(req: Request) {
 
 export async function POST(req: NextRequest) {
     try {
-        await connectToDatabase()
+        await connectToDatabase();
         const session = await getSession(req);
         if (!session) {
-            return NextResponse.json({message: "not logged in"}, {status: 400})
+            return NextResponse.json({ message: "Not logged in" }, { status: 401 });
         }
-        const userId = session?.user?._id
+        const userId = session.user._id;
 
         const body = await req.json();
         const { checkInDate, checkOutDate, confirmationNumber, firstname, hotelId, lastname, telephone } = body;
+
+        // Validate the request body here (optional but recommended)
 
         const newReservation = new Reservation({
             userId,
@@ -49,8 +51,16 @@ export async function POST(req: NextRequest) {
             telephone,
         });
         const savedReservation = await newReservation.save();
-        return NextResponse.json({reservation: savedReservation}, {status: 201});
+        return NextResponse.json({ reservation: savedReservation }, { status: 201 });
     } catch (e) {
-        console.log('error: ', e);
+        console.error('Error:', e);
+
+        // Check if it's a validation error
+        if (e.name === 'ValidationError') {
+            return NextResponse.json({ error: e.message }, { status: 400 });
+        }
+
+        // For other errors, return a generic internal server error
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
