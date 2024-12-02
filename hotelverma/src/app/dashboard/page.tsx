@@ -40,7 +40,7 @@ const ProfilePage: React.FC = () => {
           },
         });
 
-        setRole(profileResponse.data.role); 
+        setRole(profileResponse.data.role);
 
         if (profileResponse.data.role === 'user') {
           const reservationsResponse = await axios.get('dashboard/api/reservations', {
@@ -66,6 +66,23 @@ const ProfilePage: React.FC = () => {
     fetchProfile();
   }, [router]);
 
+  const handleCancelReservation = async (reservationId: string) => {
+    const token = getAuthToken();
+    if (!token) {
+      alert('You must be logged in to cancel a reservation.');
+      return;
+    }
+
+    try {
+      await axios.delete(`dashboard/api/reservations/${reservationId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setReservations(reservations.filter((res) => res._id !== reservationId));
+    } catch (error) {
+      console.error('Error canceling reservation:', error);
+    }
+  };
+
   const handleHotelSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = getAuthToken();
@@ -76,7 +93,7 @@ const ProfilePage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'dashboard/api/rooms', 
+        'dashboard/api/rooms',
         newHotel,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -114,7 +131,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div style={{ fontFamily: 'Inter, sans-serif', padding: '20px' }}>
-      <h1 className="text-3xl font-bold" style={{  color: '#333' }}>Profile Page</h1>
+      <h1 className="text-3xl font-bold" style={{ color: '#333' }}>Profile Page</h1>
       <Divider className="my-4" />
       {role === 'user' ? (
         <div style={{ marginTop: '20px' }}>
@@ -123,7 +140,17 @@ const ProfilePage: React.FC = () => {
             {reservations.length > 0 ? (
               reservations.map((reservation) => (
                 <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
-                  {reservation.roomName} - {reservation.date}
+                  <div>
+                    <p><strong>Room:</strong> {reservation.roomName}</p>
+                    <p><strong>Date:</strong> {reservation.date}</p>
+                  </div>
+                  <Button
+                    color="danger"
+                    variant="bordered"
+                    onClick={() => handleCancelReservation(reservation._id)}
+                  >
+                    Cancel Reservation
+                  </Button>
                 </li>
               ))
             ) : (
@@ -137,42 +164,42 @@ const ProfilePage: React.FC = () => {
           <h3 style={{ marginBottom: '10px' }}>Manage Hotels</h3>
 
           <form onSubmit={handleHotelSubmit} style={{ marginBottom: '20px' }}>
-            <Input 
+            <Input
               type="text"
               placeholder="Hotel Title"
               value={newHotel.title}
               onChange={(e) => setNewHotel({ ...newHotel, title: e.target.value })}
             />
             <Spacer y={4} />
-            <Input 
+            <Input
               type="text"
               placeholder="Location"
               value={newHotel.location}
               onChange={(e) => setNewHotel({ ...newHotel, location: e.target.value })}
             />
             <Spacer y={4} />
-            <Input 
+            <Input
               type="text"
               placeholder="Amenities (comma-separated)"
               value={newHotel.amenities}
               onChange={(e) => setNewHotel({ ...newHotel, amenities: e.target.value })}
             />
             <Spacer y={4} />
-            <Input 
+            <Input
               type="text"
               placeholder="Image URL"
               value={newHotel.image}
               onChange={(e) => setNewHotel({ ...newHotel, image: e.target.value })}
             />
             <Spacer y={4} />
-            <Input 
+            <Input
               type="number"
               placeholder="Price"
               value={newHotel.price}
               onChange={(e) => setNewHotel({ ...newHotel, price: e.target.value })}
             />
             <Spacer y={4} />
-            <Input 
+            <Input
               type="number"
               placeholder="Rating"
               value={newHotel.rating}
