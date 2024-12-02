@@ -5,7 +5,7 @@ import {useRouter} from "next/navigation";
 import {useEffect} from "react"
 
 
-export default function confimation () {
+export default function Confimation () {
     const router = useRouter();
 
   useEffect(() => {
