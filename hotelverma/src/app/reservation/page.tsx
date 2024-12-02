@@ -29,6 +29,7 @@ export default function Reservation() {
   const [dateError, setDateError] = useState("");
   const [showError, setShowError] = useState(false);
 
+  const [isClient, setIsClient] = useState(false); // Track if we are on the client side
   const router = useRouter();
 
   const getAuthToken = () => {
@@ -70,6 +71,10 @@ export default function Reservation() {
       setNights(nights);
     }
   };
+
+  useEffect(() => {
+    setIsClient(true); // Set to true once the component is mounted on the client side
+  }, []);
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -134,7 +139,9 @@ export default function Reservation() {
       payload.hotelId = hotel?._id;
       const token = getAuthToken();
       if (!token) {
-        router.push('/login');
+        if (isClient) { // Ensure this only happens on the client side
+          router.push('/login');
+        }
         return;
       }
       try {
@@ -260,23 +267,36 @@ export default function Reservation() {
               isRequired
               label="Expiration Date"
               labelPlacement="outside"
+              size="md"
+              type="text"
               placeholder="MM/YY"
               required
-              size="md"
-              className="w-1/2"
+              name="expirationDate"
             />
             <Input
               isRequired
               label="CVV"
               labelPlacement="outside"
-              placeholder="132"
-              required
               size="md"
-              className="w-1/2"
+              type="text"
+              placeholder="CVV"
+              required
+              maxLength={3}
+              name="cvv"
             />
           </div>
-          <h2>Total: {hotel ? `$${calculateTotal().toFixed(2)}` : 'Loading total...'}</h2>
-          <button type="submit" className="w-full mt-6 bg-blue-500 text-white py-2 px-4 rounded">Confirm Reservation</button>
+          <div className="mt-4 flex justify-between">
+            <h2>Night(s): {numNights}</h2>
+            <h2>Total: ${calculateTotal()}</h2>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="text-white bg-black px-10 py-2 mt-4"
+            >
+              Reserve
+            </button>
+          </div>
         </form>
       </div>
     </div>
