@@ -6,8 +6,7 @@ import {useEffect, useState} from "react";
 import { RiStarSFill } from "react-icons/ri";
 import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
 import Calendar from "../components/Calendar";
-import axios from "axios"; // Make sure you import the Calendar component
-
+import axios from "axios";
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -49,8 +48,8 @@ export default function Reservation() {
       try {
         const response = await axios.get(`/reservation/api?id=${newurl}`)
         const data = response.data
-        setHotel(data.hotels[0])
-        console.log(data.hotels[0])
+        setHotel(data.hotel)
+        console.log(hotel)
       } catch (e) {
         console.error("Error fetching hotels:", e);
       }
@@ -60,13 +59,24 @@ export default function Reservation() {
 
 
   // Function to handle form submission
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const payload = Object.fromEntries(formData);
+    const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
-    console.log(payload);
+    const conFirNum = Math.floor(Math.random() * 90000) + 10000;
+    payload.conFirNum = conFirNum.toString()
+    payload.title = hotel?.title
+
+    console.log(payload)
+
+    try {
+      const response = await axios.post('/reservation/api', payload)
+      console.log(response)
+    } catch (e) {
+      console.log("Error: ", e)
+    }
 
     /*const firstSixDigits = cardNumber.slice(0, 6);
     if (BIN.includes(firstSixDigits)) {
