@@ -19,10 +19,11 @@
 </p>
 
 ## 📝 Table of Contents
+- [Setup Instructions](#setup_instructions)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
-## Setup Instructions
+## ⚙️ Setup Instructions <a name = "setup_instructions"></a>
 
 ### Prerequisites:
 - Node.js (version 14 or higher)
@@ -54,7 +55,6 @@ npm run dev
 ```
 http://localhost:3000
 ```
-
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - [MongoDB](https://www.mongodb.com/) - Database
