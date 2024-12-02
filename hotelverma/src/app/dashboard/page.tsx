@@ -7,6 +7,7 @@ import { Spinner, Spacer, Button, Divider, Image, Input } from '@nextui-org/reac
 import { FaHotel } from "react-icons/fa";
 import { MdPostAdd } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
+import { MdFreeCancellation } from "react-icons/md";
 
 const ProfilePage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -158,13 +159,14 @@ const ProfilePage: React.FC = () => {
                     <p><strong>Hotel:</strong> {reservation.hotelName}</p> {/* Show hotel name */}
                     <p><strong>Location:</strong> {reservation.location}</p>
                     <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
-                    <p><strong>Price:</strong> ${reservation.price}</p>
+                    <p><strong>Price:</strong> ${reservation.price}/night</p>
                     <p><strong>Confirmation Number:</strong> {reservation.confirmationNumber}</p>
                   </div>
                   <Button
                     color="danger"
                     variant="bordered"
                     onClick={() => handleCancelReservation(reservation._id)}
+                    startContent={<MdFreeCancellation />}
                   >
                     Cancel Reservation
                   </Button>
