@@ -1,30 +1,9 @@
 import { MongoClient, ObjectId } from "mongodb";
+import {NextRequest, NextResponse} from "next/server";
+import Reservation from "@/app/reservation/models/Reservation";
+import {connectToDatabase} from "@/app/reservation/utils/db";
+import Hotel from '../../hotels/models/Hotels'
 
-const uri = process.env.REACT_APP_MONGODB_URI || "your-default-uri-here";
-const datab = process.env.REACT_APP_DB || "your-default-here";
-const collectionHotels = process.env.REACT_APP_HOTELS || "your-default-here";
-
-let cachedClient: MongoClient | null = null;
-let cachedDb: any = null;
-
-if (!uri) {
-    throw new Error("MongoDB URI is not defined in environment variables.");
-}
-
-async function connectToDatabase() {
-    if (cachedClient && cachedDb) {
-        return { client: cachedClient, db: cachedDb };
-    }
-
-    const client = new MongoClient(uri);
-    await client.connect();
-    const db = client.db(datab);
-
-    cachedClient = client;
-    cachedDb = db;
-
-    return { client, db };
-}
 
 // The GET function is now accepting an `id` as a parameter
 export async function GET(req: Request) {
@@ -36,26 +15,38 @@ export async function GET(req: Request) {
     }
 
     try {
-        const { db } = await connectToDatabase();
-        const data = await db.collection(collectionHotels).find({ _id: new ObjectId(id) }).toArray();
+        await connectToDatabase()
+        const hotel = await Hotel.findById(id)
 
-        if (data.length === 0) {
-            return new Response(JSON.stringify({ error: "Hotel not found" }), { status: 404 });
-        }
-
-        const hotels = data.map((hotel: any) => ({
-            _id: hotel._id.toString(),
-            title: hotel.title,
-            location: hotel.location,
-            amenities: hotel.amenities || [],
-            image: hotel.image || "/default-image.jpg",
-            price: hotel.price,
-            rating: hotel.rating,
-        }));
-
-        return new Response(JSON.stringify({ hotels }), { status: 200 });
+        return new Response(JSON.stringify({ hotel }), { status: 200 });
     } catch (error) {
         console.error("Error fetching hotel:", error);
         return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+    }
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        await connectToDatabase()
+        // const { db } = await connectToDatabase();
+        // const body = await req.json();
+
+        const body = await req.json();
+        const { checkIn, checkOut, conFirNum, email, fname, lname, tel, title } = body;
+
+        const newReservation = new Reservation({
+            checkIn,
+            checkOut,
+            conFirNum,
+            email,
+            fname,
+            lname,
+            tel,
+            title,
+        });
+        const savedReservation = await newReservation.save();
+        return NextResponse.json({reservation: savedReservation}, {status: 201});
+    } catch (e) {
+        console.log('error: ', e);
     }
 }
