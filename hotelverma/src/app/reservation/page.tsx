@@ -90,7 +90,7 @@ export default function Reservation() {
         console.log("error:", e);
       }
 
-      //router.push(`/confirmation?confirmationNumber=${conFirNum}`);
+      router.push(`/confirmation?confirmationNumber=${conFirNum}`);
     } else {
       setMessage("Sorry BIN number is invalid");
       setShowMessage(true);

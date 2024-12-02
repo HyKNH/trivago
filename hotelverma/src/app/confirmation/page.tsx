@@ -1,8 +1,27 @@
+"use client";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import {Image} from "@nextui-org/image";
+import {useRouter} from "next/navigation";
+import {useEffect} from "react"
 
 
 export default function confimation () {
+    const router = useRouter();
+
+  useEffect(() => {
+    // Set a timer to redirect after 5 seconds (5000 milliseconds)
+    const timer = setTimeout(() => {
+      router.push("/");
+    }, 5000);
+
+    // Clean up the timer if the component unmounts before the time is up
+    return () => clearTimeout(timer);
+  }, [router]);
+
+
+
+
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
@@ -18,8 +37,6 @@ export default function confimation () {
                 />
                 </div>
                 <div className="w-full flex gap-4 mt-4 ">
-                    <h2 className="">Confirmation Number:</h2>
-                    <h2>ksksksksksksksk</h2>
                 </div>
                 </div>
             </div>
