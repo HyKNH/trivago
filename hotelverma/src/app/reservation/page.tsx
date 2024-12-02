@@ -98,6 +98,8 @@ export default function Reservation() {
         </div>
         <hr className="w-full border-black mt-5" />
         <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
+        <h2>{hotel?.location}</h2>
+        <h3>{hotel?.amenities.join(", ")}</h3>
         <div className="flex pt-3 pl-3">
           {stars.map((star, index) => (
               <div key={index}>{star}</div>
