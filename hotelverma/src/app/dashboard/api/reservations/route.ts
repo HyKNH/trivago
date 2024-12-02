@@ -27,8 +27,8 @@ export async function GET(req: Request) {
         telephone: reservation.telephone,
         hotelName: hotel?.title || 'Unknown Hotel',
         location: hotel?.location || 'Unknown Location',
-        checkInDate: reservation.checkInDate.toISOString().split('T')[0], 
-        checkOutDate: reservation.checkOutDate.toISOString().split('T')[0],
+        checkInDate: reservation.checkInDate, 
+        checkOutDate: reservation.checkOutDate,
         price: hotel?.price || 0,
         confirmationNumber: reservation.confirmationNumber,
       });
