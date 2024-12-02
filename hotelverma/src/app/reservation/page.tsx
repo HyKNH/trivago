@@ -34,21 +34,28 @@ export default function Reservation() {
 
   // Function to get the right room
   useEffect(() => {
-    const url = window.location.href
-    const newurl = url.slice(42)
-    const fetchroom = async () => {
-      try {
-        const response = await axios.get(`/reservation/api?id=${newurl}`)
-        const data = response.data
-        setHotel(data.hotel)
-        console.log(hotel)
-      } catch (e) {
-        console.error("Error fetching hotels:", e);
-      }
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const reservationId = params.get('id'); // Get 'id' query parameter from the URL
+  
+      const fetchroom = async () => {
+        try {
+          if (reservationId) {
+            const response = await axios.get(`/reservation/api?id=${reservationId}`);
+            const data = response.data;
+            setHotel(data.hotel);
+            console.log("Fetched hotel data:", data.hotel); // Log fetched data directly
+          } else {
+            console.error("Reservation ID not found in the URL");
+          }
+        } catch (e) {
+          console.error("Error fetching hotels:", e);
+        }
+      };
+  
+      fetchroom();
     }
-    fetchroom()
   }, []);
-
 
   // Function to handle form submission
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
