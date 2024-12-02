@@ -235,6 +235,30 @@ const ProfilePage: React.FC = () => {
           >
             Download Reservations Report
           </Button>
+          <Spacer y={4} />
+          <h3 className="text-2xl font-bold">Existing Hotels</h3>
+          <ul style={{ listStyleType: 'none', padding: '0' }}>
+            {hotels.length > 0 ? (
+              hotels.map((hotel) => (
+                <li key={hotel._id} style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '6px', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <h4 className="text-xl font-bold">{hotel.title}</h4>
+                    <p>Location: {hotel.location}</p>
+                    <p>Amenities: {hotel.amenities.join(", ")}</p>
+                    <p>Price: ${hotel.price}</p>
+                    <p>Rating: {hotel.rating} stars</p>
+                    <Image src={hotel.image} alt={hotel.title} width={200}></Image>
+                  </div>
+                  <Spacer y={4} />
+                  <Button onClick={() => handleDeleteHotel(hotel._id)} color="danger" variant="bordered" startContent={<FaHotel />}>
+                    Delete Hotel
+                  </Button>
+                </li>
+              ))
+            ) : (
+              <p>No hotels available.</p>
+            )}
+          </ul>
         </div>
       ) : (
         <Spinner className="flex items-center justify-center w-full py-35" color="warning" />
