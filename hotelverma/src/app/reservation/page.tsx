@@ -21,8 +21,6 @@ type Hotel = {
 
 export default function Reservation() {
   const [cardNumber, setCardNumber] = useState(""); // User card input
-  const [message, setMessage] = useState(""); // Message to display
-  const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -275,7 +273,6 @@ export default function Reservation() {
                 pattern="\d{16}"
                inputMode="numeric"
             />
-            {showMessage && <div className="text-red-500">{message}</div>}
             <div className="flex gap-2">
               <Input
                   isRequired
