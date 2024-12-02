@@ -1,10 +1,12 @@
 "use client";
 import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
-import { useEffect, useState } from "react";
+import {DateRangePicker} from "@nextui-org/react";
+import {useEffect, useState} from "react";
 import { RiStarSFill } from "react-icons/ri";
+import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
+import Calendar from "../components/Calendar";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -19,263 +21,205 @@ type Hotel = {
 };
 
 export default function Reservation() {
+  const rating = 3; // For now, set to a fixed value. Later, will fetch this from the database.
+
+  // Create an array of size 'rating' using the Array constructor.
+  // Then, use .fill() to assign a star icon to each element in the array.
+  // This means, if 'rating' is 2, the array will contain two <RiStarSFill/> components.
+  const stars = Array(rating).fill(<RiStarSFill />);
+
   const [cardNumber, setCardNumber] = useState(""); // User card input
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
-  const [hotel, setHotel] = useState<Hotel | undefined>(undefined);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [numNights, setNights] = useState(1);
-  const [dateError, setDateError] = useState("");
-  const [showError, setShowError] = useState(false);
+  const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
 
-  const [isClient, setIsClient] = useState(false); // Track if we are on the client side
-  const router = useRouter();
 
-  const getAuthToken = () => {
-    return localStorage.getItem('authToken');
-  };
-
-  const rating = hotel?.rating;
-  const stars = Array(rating).fill(<RiStarSFill className="text-yellow-400" />);
-
+  // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setCardNumber(inputValue);
-    if (inputValue.length < 16) {
-      setMessage("Card Number must be 16-digits long");
-      setShowMessage(true);
-    } else if (inputValue.length === 16) {
-      setMessage(""); //
-    }
+    setCardNumber(e.target.value);
+    setMessage(""); // Reset message while typing
   };
 
-  const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name === "checkIn") {
-      setStartDate(value);
-    } else if (name === "checkOut") {
-      setEndDate(value);
-    }
-  };
-
-  const calculateDays = () => {
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      start.setHours(0, 0, 0, 0);
-      end.setHours(0, 0, 0, 0);
-      const diffTime = end.getTime() - start.getTime();
-      const nights = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      setNights(nights);
-    }
-  };
-
+  // Function to get the right room
   useEffect(() => {
-    setIsClient(true); // Set to true once the component is mounted on the client side
-  }, []);
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      if (end < start) {
-        setDateError("End date must come after start date");
-        setShowError(true);
-        setNights(1);
-        return;
-      } else if (end > start) {
-        setDateError("");
-      }
-      calculateDays();
-    }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    const url = window.location.href;
-    const newurl = url.slice(42);
-    const fetchRoom = async () => {
+    const url = window.location.href
+    const newurl = url.slice(42)
+    const fetchroom = async () => {
       try {
-        const response = await axios.get(`/reservation/api?id=${newurl}`);
-        const data = response.data;
-        setHotel(data.hotel);
+        const response = await axios.get(`/reservation/api?id=${newurl}`)
+        const data = response.data
+        setHotel(data.hotel)
+        console.log(hotel)
       } catch (e) {
         console.error("Error fetching hotels:", e);
       }
-    };
-    fetchRoom();
+    }
+    fetchroom()
   }, []);
 
-  const calculateTotal = () => {
-    if (hotel?.price && numNights) {
-      const roomTotal = hotel.price * numNights;
-      const tax = 0.12;
-      const taxTotal = roomTotal * tax;
-      const total = roomTotal + taxTotal;
-      return total;
-    }
-    return 0;
-  };
 
-  const calulateRoomT = () => {
-    if (hotel?.price && numNights) {
-      return hotel.price * numNights;
-    }
-    return hotel?.price;
-  };
-
-  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Function to handle form submission
+  const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
-    const firstSixDigits = cardNumber.slice(0, 6);
-    if (BIN.includes(firstSixDigits)) {
-      const formData = new FormData(e.target as HTMLFormElement);
-      const payload = Object.fromEntries(formData) as Record<string, string | undefined>;
-      payload.checkInDate = payload.checkIn;  // Convert to ISO string for storage
-      payload.checkOutDate = payload.checkOut;
-      const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-      payload.confirmationNumber = conFirNum.toString();
-      payload.hotelId = hotel?._id;
-      const token = getAuthToken();
-      if (!token) {
-        if (isClient) { // Ensure this only happens on the client side
-          router.push('/login');
-        }
-        return;
-      }
-      try {
-        const response = await axios.post('/reservation/api', payload, { headers: { Authorization: `Bearer ${token}` } });
-        console.log(response);
-      } catch (e) {
-        console.log("error:", e);
-      }
-      console.log(payload);
-    } else {
-      setMessage("Sorry BIN number is invalid");
-      setShowMessage(true);
-      return;
-    }
-  };
+    const formData = new FormData(e.target as HTMLFormElement);
+    const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
-  if (!isClient) {
-    return null; // Prevent rendering before the component is mounted on the client
+    const conFirNum = Math.floor(Math.random() * 90000) + 10000;
+    payload.conFirNum = conFirNum.toString()
+    payload.title = hotel?.title
+
+    console.log(payload)
+
+    try {
+      const response = await axios.post('/reservation/api', payload)
+      console.log(response)
+    } catch (e) {
+      console.log("Error: ", e)
+    }
+
+    /*const firstSixDigits = cardNumber.slice(0, 6);
+    if (BIN.includes(firstSixDigits)) {
+      setMessage("Payment success");
+    } else {
+      setMessage("Payment failure! Please try again.");
+    }
+
+    setShowMessage(true); // Show the message after clicking submit
+    */
   }
 
   return (
-    <div className="px-6">
-      <div className="shadow-xl">
-        {/* Check if hotel image exists */}
-        {hotel ? (
-          <Image width="full" height={300} src={hotel.image} alt="Hotel Verma" />
-        ) : (
-          <div>Loading image...</div>
-        )}
-      </div>
-      <hr className="w-full border-black mt-5" />
-      <h1 className="mt-2 text-4xl">{hotel ? hotel.title : 'Loading hotel title...'}</h1>
-      <h2>{hotel ? hotel.location : 'Loading location...'}</h2>
-      <h3>{hotel ? hotel.amenities.join(", ") : 'Loading amenities...'}</h3>
-      <div className="flex pt-3 pl-3">
-        {stars.map((star, index) => (
-          <div key={index}>{star}</div>
-        ))}
-      </div>
-      <div className="pt-5 flex flex-wrap">
-        <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
-        <form className="space-y-9 px-20 w-2/4" onSubmit={submitForm}>
-          <h2>Date for reservation</h2>
-          <Input
-            isRequired
-            label="Check In"
-            type="date"
-            labelPlacement="outside"
-            required
-            size="md"
-            name="checkIn"
-            onChange={handleDateInput}
-            value={startDate}
+      <div className="px-6">
+        <div className="shadow-xl">
+          <Image
+              width="full"
+              height={300}
+              src={hotel?.image}
+              alt="Hotel Verma"
           />
-          <Input
-            isRequired
-            label="Check out"
-            type="date"
-            labelPlacement="outside"
-            required
-            size="md"
-            name="checkOut"
-            onChange={handleDateInput}
-            value={endDate}
-          />
-          {showError && <p className="text-red-500">{dateError}</p>}
-          <h2>Name for reservation</h2>
-          <Input
-            isRequired
-            label="First Name"
-            type="text"
-            placeholder="ex: John"
-            required
-            labelPlacement="outside"
-            size="md"
-            name="firstname"
-          />
-          <Input
-            isRequired
-            label="Last Name"
-            type="text"
-            placeholder="ex: Jones"
-            required
-            labelPlacement="outside"
-            name="lastname"
-          />
-          <h2>Contact info</h2>
-          <Input
-            isRequired
-            label="Email"
-            type="email"
-            placeholder="Enter your email"
-            required
-            fullWidth
-            aria-label="Email"
-            labelPlacement="outside"
-            name="email"
-          />
-          <Input
-            isRequired
-            type="tel"
-            label="Phone Number"
-            placeholder="Enter your phone number"
-            labelPlacement="outside"
-            required
-            startContent={<span className="text-sm">+1</span>}
-            name="phone"
-          />
-          <h2>Card Information</h2>
-          <Input
-            isRequired
-            label="Card Number"
-            type="text"
-            value={cardNumber}
-            onChange={handleCardInput}
-            labelPlacement="outside"
-            name="card"
-            placeholder="Enter your credit card number"
-          />
-          <div className="flex">
-            <span className="mr-3">Total Price: ${hotel?.price ? calulateRoomT() : 0}</span>
-            <span>Number of nights: {numNights}</span>
-          </div>
-          <div>
-            <h2>Total Price: ${calculateTotal()}</h2>
-          </div>
-          {showMessage && (
-            <div className="text-red-500">
-              <p>{message}</p>
+        </div>
+        <hr className="w-full border-black mt-5" />
+        <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
+        <div className="flex pt-3 pl-3">
+          {stars.map((star, index) => (
+              <div key={index}>{star}</div>
+          ))}
+        </div>
+        <div className="pt-5 flex flex-wrap">
+          <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
+          <form className="space-y-9 px-20 w-2/4" onSubmit={submitForm}>
+            <h2>Date for reservation</h2>
+            <Input
+                isRequired
+                label="Check In"
+                type="date"
+                labelPlacement="outside"
+                required
+                size="md"
+                name="checkIn"
+            />
+            <Input
+                isRequired
+                label="Check out"
+                type="date"
+                labelPlacement="outside"
+                required
+                size="md"
+                name="checkOut"
+            />
+            <h2>Name for reservation</h2>
+            <Input
+                isRequired
+                label="First Name"
+                type="text"
+                placeholder="ex: John"
+                required
+                labelPlacement="outside"
+                size="md"
+                name="fname"
+            />
+            <Input
+                isRequired
+                label="Last Name"
+                type="text"
+                placeholder="ex: Jones"
+                required
+                labelPlacement="outside"
+                name="lname"
+            />
+            <h2>Contact info</h2>
+            <Input
+                isRequired
+                label="Email"
+                type="email"
+                placeholder="Enter your email"
+                required
+                fullWidth
+                aria-label="Email"
+                labelPlacement="outside"
+                name="email"
+            />
+            <Input
+                isRequired
+                type="tel"
+                label="Phone Number"
+                placeholder="Enter your phone number"
+                labelPlacement="outside"
+                required
+                startContent={<span>+1</span>}
+                name="tel"
+            />
+            <h2>Payment</h2>
+            <Input
+                isRequired
+                label="Card Digits"
+                type="text"
+                placeholder="ex: 4342562412349087"
+                required
+                labelPlacement="outside"
+                size="md"
+                value={cardNumber}
+                onChange={handleCardInput}
+            />
+            <div className="flex gap-2">
+              <Input
+                  isRequired
+                  label="Expiration Date"
+                  labelPlacement="outside"
+                  placeholder="MM/YY"
+                  required
+                  size="md"
+                  className="w-1/2"
+              />
+              <Input
+                  isRequired
+                  label="CVV"
+                  labelPlacement="outside"
+                  placeholder="132"
+                  required
+                  size="md"
+                  className="w-1/2"
+              />
             </div>
-          )}
-          <button type="submit" className="mt-5 px-5 py-3 bg-blue-500 text-white rounded-md">Confirm Reservation</button>
-        </form>
+            <button type="submit" className="border-1 border-stone-600 p-2 rounded-xl">
+              Finish
+            </button>
+          </form>
+
+          <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p">
+            <h1 className="text-xl text-semibold w-full">Price Details</h1>
+            <h2 className="w-1/2 pt-5">1 night:</h2>
+            <h2 className="pr-2 pt-5">168.00</h2>
+            <h3 className="w-full pl-3">${hotel?.price} per night</h3>
+            <h2 className="pt-5 w-1/2">Taxes and Fees:</h2>
+            <h2 className="pr-2 pt-5">22.00</h2>
+            <hr className="w-full border-black mt-5" />
+            <h1 className="w-1/2">Total: </h1>
+            <h1>$190.00</h1>
+          </div>
+          {showMessage && <div className="text-green-500">{message}</div>}
+        </div>
       </div>
-    </div>
   );
 }
