@@ -63,6 +63,11 @@ export default function Reservation() {
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      router.push('/login');
+      return;
+    }
 
     const firstSixDigits = cardNumber.slice(0, 6);
     if (BIN.includes(firstSixDigits)) {
