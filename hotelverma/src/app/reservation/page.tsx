@@ -4,6 +4,7 @@ import { Input } from "@nextui-org/input";
 import {useEffect, useState, useMemo} from "react";
 import { RiStarSFill } from "react-icons/ri";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -22,6 +23,7 @@ export default function Reservation() {
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
+  const router = useRouter();
 
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
 
@@ -61,31 +63,22 @@ export default function Reservation() {
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
-    const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-    payload.conFirNum = conFirNum.toString()
-    payload.title = hotel?.title
-
-    console.log(payload)
-
-    try {
-      const response = await axios.post('/reservation/api', payload)
-      console.log(response)
-    } catch (e) {
-      console.log("Error: ", e)
-    }
-
-    /*const firstSixDigits = cardNumber.slice(0, 6);
+    const firstSixDigits = cardNumber.slice(0, 6);
     if (BIN.includes(firstSixDigits)) {
-      setMessage("Payment success");
-    } else {
-      setMessage("Payment failure! Please try again.");
-    }
+      const formData = new FormData(e.target as HTMLFormElement);
+      const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
-    setShowMessage(true); // Show the message after clicking submit
-    */
+      const conFirNum = Math.floor(Math.random() * 90000) + 10000;
+      payload.conFirNum = conFirNum.toString()
+      payload.title = hotel?.title
+
+      router.push(`/confirmation?confirmationNumber=${conFirNum}`);
+    } else {
+      setMessage("Sorry BIN number is invalid");
+      setShowMessage(true);
+      return;
+    }
   }
 
   return (
@@ -180,7 +173,9 @@ export default function Reservation() {
                 size="md"
                 value={cardNumber}
                 onChange={handleCardInput}
+                maxLength={16}
             />
+            {showMessage && <div className="text-red-500">{message}</div>}
             <div className="flex gap-2">
               <Input
                   isRequired
@@ -217,7 +212,6 @@ export default function Reservation() {
             <h1 className="w-1/2">Total: </h1>
             <h1>$190.00</h1>
           </div>
-          {showMessage && <div className="text-green-500">{message}</div>}
         </div>
       </div>
   );
