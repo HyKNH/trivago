@@ -235,7 +235,7 @@ const ProfilePage: React.FC = () => {
           >
             Download Reservations Report
           </Button>
-          <Spacer y={4} />
+          <Divider className="my-4" />
           <h3 className="text-2xl font-bold">Existing Hotels</h3>
           <ul style={{ listStyleType: 'none', padding: '0' }}>
             {hotels.length > 0 ? (
