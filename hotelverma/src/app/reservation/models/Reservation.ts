@@ -1,46 +1,46 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IReservation extends Document {
-    checkIn: string;
-    checkOut: string;
-    conFirNum: string;
-    email: string;
-    fname: string;
-    lname: string;
-    tel: string;
-    title: string;
+    userId: string;
+    hotelId: string;
+    checkInDate: string;
+    checkOutDate: string;
+    confirmationNumber: string;
+    firstname: string;
+    lastname: string;
+    telephone: string;
 }
 
 const reservationSchema = new Schema<IReservation>({
-    checkIn: {
+    userId: {
         type: String,
         required: true,
     },
-    checkOut: {
+    hotelId: {
         type: String,
         required: true,
     },
-    conFirNum: {
+    checkInDate: {
         type: String,
         required: true,
     },
-    email: {
+    checkOutDate: {
         type: String,
         required: true,
     },
-    fname: {
+    confirmationNumber: {
         type: String,
         required: true,
     },
-    lname: {
+    firstname: {
         type: String,
         required: true,
     },
-    tel: {
+    lastname: {
         type: String,
         required: true,
     },
-    title: {
+    telephone: {
         type: String,
         required: true,
     },

@@ -3,7 +3,8 @@ import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
 import {useEffect, useState} from "react";
 import { RiStarSFill } from "react-icons/ri";
-import axios from "axios"; 
+import axios from "axios";
+import {router} from "next/client";
 
 
 const BIN = ['434256', '481592', '483312'];
@@ -28,6 +29,10 @@ export default function Reservation() {
   const [numNights, setNights] = useState(1);
   const  [dateError, setDateError] = useState("");
   const [showError, setShowError] = useState(false);
+
+  const getAuthToken = () => {
+    return localStorage.getItem('authToken');
+  };
   
 
   const rating = hotel?.rating;
@@ -137,11 +142,26 @@ export default function Reservation() {
     if (BIN.includes(firstSixDigits)) {
       const formData = new FormData(e.target as HTMLFormElement);
       const payload = Object.fromEntries(formData) as Record<string, string | undefined>;
-      payload.checkIn = payload.checkIn;  // Convert to ISO string for storage
-      payload.checkOut = payload.checkOut;
+      payload.checkInDate = payload.checkIn;  // Convert to ISO string for storage
+      payload.checkOutDate = payload.checkOut;
       const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-      payload.conFirNum = conFirNum.toString();
-      payload.title = hotel?.title;
+      payload.confirmationNumber = conFirNum.toString();
+      payload.hotelId = hotel?._id
+      const token = getAuthToken()
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+      try {
+        const response = await axios.post(
+            '/reservation/api',
+            payload,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        console.log(response)
+      } catch (e) {
+        console.log("error:", e);
+      }
       console.log(payload);
     }   
     else {
@@ -210,7 +230,7 @@ export default function Reservation() {
                 required
                 labelPlacement="outside"
                 size="md"
-                name="fname"
+                name="firstname"
             />
             <Input
                 isRequired
@@ -219,7 +239,7 @@ export default function Reservation() {
                 placeholder="ex: Jones"
                 required
                 labelPlacement="outside"
-                name="lname"
+                name="lastname"
             />
             <h2>Contact info</h2>
             <Input
@@ -241,7 +261,7 @@ export default function Reservation() {
                 labelPlacement="outside"
                 required
                 startContent={<span>+1</span>}
-                name="tel"
+                name="telephone"
             />
             <h2>Payment</h2>
             <Input
@@ -256,7 +276,7 @@ export default function Reservation() {
                 onChange={handleCardInput}
                 maxLength={16}
                 pattern="\d{16}"
-            i   nputMode="numeric"
+               inputMode="numeric"
             />
             {showMessage && <div className="text-red-500">{message}</div>}
             <div className="flex gap-2">

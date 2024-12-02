@@ -3,6 +3,7 @@ import {NextRequest, NextResponse} from "next/server";
 import Reservation from "@/app/reservation/models/Reservation";
 import {connectToDatabase} from "@/app/reservation/utils/db";
 import Hotel from '../../hotels/models/Hotels'
+import {getSession} from "@/app/dashboard/utils/auth";
 
 
 // The GET function is now accepting an `id` as a parameter
@@ -28,21 +29,24 @@ export async function GET(req: Request) {
 export async function POST(req: NextRequest) {
     try {
         await connectToDatabase()
-        // const { db } = await connectToDatabase();
-        // const body = await req.json();
+        const session = await getSession(req);
+        if (!session) {
+            return NextResponse.json({message: "not logged in"}, {status: 400})
+        }
+        const userId = session?.user?._id
 
         const body = await req.json();
-        const { checkIn, checkOut, conFirNum, email, fname, lname, tel, title } = body;
+        const { checkInDate, checkOutDate, confirmationNumber, firstname, hotelId, lastname, telephone } = body;
 
         const newReservation = new Reservation({
-            checkIn,
-            checkOut,
-            conFirNum,
-            email,
-            fname,
-            lname,
-            tel,
-            title,
+            userId,
+            hotelId,
+            checkInDate,
+            checkOutDate,
+            confirmationNumber,
+            firstname,
+            lastname,
+            telephone,
         });
         const savedReservation = await newReservation.save();
         return NextResponse.json({reservation: savedReservation}, {status: 201});
