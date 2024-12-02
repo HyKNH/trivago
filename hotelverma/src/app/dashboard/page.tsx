@@ -155,7 +155,7 @@ const ProfilePage: React.FC = () => {
               reservations.map((reservation) => (
                 <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
                   <div>
-                    <p><strong>Room:</strong> {reservation.hotelName}</p>
+                    <p><strong>Hotel:</strong> {reservation.hotelName}</p> {/* Show hotel name */}
                     <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
                     <p><strong>Price:</strong> ${reservation.price}</p>
                   </div>
