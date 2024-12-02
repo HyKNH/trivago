@@ -23,6 +23,8 @@ export default function Reservation() {
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const router = useRouter();
 
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
@@ -86,6 +88,30 @@ export default function Reservation() {
     }
   }
 
+    const calculateNumOfNights = useMemo(() => {
+      if (startDate && endDate){
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const diffTime = end.getTime() - start.getTime();
+        const daysDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return daysDiff > 0 ? daysDiff : 1;
+      }
+      return 1;
+  }, [startDate, endDate]);
+
+  const totalBeforeTax = useMemo(() => {
+      return calculateNumOfNights * (hotel?.price || 1);
+  },[calculateNumOfNights, hotel?.price]);
+
+  const taxes = useMemo (() => {
+      return totalBeforeTax * 0.12;
+  },[totalBeforeTax]);
+
+    const completeTotal = useMemo(() => {
+      return totalBeforeTax + taxes;
+    },[totalBeforeTax, taxes]);
+
   return (
       <div className="px-6">
         <div className="shadow-xl">
@@ -117,6 +143,8 @@ export default function Reservation() {
                 required
                 size="md"
                 name="checkIn"
+                value={startDate}
+                onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
             />
             <Input
                 isRequired
@@ -126,6 +154,8 @@ export default function Reservation() {
                 required
                 size="md"
                 name="checkOut"
+                value={endDate}
+                onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
             />
             <h2>Name for reservation</h2>
             <Input
@@ -208,16 +238,16 @@ export default function Reservation() {
             </button>
           </form>
 
-          <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p">
+          <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p-2">
             <h1 className="text-xl text-semibold w-full">Price Details</h1>
-            <h2 className="w-1/2 pt-5">1 night:</h2>
-            <h2 className="pr-2 pt-5">168.00</h2>
+            <h2 className="w-1/2 pt-5">Number of Nights: {calculateNumOfNights}</h2>
+            <h2 className="pr-2 pt-5">${totalBeforeTax}</h2>
             <h3 className="w-full pl-3">${hotel?.price} per night</h3>
             <h2 className="pt-5 w-1/2">Taxes and Fees:</h2>
-            <h2 className="pr-2 pt-5">22.00</h2>
+            <h2 className="pr-2 pt-5">${taxes}</h2>
             <hr className="w-full border-black mt-5" />
             <h1 className="w-1/2">Total: </h1>
-            <h1>$190.00</h1>
+            <h1>${completeTotal}</h1>
           </div>
         </div>
       </div>
