@@ -19,14 +19,50 @@
 </p>
 
 ## 📝 Table of Contents
+- [Setup Instructions](#setup_instructions)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
+## ⚙️ Setup Instructions <a name = "setup_instructions"></a>
+
+### Prerequisites:
+- Node.js (version 14 or higher)
+- MongoDB instance (local or cloud-based)
+
+### Installation:
+1. Clone the repository:
+```
+git clone https://github.com/HyKNH/trivago.git
+```
+2. Navigate to the project directory:
+```
+cd trivago/hotelverma
+```
+3. Install dependencies and packages:
+```
+npm install
+```
+4. Set up environment variables (create a .env file):
+```
+REACT_APP_MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+```
+5. Start the development server:
+```
+npm run dev
+```
+6. Open the application in your browser:
+```
+http://localhost:3000
+```
+
 ## ⛏️ Built Using <a name = "built_using"></a>
-- [MySQL](https://www.mysql.com/) - Database
+- [MongoDB](https://www.mongodb.com/) - Database
 - [NextJs](https://nextjs.org/) - Web Framework
 - [NodeJs](https://nodejs.org/en/) - Server Environment
 - [NextUI](https://nextui.org/) - React UI Library
+- [JWT - JSON Web Tokens](https://jwt.io/) - Authentication
+- [Vercel](https://vercel.com) - Hosting/Deployment
 
 ## ✍️ Authors <a name = "authors"></a>
 - [Francis Nguyen](https://github.com/HyKNH)

@@ -99,8 +99,8 @@ export default function Reservation() {
       try {
         const response = await axios.get(`/reservation/api?id=${newurl}`)
         const data = response.data
-        setHotel(data.hotels[0])
-        console.log(data.hotels[0])
+        setHotel(data.hotel)
+        console.log(hotel)
       } catch (e) {
         console.error("Error fetching hotels:", e);
       }
@@ -129,7 +129,7 @@ export default function Reservation() {
   
 
   // Function to handle form submission
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form from reloading the page
 
    // const hotelName = hotel?.title;
@@ -162,6 +162,7 @@ export default function Reservation() {
               width="full"
               height={300}
               src={hotel?.image}
+              alt="Hotel Verma"
           />
         </div>
         <hr className="w-full border-black mt-5" />
