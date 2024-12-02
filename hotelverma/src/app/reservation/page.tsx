@@ -1,11 +1,8 @@
 "use client";
 import { Image } from "@nextui-org/image";
 import { Input } from "@nextui-org/input";
-import {DateRangePicker} from "@nextui-org/react";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import { RiStarSFill } from "react-icons/ri";
-import {today,getLocalTimeZone,  parseDate} from '@internationalized/date';
-import Calendar from "../components/Calendar";
 import axios from "axios";
 
 const BIN = ['434256', '481592', '483312'];
@@ -21,17 +18,12 @@ type Hotel = {
 };
 
 export default function Reservation() {
-  const rating = 3; // For now, set to a fixed value. Later, will fetch this from the database.
-
-  // Create an array of size 'rating' using the Array constructor.
-  // Then, use .fill() to assign a star icon to each element in the array.
-  // This means, if 'rating' is 2, the array will contain two <RiStarSFill/> components.
-  const stars = Array(rating).fill(<RiStarSFill />);
-
   const [cardNumber, setCardNumber] = useState(""); // User card input
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
+
+  const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
 
 
   // Function to handle card input
