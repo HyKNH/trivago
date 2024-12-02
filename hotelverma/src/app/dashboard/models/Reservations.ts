@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 
+interface IReservation extends Document {
+  userId: mongoose.Types.ObjectId;
+  hotelId: mongoose.Types.ObjectId;
+  checkInDate: Date;
+  checkOutDate: Date;
+  confirmationNumber: string;
+  firstName: string;
+  lastName: string;
+  telephone: string;
+}
+
 const reservationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -8,7 +19,7 @@ const reservationSchema = new mongoose.Schema({
   },
   hotelId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Hotel',
+    ref: 'Hotel',  
     required: true,
   },
   firstName: {
