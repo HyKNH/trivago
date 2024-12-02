@@ -158,6 +158,10 @@ export default function Reservation() {
     }
   };
 
+  if (!isClient) {
+    return null; // Prevent rendering before the component is mounted on the client
+  }
+
   return (
     <div className="px-6">
       <div className="shadow-xl">
@@ -243,60 +247,33 @@ export default function Reservation() {
             placeholder="Enter your phone number"
             labelPlacement="outside"
             required
-            startContent={<span>+1</span>}
-            name="telephone"
+            startContent={<span className="text-sm">+1</span>}
+            name="phone"
           />
-          <h2>Payment</h2>
+          <h2>Card Information</h2>
           <Input
             isRequired
-            label="Card Digits"
+            label="Card Number"
             type="text"
-            placeholder="ex: 4342562412349087"
-            required
-            labelPlacement="outside"
-            size="md"
             value={cardNumber}
             onChange={handleCardInput}
-            maxLength={16}
-            pattern="\d{16}"
-            inputMode="numeric"
+            labelPlacement="outside"
+            name="card"
+            placeholder="Enter your credit card number"
           />
-          {showMessage && <div className="text-red-500">{message}</div>}
-          <div className="flex gap-2">
-            <Input
-              isRequired
-              label="Expiration Date"
-              labelPlacement="outside"
-              size="md"
-              type="text"
-              placeholder="MM/YY"
-              required
-              name="expirationDate"
-            />
-            <Input
-              isRequired
-              label="CVV"
-              labelPlacement="outside"
-              size="md"
-              type="text"
-              placeholder="CVV"
-              required
-              maxLength={3}
-              name="cvv"
-            />
-          </div>
-          <div className="mt-4 flex justify-between">
-            <h2>Night(s): {numNights}</h2>
-            <h2>Total: ${calculateTotal()}</h2>
+          <div className="flex">
+            <span className="mr-3">Total Price: ${hotel?.price ? calulateRoomT() : 0}</span>
+            <span>Number of nights: {numNights}</span>
           </div>
           <div>
-            <button
-              type="submit"
-              className="text-white bg-black px-10 py-2 mt-4"
-            >
-              Reserve
-            </button>
+            <h2>Total Price: ${calculateTotal()}</h2>
           </div>
+          {showMessage && (
+            <div className="text-red-500">
+              <p>{message}</p>
+            </div>
+          )}
+          <button type="submit" className="mt-5 px-5 py-3 bg-blue-500 text-white rounded-md">Confirm Reservation</button>
         </form>
       </div>
     </div>
