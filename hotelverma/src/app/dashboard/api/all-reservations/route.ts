@@ -13,14 +13,13 @@ export async function GET(req: Request) {
     }
 
     const reservations = await Reservation.find({})
-      .populate('userId', 'email')
+      .populate('userId', 'name email')
       .populate('hotelId', 'title location price')
       .exec();
 
     const formattedReservations = reservations.map((reservation) => ({
       _id: reservation._id,
-      firstName: reservation.firstName || 'Unknown First Name',
-      lastName: reservation.lastName || 'Unknown Last Name',
+      userName: reservation.userId?.name || 'Unknown Name',
       userEmail: reservation.userId?.email || 'Unknown Email',
       userTelephone: reservation.telephone || 'Unknown Telephone',
       hotelId: reservation.hotelId?._id || null,

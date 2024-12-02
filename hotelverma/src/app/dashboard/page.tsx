@@ -58,6 +58,12 @@ const ProfilePage: React.FC = () => {
             },
           });
           setHotels(hotelsResponse.data.hotels);
+          const reservationResponse = await axios.get('dashboard/api/all-reservations', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setReservations(reservationResponse.data.reservations);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
