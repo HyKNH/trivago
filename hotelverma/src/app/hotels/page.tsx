@@ -84,11 +84,11 @@ export default function Content() {
       {/* Filter Menu */}
       <div className="ml-5 w-full md:w-1/4 p-5 mb-8 md:mb-52 shadow-2xl rounded-lg border h-fit">
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
-        <Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} />
+        <span className="flex justify-center w-full"><Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
-        <PriceSlider onChange={handlePriceChange} />
+        <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
-        <SearchBar onSearch={handleSearch} />
+        <span className="flex justify-center w-full"><SearchBar onSearch={handleSearch} /></span>
       </div>
 
       {/* Cards Listing */}
