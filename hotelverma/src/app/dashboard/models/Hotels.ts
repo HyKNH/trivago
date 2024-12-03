@@ -7,6 +7,7 @@ interface IHotel extends Document {
   image: string;
   price: number;
   rating: number;
+  booked: boolean;
 }
 
 const hotelSchema = new Schema<IHotel>({
@@ -33,6 +34,10 @@ const hotelSchema = new Schema<IHotel>({
   rating: {
     type: Number,
     required: true,
+  },
+  booked: {
+    type: Boolean,
+    default: false,
   },
 });
 
