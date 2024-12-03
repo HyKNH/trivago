@@ -26,6 +26,8 @@ export default function Reservation() {
   const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
   const [dateRange, setDateRange] = useState<Range | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
   const router = useRouter();
 
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
@@ -33,8 +35,34 @@ export default function Reservation() {
 
   // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(e.target.value);
+    let input = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    if (input.length <= 16) {
+      input = input.replace(/(\d{4})(?=\d)/g, '$1 '); // Add space after every 4 digits
+    } 
+    setCardNumber(input);
     setMessage(""); // Reset message while typing
+  };
+
+  const handleExpirationDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 2) {
+      value = value.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+    }
+
+    setExpirationDate(value);
+  };
+
+  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 3 && value.length <= 6) {
+      value = value.replace(/(\d{3})(\d{1,3})/, '$1 $2');
+    } else if (value.length > 6) {
+      value = value.replace(/(\d{3})(\d{3})(\d{1,4})/, '$1 $2 $3');
+    }
+
+    setPhoneNumber(value);
   };
 
   // Function to get the right room
@@ -72,7 +100,9 @@ export default function Reservation() {
       return;
     }
 
-    const firstSixDigits = cardNumber.slice(0, 6);
+    const cardNumberWithoutSpaces = cardNumber.replace(/\s+/g, '');
+
+    const firstSixDigits = cardNumberWithoutSpaces.slice(0, 6);
     if (BIN.includes(firstSixDigits)) {
       const formData = new FormData(e.target as HTMLFormElement);
       const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
@@ -181,6 +211,9 @@ export default function Reservation() {
           placeholder="Enter your phone number"
           labelPlacement="outside"
           required
+          value={phoneNumber}
+          onChange={handlePhoneInputChange}
+          maxLength={12}
           startContent={<span>+1</span>}
           name="telephone"
         />
@@ -189,13 +222,13 @@ export default function Reservation() {
           isRequired
           label="Card Number"
           type="text"
-          placeholder="ex: 4342562412349087"
+          placeholder="ex: 4342 5624 1234 9087"
           required
           labelPlacement="outside"
           size="md"
           value={cardNumber}
           onChange={handleCardInput}
-          maxLength={16}
+          maxLength={19}
         />
         {showMessage && <div className="text-red-500">{message}</div>}
         <div className="flex gap-2">
@@ -206,6 +239,9 @@ export default function Reservation() {
             placeholder="MM/YY"
             required
             size="md"
+            value={expirationDate}
+            onChange={handleExpirationDateChange}
+            maxLength={5}
             className="w-1/2"
           />
           <Input
