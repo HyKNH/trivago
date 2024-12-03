@@ -141,12 +141,16 @@ const ProfilePage: React.FC = () => {
     const reservationsWithTotalCost = reservations.map((reservation) => {
       const checkInDate = new Date(reservation.checkInDate);
       const checkOutDate = new Date(reservation.checkOutDate);
+      const checkInDateFormatted = checkInDate.toISOString().split('T')[0];
+      const checkOutDateFormatted = checkOutDate.toISOString().split('T')[0];  
       const numDays = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
       const baseCost = reservation.price * numDays;
       const totalCost = baseCost + baseCost * 0.12;
   
       return {
         ...reservation,
+        checkInDate: checkInDateFormatted,
+        checkOutDate: checkOutDateFormatted,
         totalCost: totalCost,
       };
     });
@@ -194,7 +198,7 @@ const ProfilePage: React.FC = () => {
                     <div>
                       <p><strong>Hotel:</strong> {reservation.hotelName}</p>
                       <p><strong>Location:</strong> {reservation.location}</p>
-                      <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
+                      <p><strong>Date:</strong> {reservation.checkInDate.split('T')[0]} to {reservation.checkOutDate.split('T')[0]}</p>
                       <p><strong>Price:</strong> ${reservation.price}/night</p>
                       <p><strong>Number of Nights:</strong> {numDays} nights</p>
                       <p><strong>Total:</strong> ${totalCost}</p>
