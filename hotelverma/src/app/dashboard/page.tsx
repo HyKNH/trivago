@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { Spinner, Spacer, Button, Divider, Image, Input } from '@nextui-org/react';
-import { FaHotel } from "react-icons/fa";
-import { MdPostAdd } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
-import { MdFreeCancellation } from "react-icons/md";
+import { MdPostAdd, MdFreeCancellation } from "react-icons/md";
+import { FaHotel, FaDownload, FaRegEdit } from "react-icons/fa";
 
 const ProfilePage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -21,6 +19,7 @@ const ProfilePage: React.FC = () => {
     price: '',
     rating: '',
   });
+  const [editHotel, setEditHotel] = useState<any | null>(null);
   const router = useRouter();
 
   const getAuthToken = () => {
@@ -119,6 +118,48 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleUpdateHotel = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    const token = getAuthToken();
+    if (!token) {
+      alert('You must be logged in to update a hotel.');
+      return;
+    }
+  
+    if (!editHotel || !editHotel._id) {
+      alert('No hotel selected for update or missing hotel ID.');
+      return;
+    }
+  
+    console.log('Attempting to update hotel:', editHotel);
+  
+    try {
+      const response = await axios.put(
+        `/dashboard/api/rooms/?id=${editHotel._id}`,
+        editHotel,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      console.log('Update response:', response.data);
+  
+      const updatedHotels = hotels.map((hotel) =>
+        hotel._id === response.data.hotel._id ? response.data.hotel : hotel
+      );
+  
+      setHotels(updatedHotels);
+      setEditHotel(null);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios-specific error
+        console.error('Axios error response:', error.response?.data || error.message);
+      } else {
+        // Handle other types of errors
+        console.error('Unexpected error:', error);
+      }
+    }
+  };
+  
   const handleDeleteHotel = async (hotelId: string) => {
     const token = getAuthToken();
     if (!token) {
@@ -283,27 +324,76 @@ const ProfilePage: React.FC = () => {
             Download Reservations Report
           </Button>
           <Divider className="my-4" />
-          <h3 className="text-2xl font-bold">Existing Hotels</h3>
-          <ul style={{ listStyleType: 'none', padding: '0' }}>
-            {hotels.length > 0 ? (
-              hotels.map((hotel) => (
-                <li key={hotel._id} style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '6px', marginBottom: '20px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <h4 className="text-xl font-bold">{hotel.title}</h4>
-                    <p>Location: {hotel.location}</p>
-                    <p>Amenities: {hotel.amenities.join(", ")}</p>
-                    <p>Price: ${hotel.price}</p>
-                    <p>Rating: {hotel.rating} stars</p>
-                    <Image src={hotel.image} alt={hotel.title} width={200}></Image>
-                  </div>
-                  <Spacer y={4} />
-                  <Button onClick={() => handleDeleteHotel(hotel._id)} color="danger" variant="bordered" startContent={<FaHotel />}>
-                    Delete Hotel
-                  </Button>
-                </li>
-              ))
-            ) : (
-              <p>No hotels available.</p>
+          {editHotel && (
+            <form onSubmit={handleUpdateHotel} style={{ marginBottom: '20px' }}>
+              <h3 className="text-xl font-semibold">Update Hotel</h3>
+              <Input
+                label="Title"
+                value={editHotel.title}
+                onChange={(e) => setEditHotel({ ...editHotel, title: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Input
+                label="Location"
+                value={editHotel.location}
+                onChange={(e) => setEditHotel({ ...editHotel, location: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Input
+                label="Amenities"
+                value={editHotel.amenities}
+                onChange={(e) => setEditHotel({ ...editHotel, amenities: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Input
+                label="Image URL"
+                value={editHotel.image}
+                onChange={(e) => setEditHotel({ ...editHotel, image: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Input
+                label="Price per Night"
+                value={editHotel.price}
+                onChange={(e) => setEditHotel({ ...editHotel, price: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Input
+                label="Rating"
+                value={editHotel.rating}
+                onChange={(e) => setEditHotel({ ...editHotel, rating: e.target.value })}
+              />
+              <Spacer y={4} />
+              <Button color="success" type="submit" variant="bordered" startContent={<MdPostAdd />}>
+                Update Hotel
+              </Button>
+            </form>
+          )}
+          <Divider className="my-4" />
+            <h3 className="text-2xl font-bold">Existing Hotels</h3>
+            <ul style={{ listStyleType: 'none', padding: '0' }}>
+              {hotels.length > 0 ? (
+                hotels.map((hotel) => (
+                  <li key={hotel._id} style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '6px', marginBottom: '20px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <h4 className="text-xl font-bold">{hotel.title}</h4>
+                      <p>Location: {hotel.location}</p>
+                      <p>Amenities: {hotel.amenities.join(", ")}</p>
+                      <p>Price: ${hotel.price}</p>
+                      <p>Rating: {hotel.rating} stars</p>
+                      <Image src={hotel.image} alt={hotel.title} width={200}></Image>
+                    </div>
+                    <Spacer y={4} />
+                    <Button onClick={() => setEditHotel(hotel)} color="secondary" variant="bordered" startContent={<FaRegEdit />}>
+                      Edit
+                    </Button>
+                    <Spacer x={4} />
+                    <Button onClick={() => handleDeleteHotel(hotel._id)} color="danger" variant="bordered" startContent={<FaHotel />}>
+                      Delete Hotel
+                    </Button>
+                  </li>
+                ))
+              ) : (
+                <p>No hotels available.</p>
             )}
           </ul>
         </div>
