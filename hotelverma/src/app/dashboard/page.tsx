@@ -136,7 +136,7 @@ const ProfilePage: React.FC = () => {
   
     try {
       const response = await axios.put(
-        `/dashboard/api/rooms/?id=${editHotel._id}`,
+        `/dashboard/api/rooms/${editHotel._id}`,
         editHotel,
         { headers: { Authorization: `Bearer ${token}` } }
       );
