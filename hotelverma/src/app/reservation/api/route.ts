@@ -59,12 +59,14 @@ export async function POST(req: NextRequest) {
       checkInDate,
       checkOutDate,
       confirmationNumber,
-      firstName, 
+      firstName,
       lastName,
       telephone,
     });
 
     const savedReservation = await newReservation.save();
+
+    await Hotel.findByIdAndUpdate(hotelId, { booked: true });
 
     return NextResponse.json(
       { reservation: savedReservation },

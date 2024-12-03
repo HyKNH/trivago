@@ -1,10 +1,9 @@
-// app/pages/Hotels/page.tsx
 'use client';
 
 import { Card, CardBody, Image, Spinner } from "@nextui-org/react";
 import Checkbox from "../components/ratingFil";
 import PriceSlider from "../components/priceFil";
-import SearchBar from "../components/serchbar"
+import SearchBar from "../components/serchbar";
 import { useState, useEffect } from "react";
 
 type Hotel = {
@@ -15,6 +14,7 @@ type Hotel = {
   image: string;
   price: number;
   rating: number;
+  booked: boolean;
 };
 
 export default function Content() {
@@ -60,20 +60,21 @@ export default function Content() {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
-
-
+  
   useEffect(() => {
     if (hotels) {
-      const filtered = hotels.filter(hotel => {
-        const isInPriceRange = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
-        const matchesRating = selectedRatings.size === 0 || selectedRatings.has(hotel.rating);
-        const matchesLocation = hotel.location.toLowerCase().includes(searchQuery); // Location match
-        return isInPriceRange && matchesRating && matchesLocation;
-      });
+      const filtered = hotels
+        .filter(hotel => !hotel.booked) 
+        .filter(hotel => {
+          const isInPriceRange = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
+          const matchesRating = selectedRatings.size === 0 || selectedRatings.has(hotel.rating);
+          const matchesLocation = hotel.location.toLowerCase().includes(searchQuery);
+          return isInPriceRange && matchesRating && matchesLocation;
+        });
 
       setFilteredHotels(filtered);
     }
-  }, [priceRange, selectedRatings,searchQuery, hotels]);
+  }, [priceRange, selectedRatings, searchQuery, hotels]);
 
   if (filteredHotels === undefined) {
     return <Spinner className="flex items-center justify-center w-full py-35" color="warning" />;
