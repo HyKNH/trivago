@@ -138,18 +138,41 @@ const ProfilePage: React.FC = () => {
   };
 
   const handleDownloadReport = () => {
-    const dataStr = JSON.stringify(reservations, null, 2);
+    const reservationsWithTotalCost = reservations.map((reservation) => {
+      const checkInDate = new Date(reservation.checkInDate);
+      const checkOutDate = new Date(reservation.checkOutDate);
+      const numDays = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+      const baseCost = reservation.price * numDays;
+      const totalCost = baseCost + baseCost * 0.12;
+  
+      return {
+        ...reservation,
+        totalCost: totalCost,
+      };
+    });
+  
+    const totalRevenue = reservationsWithTotalCost.reduce(
+      (sum, reservation) => sum + parseFloat(reservation.totalCost),
+      0
+    );
+  
+    const reportData = {
+      totalRevenue: totalRevenue,
+      reservations: reservationsWithTotalCost,
+    };
+
+    const dataStr = JSON.stringify(reportData, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-
+  
     const link = document.createElement('a');
     link.href = url;
     link.download = 'reservations-report.json';
     link.click();
-
+  
     URL.revokeObjectURL(url);
   };
-
+  
   return (
     <div style={{ fontFamily: 'Inter, sans-serif', padding: '20px' }}>
       <h1 className="text-3xl font-bold" style={{ color: '#333' }}>Profile Page</h1>
@@ -159,25 +182,35 @@ const ProfilePage: React.FC = () => {
           <h2 className="text-2xl font-bold">Your Reservations</h2>
           <ul style={{ listStyleType: 'none', padding: '0' }}>
             {reservations.length > 0 ? (
-              reservations.map((reservation) => (
-                <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
-                  <div>
-                    <p><strong>Hotel:</strong> {reservation.hotelName}</p> {/* Show hotel name */}
-                    <p><strong>Location:</strong> {reservation.location}</p>
-                    <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
-                    <p><strong>Price:</strong> ${reservation.price}/night</p>
-                    <p><strong>Confirmation Number:</strong> {reservation.confirmationNumber}</p>
-                  </div>
-                  <Button
-                    color="danger"
-                    variant="bordered"
-                    onClick={() => handleCancelReservation(reservation._id)}
-                    startContent={<MdFreeCancellation />}
-                  >
-                    Cancel Reservation
-                  </Button>
-                </li>
-              ))
+              reservations.map((reservation) => {
+                const checkInDate = new Date(reservation.checkInDate);
+                const checkOutDate = new Date(reservation.checkOutDate);
+                const numDays = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+                const baseCost = reservation.price * numDays;
+                const totalCost = baseCost + baseCost * 0.12;
+
+                return (
+                  <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
+                    <div>
+                      <p><strong>Hotel:</strong> {reservation.hotelName}</p>
+                      <p><strong>Location:</strong> {reservation.location}</p>
+                      <p><strong>Date:</strong> {reservation.checkInDate} to {reservation.checkOutDate}</p>
+                      <p><strong>Price:</strong> ${reservation.price}/night</p>
+                      <p><strong>Number of Nights:</strong> {numDays} nights</p>
+                      <p><strong>Total:</strong> ${totalCost}</p>
+                      <p><strong>Confirmation Number:</strong> {reservation.confirmationNumber}</p>
+                    </div>
+                    <Button
+                      color="danger"
+                      variant="bordered"
+                      onClick={() => handleCancelReservation(reservation._id)}
+                      startContent={<MdFreeCancellation />}
+                    >
+                      Cancel Reservation
+                    </Button>
+                  </li>
+                );
+              })
             ) : (
               <p>No reservations found.</p>
             )}
