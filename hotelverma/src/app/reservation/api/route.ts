@@ -4,10 +4,9 @@ import { connectToDatabase } from "@/app/reservation/utils/db";
 import Hotel from "../../hotels/models/Hotels";
 import { getSession } from "@/app/dashboard/utils/auth";
 
-// The GET function is now accepting an `id` as a parameter
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const id = url.searchParams.get("id"); // Extract the hotel ID from the query string
+  const id = url.searchParams.get("id");
 
   if (!id) {
     return new Response(JSON.stringify({ error: "Hotel ID is required" }), {
@@ -48,16 +47,11 @@ export async function POST(req: NextRequest) {
       checkInDate,
       checkOutDate,
       confirmationNumber,
-      firstname,
+      firstName,
       hotelId,
-      lastname,
+      lastName,
       telephone,
     } = body;
-
-    // Optionally validate the request body here
-
-    const firstName = firstname;
-    const lastName = lastname;
 
     const newReservation = new Reservation({
       userId,
@@ -80,7 +74,6 @@ export async function POST(req: NextRequest) {
     console.error("Error:", e);
 
     if (e instanceof Error) {
-      // Check if it's a validation error (e.g., from Mongoose)
       if (e.name === "ValidationError") {
         return NextResponse.json(
           { error: e.message },
@@ -88,14 +81,12 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // For other known errors, return the error message
       return NextResponse.json(
         { error: e.message },
         { status: 500 }
       );
     }
 
-    // If 'e' is not an instance of Error, return a generic error message
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

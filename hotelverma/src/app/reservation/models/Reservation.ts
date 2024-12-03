@@ -6,8 +6,8 @@ interface IReservation extends Document {
     checkInDate: string;
     checkOutDate: string;
     confirmationNumber: string;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     telephone: string;
 }
 
@@ -32,11 +32,11 @@ const reservationSchema = new Schema<IReservation>({
         type: String,
         required: true,
     },
-    firstname: {
+    firstName: {
         type: String,
         required: true,
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true,
     },
