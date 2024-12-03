@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IReservation extends Document {
-    userId: string;
-    hotelId: string;
+    userId: mongoose.Types.ObjectId;
+    hotelId: mongoose.Types.ObjectId;
     checkInDate: string;
     checkOutDate: string;
     confirmationNumber: string;
@@ -13,13 +13,15 @@ interface IReservation extends Document {
 
 const reservationSchema = new Schema<IReservation>({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-    },
-    hotelId: {
-        type: String,
+      },
+      hotelId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hotel',  
         required: true,
-    },
+      },
     checkInDate: {
         type: String,
         required: true,
