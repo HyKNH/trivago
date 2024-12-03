@@ -2,23 +2,39 @@
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import {Image} from "@nextui-org/image";
 import {useRouter} from "next/navigation";
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
+import axios from "axios";
 
 
 export default function Confimation () {
     const router = useRouter();
-
-  useEffect(() => {
-    // Set a timer to redirect after 5 seconds (5000 milliseconds)
-    const timer = setTimeout(() => {
-      router.push("/");
-    }, 5000);
-
-    // Clean up the timer if the component unmounts before the time is up
-    return () => clearTimeout(timer);
-  }, [router]);
-
-
+    const [reservation, setReservation] = useState(null)
+    
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const reservation = params.get('confirmationNumber'); // Get 'id' query parameter from the URL
+    
+        const fetchDetails = async () => {
+          try {
+            if (reservation) {
+              const response = await axios.get(`/confirmation/api`, {
+                params: { confirmationNumber: reservation },
+              });
+              const data = response.data;
+              setReservation(data.reservation);
+              console.log("Fetched hotel data:", data.reservation); // Log fetched data directly
+            } else {
+              console.error("Reservation ID not found in the URL");
+            }
+          } catch (e) {
+            console.error("Error fetching hotels:", e);
+          }
+        };
+    
+        fetchDetails();
+      }
+    },[]); 
 
 
 
@@ -39,6 +55,7 @@ export default function Confimation () {
                 <div className="w-full flex gap-4 mt-4 ">
                 </div>
                 </div>
+                <h1></h1>
             </div>
         </div>
     );
