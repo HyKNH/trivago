@@ -40,7 +40,7 @@ export default function NavBar() {
     window.location.reload();
   };
 
-  const menuItems = ["Home", "Hotels", "Bookings"];
+  const menuItems = ["Home", "Hotels"];
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
