@@ -1,13 +1,10 @@
 "use client";
-import { Image } from "@nextui-org/image";
-import { Input } from "@nextui-org/input";
 import {useEffect, useState, useMemo} from "react";
 import { RiStarSFill } from "react-icons/ri";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-import { DateRangePicker } from "@nextui-org/react";
-import { DateValue } from "@internationalized/date";
-import { getLocalTimeZone } from "@internationalized/date";
+import { DateRangePicker, Image, Input, Card, Divider, Button, Spacer } from "@nextui-org/react";
+import { DateValue, getLocalTimeZone, today } from "@internationalized/date";
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -130,126 +127,142 @@ export default function Reservation() {
     },[totalBeforeTax, taxes]);
 
   return (
-      <div className="px-6">
-        <div className="shadow-xl">
-          <Image
-              width="full"
-              height={300}
-              src={hotel?.image}
-              alt="Hotel Verma"
+    <div className="w-full flex flex-wrap md:flex-nowrap md:space-x-8">
+    {/* Left Section - Reservation Form */}
+    <div className="w-full md:w-2/4 px-6">
+      <h1 className="mb-3 text-2xl font-bold">Reserve your Room</h1>
+      <form className="space-y-9" onSubmit={submitForm}>
+        <h2>Date for reservation</h2>
+        <DateRangePicker
+          isRequired
+          label="Select check-in and check-out dates"
+          value={dateRange}
+          minValue={today(getLocalTimeZone())}
+          onChange={(range) => setDateRange(range ? { start: range.start, end: range.end } : null)}
+        />
+        <h2>Name for reservation</h2>
+        <Input
+          isRequired
+          label="First Name"
+          type="text"
+          placeholder="ex: John"
+          required
+          labelPlacement="outside"
+          size="md"
+          name="firstName"
+        />
+        <Input
+          isRequired
+          label="Last Name"
+          type="text"
+          placeholder="ex: Doe"
+          required
+          labelPlacement="outside"
+          name="lastName"
+        />
+        <h2>Contact info</h2>
+        <Input
+          isRequired
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+          required
+          fullWidth
+          aria-label="Email"
+          labelPlacement="outside"
+          name="email"
+        />
+        <Input
+          isRequired
+          type="tel"
+          label="Phone Number"
+          placeholder="Enter your phone number"
+          labelPlacement="outside"
+          required
+          startContent={<span>+1</span>}
+          name="telephone"
+        />
+        <h2>Payment</h2>
+        <Input
+          isRequired
+          label="Card Number"
+          type="text"
+          placeholder="ex: 4342562412349087"
+          required
+          labelPlacement="outside"
+          size="md"
+          value={cardNumber}
+          onChange={handleCardInput}
+          maxLength={16}
+        />
+        {showMessage && <div className="text-red-500">{message}</div>}
+        <div className="flex gap-2">
+          <Input
+            isRequired
+            label="Expiration Date"
+            labelPlacement="outside"
+            placeholder="MM/YY"
+            required
+            size="md"
+            className="w-1/2"
+          />
+          <Input
+            isRequired
+            label="CVV"
+            labelPlacement="outside"
+            placeholder="132"
+            required
+            size="md"
+            className="w-1/2"
           />
         </div>
-        <hr className="w-full border-black mt-5" />
-        <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
-        <h2>{hotel?.location}</h2>
-        <h3>{hotel?.amenities.join(", ")}</h3>
-        <div className="flex pt-3 pl-3">
-          {stars.map((star, index) => (
-              <div key={index}>{star}</div>
-          ))}
+          <Button type="submit" color="success" variant="bordered">
+            Complete Reservation
+          </Button>
+      </form>
+      <Spacer y={8}></Spacer>
+    </div>
+  
+    {/* Right Section - Hotel Information and Price */}
+    <div className="w-full md:w-2/4 px-6 mt-6 md:mt-0">
+      <div className="shadow-xl mb-5">
+        <Card>
+          <Image
+            width="100%"
+            height={300}
+            src={hotel?.image}
+            alt="Hotel Verma"
+          />
+        </Card>
+      </div>
+      <Divider className="my-4" />
+      <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
+      <h2>{hotel?.location}</h2>
+      <h3>{hotel?.amenities.join(", ")}</h3>
+      <div className="flex pt-3 pl-3">
+        {stars.map((star, index) => (
+          <div key={index}>{star}</div>
+        ))}
+      </div>
+  
+      <div className="border w-full mt-6 p-5 rounded-md shadow-xl">
+        <h1 className="text-xl font-semibold">Price Details</h1>
+        <div className="flex justify-between mt-5">
+          <h2>Number of Nights: {calculateNumOfNights}</h2>
+          <h2>${totalBeforeTax}</h2>
         </div>
-        <div className="pt-5 flex flex-wrap">
-          <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
-          <form className="space-y-9 px-20 w-2/4" onSubmit={submitForm}>
-            <h2>Date for reservation</h2>
-            <DateRangePicker
-              label="Select your dates"
-              value={dateRange}
-              onChange={(range) => setDateRange(range ? { start: range.start, end: range.end } : null)}
-              />
-            <h2>Name for reservation</h2>
-            <Input
-                isRequired
-                label="First Name"
-                type="text"
-                placeholder="ex: John"
-                required
-                labelPlacement="outside"
-                size="md"
-                name="firstName"
-            />
-            <Input
-                isRequired
-                label="Last Name"
-                type="text"
-                placeholder="ex: Jones"
-                required
-                labelPlacement="outside"
-                name="lastName"
-            />
-            <h2>Contact info</h2>
-            <Input
-                isRequired
-                label="Email"
-                type="email"
-                placeholder="Enter your email"
-                required
-                fullWidth
-                aria-label="Email"
-                labelPlacement="outside"
-                name="email"
-            />
-            <Input
-                isRequired
-                type="tel"
-                label="Phone Number"
-                placeholder="Enter your phone number"
-                labelPlacement="outside"
-                required
-                startContent={<span>+1</span>}
-                name="telephone"
-            />
-            <h2>Payment</h2>
-            <Input
-                isRequired
-                label="Card Digits"
-                type="text"
-                placeholder="ex: 4342562412349087"
-                required
-                labelPlacement="outside"
-                size="md"
-                value={cardNumber}
-                onChange={handleCardInput}
-                maxLength={16}
-            />
-            {showMessage && <div className="text-red-500">{message}</div>}
-            <div className="flex gap-2">
-              <Input
-                  isRequired
-                  label="Expiration Date"
-                  labelPlacement="outside"
-                  placeholder="MM/YY"
-                  required
-                  size="md"
-                  className="w-1/2"
-              />
-              <Input
-                  isRequired
-                  label="CVV"
-                  labelPlacement="outside"
-                  placeholder="132"
-                  required
-                  size="md"
-                  className="w-1/2"
-              />
-            </div>
-            <button type="submit" className="border-1 border-stone-600 p-2 rounded-xl">
-              Finish
-            </button>
-          </form>
-
-          <div className="border w-2/4 flex h-fit flex-wrap border-2 rounded-md shadow-xl justify-between p-2">
-            <h1 className="text-xl text-semibold w-full">Price Details</h1>
-            <h2 className="w-1/2 pt-5">Number of Nights: {calculateNumOfNights}</h2>
-            <h2 className="pr-2 pt-5">${totalBeforeTax}</h2>
-            <h3 className="w-full pl-3">${hotel?.price} per night</h3>
-            <h2 className="pt-5 w-1/2">Taxes and Fees:</h2>
-            <h2 className="pr-2 pt-5">${taxes}</h2>
-            <hr className="w-full border-black mt-5" />
-            <h1 className="w-1/2">Total: </h1>
-            <h1>${completeTotal}</h1>
-          </div>
+        <h3>{hotel?.price} per night</h3>
+        <div className="flex justify-between mt-5">
+          <h2>Taxes and Fees:</h2>
+          <h2>${taxes}</h2>
+        </div>
+        <hr className="w-full mt-5" />
+        <div className="flex justify-between mt-5">
+          <h1>Total:</h1>
+          <h1>${completeTotal}</h1>
         </div>
       </div>
+    </div>
+  </div>
   );
 }
