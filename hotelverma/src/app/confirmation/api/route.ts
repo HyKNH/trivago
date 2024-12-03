@@ -1,4 +1,4 @@
-import Reservation from "../../reservation/models/Reservation";
+import Reservation from "../../reservation/models/Reservations";
 import { connectToDatabase } from "@/app/reservation/utils/db";
 
 export async function GET(req: Request) {
