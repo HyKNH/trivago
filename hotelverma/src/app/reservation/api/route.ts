@@ -56,14 +56,17 @@ export async function POST(req: NextRequest) {
 
     // Optionally validate the request body here
 
+    const firstName = firstname;
+    const lastName = lastname;
+
     const newReservation = new Reservation({
       userId,
       hotelId,
       checkInDate,
       checkOutDate,
       confirmationNumber,
-      firstname,
-      lastname,
+      firstName, 
+      lastName,
       telephone,
     });
 
