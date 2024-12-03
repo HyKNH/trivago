@@ -115,16 +115,18 @@ export default function Reservation() {
   }, [dateRange]);
   
   const totalBeforeTax = useMemo(() => {
-      return calculateNumOfNights * (hotel?.price || 1);
+    return calculateNumOfNights * (hotel?.price || 1);
   },[calculateNumOfNights, hotel?.price]);
 
   const taxes = useMemo (() => {
-      return totalBeforeTax * 0.12;
+    const totaltax = totalBeforeTax * 0.12;
+    return Math.floor(totaltax)
   },[totalBeforeTax]);
 
-    const completeTotal = useMemo(() => {
-      return totalBeforeTax + taxes;
-    },[totalBeforeTax, taxes]);
+  const completeTotal = useMemo(() => {
+    const total = totalBeforeTax + taxes;
+    return Math.floor(total);
+  },[totalBeforeTax, taxes]);
 
   return (
     <div className="w-full flex flex-wrap md:flex-nowrap md:space-x-8">
