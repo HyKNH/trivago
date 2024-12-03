@@ -3,10 +3,18 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Image} from "@nextui-org/image";
+import {Card, CardHeader, CardBody, CardFooter, Avatar, Button} from "@nextui-org/react";
+
+type Review = {
+    firstname: string;
+    lastname: string;
+    message: string;
+    hotelId: string;
+}
 
 export default function GetReviews() {
     const [hotel, setHotel] = useState<any>();
-    const [reviews, setReviews] = useState<any>();
+    const [reviews, setReviews] = useState<Review[] | undefined>(undefined);
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const params = new URLSearchParams(window.location.search);
@@ -18,8 +26,13 @@ export default function GetReviews() {
                         const response = await axios.get(`/reservation/api?id=${reservationId}`);
                         const reviewresponse = await axios.get(`/Reviews/api?id=${reservationId}`)
                         const data = response.data;
-                        console.log(reviewresponse)
+                        const reviewdata = reviewresponse.data
+                        if (reviewdata) {
+                            setReviews(reviewdata.reviews)
+                        }
                         setHotel(data.hotel);
+                        console.log(reviews)
+
                         console.log("Fetched hotel data:", data.hotel); // Log fetched data directly
                     } else {
                         console.error("Reservation ID not found in the URL");
@@ -31,8 +44,9 @@ export default function GetReviews() {
             fetchroom();
         }
     }, []);
+
     return (
-        <div className="px-6">
+        <div>
             <div className="shadow-xl">
                 <Image
                     width="full"
@@ -45,6 +59,27 @@ export default function GetReviews() {
             <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
             <h2>{hotel?.location}</h2>
             <h3>{hotel?.amenities.join(", ")}</h3>
+            {Array.isArray(reviews) && reviews.length > 0 ? (
+                reviews.map((review) => (
+                    <Card key={review.lastname || `${review.firstname}-${review.lastname}`}>
+                        <CardHeader className="justify-between">
+                            <div className="flex gap-5">
+                                <div className="flex flex-col gap-1 items-start justify-center">
+                                    <h4 className="text-small font-semibold leading-none text-default-600">
+                                        {review.firstname} {review.lastname}
+                                    </h4>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardBody className="px-3 py-0 text-small text-default-400">
+                            <p>{review.message}</p>
+                        </CardBody>
+                    </Card>
+                ))
+            ) : (
+                <p>No reviews currently</p>
+            )}
+
         </div>
     );
 }
