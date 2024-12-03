@@ -32,9 +32,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ message: 'Hotel not found.' }, { status: 404 });
     }
 
+    const amenitiesArray = Array.isArray(amenities)
+      ? amenities
+      : amenities?.split(",").map((item: string) => item.trim());
+
     hotel.title = title;
     hotel.location = location;
-    hotel.amenities = amenities;
+    hotel.amenities = amenitiesArray;
     hotel.image = image;
     hotel.price = price;
     hotel.rating = rating;
