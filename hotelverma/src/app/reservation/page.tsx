@@ -5,6 +5,9 @@ import {useEffect, useState, useMemo} from "react";
 import { RiStarSFill } from "react-icons/ri";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
+import { DateRangePicker } from "@nextui-org/react";
+import { DateValue } from "@internationalized/date";
+import { getLocalTimeZone } from "@internationalized/date";
 
 const BIN = ['434256', '481592', '483312'];
 
@@ -18,13 +21,14 @@ type Hotel = {
   rating: number;
 };
 
+type Range = { start: DateValue; end: DateValue };
+
 export default function Reservation() {
   const [cardNumber, setCardNumber] = useState(""); // User card input
   const [message, setMessage] = useState(""); // Message to display
   const [showMessage, setShowMessage] = useState(false); // When to display message
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [dateRange, setDateRange] = useState<Range | null>(null);
   const router = useRouter();
 
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
@@ -79,6 +83,11 @@ export default function Reservation() {
       const conFirNum = Math.floor(Math.random() * 90000) + 10000;
       payload.confirmationNumber = conFirNum.toString()
       payload.hotelId = hotel?._id;
+
+      if (dateRange) {
+        payload.checkInDate = dateRange.start.toDate(getLocalTimeZone()).toISOString();
+        payload.checkOutDate = dateRange.end.toDate(getLocalTimeZone()).toISOString();
+      }
       try {
         const response = await axios.post(
           "/reservation/api",
@@ -98,18 +107,16 @@ export default function Reservation() {
     }
   }
 
-    const calculateNumOfNights = useMemo(() => {
-      if (startDate && endDate){
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-
-        const diffTime = end.getTime() - start.getTime();
-        const daysDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        return daysDiff > 0 ? daysDiff : 1;
-      }
-      return 1;
-  }, [startDate, endDate]);
-
+  const calculateNumOfNights = useMemo(() => {
+    if (dateRange) {
+      const { start, end } = dateRange;
+      const diffTime = end.toDate(getLocalTimeZone()).getTime() - start.toDate(getLocalTimeZone()).getTime();
+      const daysDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return daysDiff > 0 ? daysDiff : 1;
+    }
+    return 1;
+  }, [dateRange]);
+  
   const totalBeforeTax = useMemo(() => {
       return calculateNumOfNights * (hotel?.price || 1);
   },[calculateNumOfNights, hotel?.price]);
@@ -145,28 +152,11 @@ export default function Reservation() {
           <h1 className="mb-3 text-2xl w-full">Secure your Room</h1>
           <form className="space-y-9 px-20 w-2/4" onSubmit={submitForm}>
             <h2>Date for reservation</h2>
-            <Input
-                isRequired
-                label="Check In"
-                type="date"
-                labelPlacement="outside"
-                required
-                size="md"
-                name="checkInDate"
-                value={startDate}
-                onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
-            />
-            <Input
-                isRequired
-                label="Check out"
-                type="date"
-                labelPlacement="outside"
-                required
-                size="md"
-                name="checkOutDate"
-                value={endDate}
-                onChange ={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
-            />
+            <DateRangePicker
+              label="Select your dates"
+              value={dateRange}
+              onChange={(range) => setDateRange(range ? { start: range.start, end: range.end } : null)}
+              />
             <h2>Name for reservation</h2>
             <Input
                 isRequired
