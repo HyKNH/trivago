@@ -176,7 +176,7 @@ export default function Reservation() {
                 required
                 labelPlacement="outside"
                 size="md"
-                name="firstname"
+                name="firstName"
             />
             <Input
                 isRequired
@@ -185,7 +185,7 @@ export default function Reservation() {
                 placeholder="ex: Jones"
                 required
                 labelPlacement="outside"
-                name="lastname"
+                name="lastName"
             />
             <h2>Contact info</h2>
             <Input
