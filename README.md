@@ -46,6 +46,8 @@ npm install
 ```
 REACT_APP_MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
+Email_User=your_email
+EMAIL_PASSWORD=your_email_password
 ```
 5. Start the development server:
 ```
@@ -58,11 +60,12 @@ http://localhost:3000
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - [MongoDB](https://www.mongodb.com/) - Database
-- [NextJs](https://nextjs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Next.js](https://nextjs.org/) - Web Framework
+- [Node.js](https://nodejs.org/en/) - Server Environment
 - [NextUI](https://nextui.org/) - React UI Library
 - [JWT - JSON Web Tokens](https://jwt.io/) - Authentication
 - [Vercel](https://vercel.com) - Hosting/Deployment
+- [Nodemailer](https://www.nodemailer.com/) - Email Service
 
 ## ✍️ Authors <a name = "authors"></a>
 - [Francis Nguyen](https://github.com/HyKNH)
