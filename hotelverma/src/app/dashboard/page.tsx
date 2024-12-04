@@ -381,7 +381,12 @@ const ProfilePage: React.FC = () => {
                 onChange={(e) => setEditHotel({ ...editHotel, price: e.target.value })}
               />
               <Spacer y={4} />
-              
+              <Input
+                label="Rating"
+                value={editHotel.rating}
+                onChange={(e) => setEditHotel({ ...editHotel, rating: e.target.value })}
+              />
+              <Spacer y={4} />
               <Input
               type="text"
               placeholder="Room type"
