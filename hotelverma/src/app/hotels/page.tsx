@@ -5,6 +5,7 @@ import Checkbox from "../components/ratingFil";
 import PriceSlider from "../components/priceFil";
 import SearchBar from "../components/serchbar";
 import { useState, useEffect } from "react";
+import RoomType from "../components/roomtype"
 
 type Hotel = {
   _id: string;
@@ -23,7 +24,8 @@ export default function Content() {
   const [filteredHotels, setFilteredHotels] = useState<Hotel[] | undefined>(undefined);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
-  const [searchQuery, setSearchQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("");
+  const [roomTypeQuery, setRoomTypeQuery] = useState("");
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -58,8 +60,12 @@ export default function Content() {
     });
   };
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
+  const handleLocationSearch = (query: string) => {
+    setLocationQuery(query.toLowerCase());
+  };
+
+  const handleRoomTypeSearch = (query: string) => {
+    setRoomTypeQuery(query.toLowerCase());
   };
   
   useEffect(() => {
@@ -69,13 +75,14 @@ export default function Content() {
         .filter(hotel => {
           const isInPriceRange = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
           const matchesRating = selectedRatings.size === 0 || selectedRatings.has(hotel.rating);
-          const matchesLocation = hotel.location.toLowerCase().includes(searchQuery);
-          return isInPriceRange && matchesRating && matchesLocation;
+          const matchesLocation = hotel.location.toLowerCase().includes(locationQuery);
+          const matchesRoomType = hotel.roomType.toLowerCase().includes(roomTypeQuery);
+          return isInPriceRange && matchesRating && matchesLocation && matchesRoomType;
         });
 
       setFilteredHotels(filtered);
     }
-  }, [priceRange, selectedRatings, searchQuery, hotels]);
+  }, [priceRange, selectedRatings, locationQuery, hotels, roomTypeQuery]);
 
   if (filteredHotels === undefined) {
     return <Spinner className="flex items-center justify-center w-full py-35" color="warning" />;
@@ -89,10 +96,10 @@ export default function Content() {
         <span className="flex justify-center w-full"><Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
         <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} /></span>
-        <div>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
-        <span className="flex justify-center w-full"><SearchBar onSearch={handleSearch} /></span>
-        </div>
+        <span className="flex justify-center w-full"><SearchBar onSearch={handleLocationSearch} /></span>
+        <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for room type</h1>
+        <span className="flex justify-center w-full"><RoomType onSearch={handleRoomTypeSearch} /></span>
       </div>
 
       {/* Cards Listing */}
