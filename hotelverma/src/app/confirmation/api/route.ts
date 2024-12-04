@@ -14,6 +14,7 @@ interface ReservationDetails {
   checkInDate: Date | string;
   checkOutDate: Date | string;
   confirmationNumber: string;
+  roomType: string;
 }
 
 // Configure Nodemailer transporter
@@ -42,7 +43,7 @@ export async function GET(req: Request) {
 
     const reservation = await Reservation.findOne({ confirmationNumber })
       .populate('userId', 'name email')
-      .populate('hotelId', 'title location')
+      .populate('hotelId', 'title location roomType')
       .exec();
 
     if (!reservation) {
@@ -64,6 +65,7 @@ export async function GET(req: Request) {
       checkInDate: reservation.checkInDate,
       checkOutDate: reservation.checkOutDate,
       confirmationNumber: reservation.confirmationNumber,
+      roomType : reservation.hotelId?.roomType || 'Uknown room type',
     };
 
     // Send confirmation email
@@ -111,6 +113,7 @@ function generateEmailTemplate(reservation: ReservationDetails): string {
     <li>Confirmation Number: ${reservation.confirmationNumber}</li>
     <li>Hotel: ${reservation.hotelName}</li>
     <li>Location: ${reservation.location}</li>
+    <li>Room Type: ${reservation.roomType}</li>
     <li>Check-in Date: ${new Date(reservation.checkInDate).toLocaleDateString()}</li>
     <li>Check-out Date: ${new Date(reservation.checkOutDate).toLocaleDateString()}</li>
   </ul>

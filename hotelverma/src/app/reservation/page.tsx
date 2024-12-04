@@ -16,6 +16,7 @@ type Hotel = {
   image: string;
   price: number;
   rating: number;
+  roomType: string;
 };
 
 type Range = { start: DateValue; end: DateValue };
@@ -248,6 +249,7 @@ export default function Reservation() {
             required
             size="md"
             className="w-1/2"
+            maxLength={3}
           />
         </div>
           <Button type="submit" color="success" variant="bordered">
@@ -272,8 +274,9 @@ export default function Reservation() {
       <Divider className="my-4" />
       <h1 className="mt-2 text-4xl">{hotel?.title}</h1>
       <h2>{hotel?.location}</h2>
+      <h3>{hotel?.roomType}</h3>
       <h3>{hotel?.amenities.join(", ")}</h3>
-      <div className="flex pt-3 pl-3">
+      <div className="flex pt-3 pl-1">
         {stars.map((star, index) => (
           <div key={index}>{star}</div>
         ))}

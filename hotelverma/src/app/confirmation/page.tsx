@@ -63,7 +63,7 @@ export default function Confirmation() {
     }, 1000); // Update countdown every second
 
     return () => clearInterval(timer); // Cleanup the interval on unmount
-  }, [router]);
+  }, [router]); 
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
