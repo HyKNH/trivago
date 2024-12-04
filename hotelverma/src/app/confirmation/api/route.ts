@@ -104,18 +104,34 @@ async function sendConfirmationEmail(reservation: ReservationDetails): Promise<v
 function generateEmailTemplate(reservation: ReservationDetails): string {
   return `
     <h1>Reservation Confirmation</h1>
-    <p>Dear ${reservation.userName},</p>
-    <p>Thank you for your reservation at ${reservation.hotelName}!</p>
-    <p><strong>Reservation Details:</strong></p>
-    <ul>
-      <li>Confirmation Number: ${reservation.confirmationNumber}</li>
-      <li>Hotel: ${reservation.hotelName}</li>
-      <li>Location: ${reservation.location}</li>
-      <li>Check-in Date: ${new Date(reservation.checkInDate).toLocaleDateString()}</li>
-      <li>Check-out Date: ${new Date(reservation.checkOutDate).toLocaleDateString()}</li>
-    </ul>
-    <p>We look forward to your stay!</p>
-    <p>Best regards,</p>
-    <p>Hotel Verma Team</p>
+  <p>Dear ${reservation.userName},</p>
+  <p>Thank you for your reservation at ${reservation.hotelName}!</p>
+  <p><strong>Reservation Details:</strong></p>
+  <ul>
+    <li>Confirmation Number: ${reservation.confirmationNumber}</li>
+    <li>Hotel: ${reservation.hotelName}</li>
+    <li>Location: ${reservation.location}</li>
+    <li>Check-in Date: ${new Date(reservation.checkInDate).toLocaleDateString()}</li>
+    <li>Check-out Date: ${new Date(reservation.checkOutDate).toLocaleDateString()}</li>
+  </ul>
+  <p>We look forward to your stay!</p>
+  <p>Best regards,</p>
+  <p>Hotel Verma Team</p>
+  <p>If you wish to cancel reservation or leave a review of your stay please visit your profile</p>
+
+  <a href="https://hotelverma.vercel.app/">
+    <button style="
+    display: inline-block;
+    padding: 5px 15px;
+    border: 1px solid #f59e0b; 
+    border-radius: 50px; 
+    background-color: #f59e0b; 
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+  ">
+  Home Page
+    </button>
+  </a>
   `;
 }
