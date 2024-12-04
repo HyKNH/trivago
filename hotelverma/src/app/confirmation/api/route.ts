@@ -1,6 +1,18 @@
+// Import necessary modules
+import nodemailer from 'nodemailer';
 import Reservation from "../model/Reservation";
 import { connectToDatabase } from "../utils/db";
 
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // Use your email provider
+  auth: {
+    user: process.env.Email_User, // Your email address
+    pass: process.env.EMAIL_PASSWORD, // Your email password or app password
+  },
+});
+
+// The main function to handle the GET request
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const confirmationNumber = url.searchParams.get("confirmationNumber");
@@ -18,7 +30,7 @@ export async function GET(req: Request) {
     const reservation = await Reservation.findOne({ confirmationNumber })
       .populate('userId', 'name email')
       .populate('hotelId', 'title location')
-      .exec(); // Corrected method
+      .exec();
 
     if (!reservation) {
       return new Response(
@@ -41,6 +53,9 @@ export async function GET(req: Request) {
       confirmationNumber: reservation.confirmationNumber,
     };
 
+    // Send confirmation email
+    await sendConfirmationEmail(formattedReservation);
+
     // Return the reservation details
     return new Response(
       JSON.stringify({ reservation: formattedReservation }),
@@ -53,4 +68,41 @@ export async function GET(req: Request) {
       { status: 500 }
     );
   }
+}
+
+// Function to send the confirmation email
+async function sendConfirmationEmail(reservation) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER, // Sender address
+    to: reservation.userEmail, // Receiver's email
+    subject: 'Your Reservation Confirmation', // Subject line
+    html: generateEmailTemplate(reservation), // HTML body
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Confirmation email sent to:', reservation.userEmail);
+  } catch (error) {
+    console.error('Error sending confirmation email:', error);
+  }
+}
+
+// Function to generate the email HTML content
+function generateEmailTemplate(reservation) {
+  return `
+    <h1>Reservation Confirmation</h1>
+    <p>Dear ${reservation.userName},</p>
+    <p>Thank you for your reservation at ${reservation.hotelName}!</p>
+    <p><strong>Reservation Details:</strong></p>
+    <ul>
+      <li>Confirmation Number: ${reservation.confirmationNumber}</li>
+      <li>Hotel: ${reservation.hotelName}</li>
+      <li>Location: ${reservation.location}</li>
+      <li>Check-in Date: ${new Date(reservation.checkInDate).toLocaleDateString()}</li>
+      <li>Check-out Date: ${new Date(reservation.checkOutDate).toLocaleDateString()}</li>
+    </ul>
+    <p>We look forward to your stay!</p>
+    <p>Best regards,</p>
+    <p>Hotel Verma Team</p>
+  `;
 }

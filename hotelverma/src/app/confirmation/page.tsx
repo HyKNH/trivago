@@ -5,10 +5,21 @@ import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react"
 import axios from "axios";
 
-
+type Reservation = {
+  _id: string;
+  userName: string;
+  userEmail: string;
+  userTelephone: string;
+  hotelId: string | null;
+  hotelName: string;
+  location: string;
+  checkInDate: string; // Use `string` if it's a date string
+  checkOutDate: string; // Use `string` if it's a date string
+  confirmationNumber: string;
+};
 export default function Confimation () {
     const router = useRouter();
-    const [reservation, setReservation] = useState(null)
+    const [reservation, setReservation] = useState<Reservation | null>(null)
     
     useEffect(() => {
       if (typeof window !== 'undefined') {
@@ -36,8 +47,7 @@ export default function Confimation () {
       }
     },[]); 
 
-
-
+    
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
@@ -55,7 +65,7 @@ export default function Confimation () {
                 <div className="w-full flex gap-4 mt-4 ">
                 </div>
                 </div>
-                <h1></h1>
+                <h1>{reservation?.userEmail}</h1>
             </div>
         </div>
     );
