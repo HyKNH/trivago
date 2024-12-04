@@ -187,12 +187,13 @@ const ProfilePage: React.FC = () => {
       const numDays = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
       const baseCost = reservation.price * numDays;
       const totalCost = baseCost + baseCost * 0.12;
+      const formatted =  Math.floor(totalCost);
   
       return {
         ...reservation,
         checkInDate: checkInDateFormatted,
         checkOutDate: checkOutDateFormatted,
-        totalCost: totalCost,
+        totalCost: formatted,
       };
     });
   
@@ -233,6 +234,7 @@ const ProfilePage: React.FC = () => {
                 const numDays = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
                 const baseCost = reservation.price * numDays;
                 const totalCost = baseCost + baseCost * 0.12;
+                const formatted =  Math.floor(totalCost);
 
                 return (
                   <li key={reservation._id} style={{ padding: '10px', backgroundColor: '#f4f4f4', marginBottom: '10px', borderRadius: '4px' }}>
@@ -242,7 +244,7 @@ const ProfilePage: React.FC = () => {
                       <p><strong>Date:</strong> {reservation.checkInDate.split('T')[0]} to {reservation.checkOutDate.split('T')[0]}</p>
                       <p><strong>Price:</strong> ${reservation.price}/night</p>
                       <p><strong>Number of Nights:</strong> {numDays} nights</p>
-                      <p><strong>Total:</strong> ${totalCost}</p>
+                      <p><strong>Total:</strong> ${formatted}</p>
                       <p><strong>Confirmation Number:</strong> {reservation.confirmationNumber}</p>
                     </div>
                     <Button
