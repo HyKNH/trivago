@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { Spinner, Spacer, Button, Divider, Image, Input } from '@nextui-org/react';
-import { MdPostAdd, MdFreeCancellation } from "react-icons/md";
+import {MdPostAdd, MdFreeCancellation, MdRateReview} from "react-icons/md";
 import { FaHotel, FaDownload, FaRegEdit } from "react-icons/fa";
 
 const ProfilePage: React.FC = () => {
@@ -254,6 +254,14 @@ const ProfilePage: React.FC = () => {
                       startContent={<MdFreeCancellation />}
                     >
                       Cancel Reservation
+                    </Button>
+                    <Button
+                        color="danger"
+                        variant="bordered"
+                        onClick={() => location.href=`/MakeReview?reservation=${reservation._id}`}
+                        startContent={<MdRateReview />}
+                    >
+                      Write Review
                     </Button>
                   </li>
                 );
