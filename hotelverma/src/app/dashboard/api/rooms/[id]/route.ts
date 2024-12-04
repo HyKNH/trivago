@@ -13,7 +13,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const { id } = params;
 
   const body = await req.json();  
-  const { title, location, amenities, image, price, rating, booked } = body;
+  const { title, location, amenities, image, price, rating, booked, roomType} = body;
   
   if (!id) {
     return NextResponse.json({ message: 'Hotel ID is required.' }, { status: 400 });
@@ -43,6 +43,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     hotel.price = price;
     hotel.rating = rating;
     hotel.booked = booked;
+    hotel.roomType = roomType;
 
     await hotel.save(); 
 

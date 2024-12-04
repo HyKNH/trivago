@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json(); 
-    const { title, location, amenities, image, price, rating } = body;
+    const { title, location, amenities, image, price, rating, roomType } = body;
 
     if (!title || !location || !price || !rating) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       image,
       price,
       rating,
+      roomType
     });
 
     const savedHotel = await newHotel.save();

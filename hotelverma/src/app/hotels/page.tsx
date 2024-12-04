@@ -15,6 +15,7 @@ type Hotel = {
   price: number;
   rating: number;
   booked: boolean;
+  roomType: string;
 };
 
 export default function Content() {
@@ -88,8 +89,10 @@ export default function Content() {
         <span className="flex justify-center w-full"><Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
         <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} /></span>
+        <div>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
         <span className="flex justify-center w-full"><SearchBar onSearch={handleSearch} /></span>
+        </div>
       </div>
 
       {/* Cards Listing */}
@@ -108,6 +111,7 @@ export default function Content() {
                     <h1 className="font-semibold">{hotel.title}</h1>
                     <h2>{hotel.location}</h2>
                     <h3>{hotel.amenities.join(", ")}</h3>
+                    <h4>{hotel.roomType}</h4>
                     <div className="flex items-center gap-2">
                       <span className="text-xl font-bold">${hotel.price}</span>
                       <span className="text-yellow-400">{'★'.repeat(hotel.rating)}</span>

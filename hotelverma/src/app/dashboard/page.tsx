@@ -18,6 +18,7 @@ const ProfilePage: React.FC = () => {
     image: '',
     price: '',
     rating: '',
+    roomType: ''
   });
   const [editHotel, setEditHotel] = useState<any | null>(null);
   const router = useRouter();
@@ -98,6 +99,8 @@ const ProfilePage: React.FC = () => {
       return;
     }
 
+     
+
     try {
       const response = await axios.post(
         'dashboard/api/rooms',
@@ -112,6 +115,7 @@ const ProfilePage: React.FC = () => {
         image: '',
         price: '',
         rating: '',
+        roomType: ''
       });
     } catch (error) {
       console.error('Error adding hotel:', error);
@@ -320,6 +324,13 @@ const ProfilePage: React.FC = () => {
               onChange={(e) => setNewHotel({ ...newHotel, rating: e.target.value })}
             />
             <Spacer y={4} />
+            <Input
+              type="text"
+              placeholder="Room type"
+              value={newHotel.roomType}
+              onChange={(e) => setNewHotel({ ...newHotel, roomType: e.target.value })}
+            />
+             <Spacer y={4} />
             <Button type="submit" color="warning" variant="bordered" startContent={<MdPostAdd />}>
               Add Hotel
             </Button>
@@ -368,12 +379,14 @@ const ProfilePage: React.FC = () => {
                 onChange={(e) => setEditHotel({ ...editHotel, price: e.target.value })}
               />
               <Spacer y={4} />
+              
               <Input
-                label="Rating"
-                value={editHotel.rating}
-                onChange={(e) => setEditHotel({ ...editHotel, rating: e.target.value })}
-              />
-              <Spacer y={4} />
+              type="text"
+              placeholder="Room type"
+              value={editHotel.roomType}
+              onChange={(e) => setEditHotel({ ...editHotel, roomType: e.target.value })}
+            />
+             <Spacer y={4} />
               <Button color="success" type="submit" variant="bordered" startContent={<MdPostAdd />}>
                 Update Hotel
               </Button>
@@ -390,6 +403,7 @@ const ProfilePage: React.FC = () => {
                       <p>Location: {hotel.location}</p>
                       <p>Amenities: {hotel.amenities.join(", ")}</p>
                       <p>Price: ${hotel.price}</p>
+                      <p>Room Type: {hotel.roomType}</p>
                       <p>Rating: {hotel.rating} stars</p>
                       <Image src={hotel.image} alt={hotel.title} width={200}></Image>
                     </div>

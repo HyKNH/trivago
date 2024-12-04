@@ -7,6 +7,7 @@ interface IHotel extends Document {
   image: string;
   price: number;
   rating: number;
+  roomType: string;
   booked: boolean;
 }
 
@@ -39,6 +40,10 @@ const hotelSchema = new Schema<IHotel>({
     type: Boolean,
     default: false,
   },
+  roomType: {
+    type: String, 
+    required: true,
+  }
 });
 
 const Hotel = mongoose.models.Hotel || mongoose.model<IHotel>('Hotel', hotelSchema);
