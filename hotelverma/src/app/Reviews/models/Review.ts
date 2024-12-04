@@ -1,13 +1,17 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IReview extends Document {
+    hotelId: string;
     firstname: string;
     lastname: string;
     message: string;
-    hotelId: string;
 }
 
 const reviewSchema = new Schema<IReview>({
+    hotelId: {
+        type: String,
+        required: true,
+    },
     firstname: {
         type: String,
         required: true,
@@ -17,10 +21,6 @@ const reviewSchema = new Schema<IReview>({
         required: true,
     },
     message: {
-        type: String,
-        required: true,
-    },
-    hotelId: {
         type: String,
         required: true,
     },
