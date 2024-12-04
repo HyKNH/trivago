@@ -21,9 +21,9 @@ type Hotel = {
 type Range = { start: DateValue; end: DateValue };
 
 export default function Reservation() {
-  const [cardNumber, setCardNumber] = useState(""); // User card input
-  const [message, setMessage] = useState(""); // Message to display
-  const [showMessage, setShowMessage] = useState(false); // When to display message
+  const [cardNumber, setCardNumber] = useState("");
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
   const [hotel, setHotel] = useState<Hotel | undefined>(undefined)
   const [dateRange, setDateRange] = useState<Range | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -32,15 +32,13 @@ export default function Reservation() {
 
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
 
-
-  // Function to handle card input
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let input = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    let input = e.target.value.replace(/\D/g, ''); 
     if (input.length <= 16) {
-      input = input.replace(/(\d{4})(?=\d)/g, '$1 '); // Add space after every 4 digits
+      input = input.replace(/(\d{4})(?=\d)/g, '$1 '); 
     } 
     setCardNumber(input);
-    setMessage(""); // Reset message while typing
+    setMessage("");
   };
 
   const handleExpirationDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,11 +63,10 @@ export default function Reservation() {
     setPhoneNumber(value);
   };
 
-  // Function to get the right room
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const reservationId = params.get('hotelId'); // Get 'id' query parameter from the URL
+      const reservationId = params.get('hotelId'); 
   
       const fetchroom = async () => {
         try {
@@ -77,7 +74,7 @@ export default function Reservation() {
             const response = await axios.get(`/reservation/api?id=${reservationId}`);
             const data = response.data;
             setHotel(data.hotel);
-            console.log("Fetched hotel data:", data.hotel); // Log fetched data directly
+            console.log("Fetched hotel data:", data.hotel);
           } else {
             console.error("Reservation ID not found in the URL");
           }
@@ -90,9 +87,8 @@ export default function Reservation() {
     }
   }, []);
 
-  // Function to handle form submission
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent form from reloading the page
+    e.preventDefault();
 
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -297,7 +293,7 @@ export default function Reservation() {
         <hr className="w-full mt-5" />
         <div className="flex justify-between mt-5">
           <h1>Total:</h1>
-          <h1>${completeTotal}</h1>
+          <h1 className="text-red-600">${completeTotal}</h1>
         </div>
       </div>
     </div>
