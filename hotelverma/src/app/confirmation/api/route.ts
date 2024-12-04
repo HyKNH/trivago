@@ -84,7 +84,7 @@ export async function GET(req: Request) {
 }
 
 // Function to send the confirmation email
-async function sendConfirmationEmail(reservation: ReservationDetails): Promise<void> {
+async function sendConfirmationEmail(reservation: ReservationDetails) {
   const mailOptions = {
     from: process.env.EMAIL_USER, // Sender address
     to: reservation.userEmail, // Receiver's email

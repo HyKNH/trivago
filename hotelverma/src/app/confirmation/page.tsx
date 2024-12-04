@@ -2,7 +2,7 @@
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import {Image} from "@nextui-org/image";
 import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react"
+import {useEffect, useState, useRef} from "react"
 import axios from "axios";
 
 type Reservation = {
@@ -20,32 +20,37 @@ type Reservation = {
 export default function Confimation () {
     const router = useRouter();
     const [reservation, setReservation] = useState<Reservation | null>(null)
+    const hasFetched = useRef(false);
     
     useEffect(() => {
+      if (hasFetched.current) return; // Prevent multiple executions
+      hasFetched.current = true;
+
       if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
-        const reservation = params.get('confirmationNumber'); // Get 'id' query parameter from the URL
-    
+        const confirmationNumber = params.get('confirmationNumber');
+        
         const fetchDetails = async () => {
           try {
-            if (reservation) {
+            if (confirmationNumber) {
               const response = await axios.get(`/confirmation/api`, {
-                params: { confirmationNumber: reservation },
+                params: { confirmationNumber },
               });
               const data = response.data;
               setReservation(data.reservation);
-              console.log("Fetched hotel data:", data.reservation); // Log fetched data directly
+              console.log("Fetched reservation data:", data.reservation);
             } else {
-              console.error("Reservation ID not found in the URL");
+              console.error("Confirmation number not found in the URL");
             }
           } catch (e) {
-            console.error("Error fetching hotels:", e);
+            console.error("Error fetching reservation:", e);
           }
         };
     
         fetchDetails();
       }
-    },[]); 
+    }, []); // Empty dependency array to run only once
+    
 
     
     return (
@@ -65,7 +70,10 @@ export default function Confimation () {
                 <div className="w-full flex gap-4 mt-4 ">
                 </div>
                 </div>
-                <h1>{reservation?.userEmail}</h1>
+                <div>
+                <p className="text-xl text-center font-semibold mb-1">reservation details have been sent to:</p>
+                <h2 className="text-center text-lg">{reservation?.userEmail}</h2>
+                </div>
             </div>
         </div>
     );
