@@ -14,7 +14,7 @@ export async function GET(req: Request) {
 
     const reservations = await Reservation.find({})
       .populate('userId', 'name email')
-      .populate('hotelId', 'title location price')
+      .populate('hotelId', 'title location price roomType')
       .exec();
 
     const formattedReservations = reservations.map((reservation) => ({
@@ -29,6 +29,7 @@ export async function GET(req: Request) {
       checkOutDate: reservation.checkOutDate,
       price: reservation.hotelId?.price || 0,
       confirmationNumber: reservation.confirmationNumber,
+      roomType: reservation.hotelId?.roomType || 'Uknown Room Type'
     }));
 
     return NextResponse.json({ reservations: formattedReservations });

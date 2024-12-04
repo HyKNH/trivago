@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     const formattedReservations = [];
 
     for (const reservation of reservations) {
-      const hotel = await Hotel.findById(reservation.hotelId, 'title location price');
+      const hotel = await Hotel.findById(reservation.hotelId, 'title location price roomType');
       
       formattedReservations.push({
         _id: reservation._id,
@@ -31,6 +31,8 @@ export async function GET(req: Request) {
         checkOutDate: reservation.checkOutDate,
         price: hotel?.price || 0,
         confirmationNumber: reservation.confirmationNumber,
+        roomType: hotel?.roomType || 'Unknown Room Type'
+
       });
     }
 

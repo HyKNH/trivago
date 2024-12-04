@@ -16,6 +16,7 @@ interface ReservationDetails {
   checkInDate: Date | string;
   checkOutDate: Date | string;
   confirmationNumber: string;
+  roomType: string;
 }
 
 
@@ -43,7 +44,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       _id: id,
       userId: session.user._id,
     }).populate('userId', 'name email')
-      .populate('hotelId', 'location title')
+      .populate('hotelId', 'location title roomType')
       .exec();
     
     ;
@@ -73,6 +74,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       checkInDate: reservation.checkInDate,
       checkOutDate: reservation.checkOutDate,
       confirmationNumber: reservation.confirmationNumber,
+      roomType: reservation.hotelId?.roomType
     };
 
     await sendConfirmationEmail(formattedReservation);
@@ -110,6 +112,7 @@ function generateEmailTemplate(reservation: ReservationDetails): string {
   <ul>
     <li>Hotel: ${reservation.hotelName}</li>
     <li>Location: ${reservation.location}</li>
+    <li>Room Type: ${reservation.roomType}</li>
     <li>Check-in Date: ${new Date(reservation.checkInDate).toLocaleDateString()}</li>
     <li>Check-out Date: ${new Date(reservation.checkOutDate).toLocaleDateString()}</li>
   </ul>

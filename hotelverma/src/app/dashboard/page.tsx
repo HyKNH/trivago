@@ -51,6 +51,7 @@ const ProfilePage: React.FC = () => {
             },
           });
           setReservations(reservationsResponse.data.reservations);
+          console.log(reservations)
         } else if (profileResponse.data.role === 'admin') {
           const hotelsResponse = await axios.get('dashboard/api/rooms', {
             headers: {
@@ -245,6 +246,7 @@ const ProfilePage: React.FC = () => {
                     <div>
                       <p><strong>Hotel:</strong> {reservation.hotelName}</p>
                       <p><strong>Location:</strong> {reservation.location}</p>
+                      <p><strong>Room Type:</strong> {reservation.roomType}</p>
                       <p><strong>Date:</strong> {reservation.checkInDate.split('T')[0]} to {reservation.checkOutDate.split('T')[0]}</p>
                       <p><strong>Price:</strong> ${reservation.price}/night</p>
                       <p><strong>Number of Nights:</strong> {numDays} nights</p>
