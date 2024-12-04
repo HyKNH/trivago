@@ -3,6 +3,19 @@ import nodemailer from 'nodemailer';
 import Reservation from "../model/Reservation";
 import { connectToDatabase } from "../utils/db";
 
+interface ReservationDetails {
+  _id: string;
+  userName: string;
+  userEmail: string;
+  userTelephone: string;
+  hotelId: string | null;
+  hotelName: string;
+  location: string;
+  checkInDate: Date | string;
+  checkOutDate: Date | string;
+  confirmationNumber: string;
+}
+
 // Configure Nodemailer transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail', // Use your email provider
@@ -71,7 +84,7 @@ export async function GET(req: Request) {
 }
 
 // Function to send the confirmation email
-async function sendConfirmationEmail(reservation) {
+async function sendConfirmationEmail(reservation: ReservationDetails): Promise<void> {
   const mailOptions = {
     from: process.env.EMAIL_USER, // Sender address
     to: reservation.userEmail, // Receiver's email
@@ -88,7 +101,7 @@ async function sendConfirmationEmail(reservation) {
 }
 
 // Function to generate the email HTML content
-function generateEmailTemplate(reservation) {
+function generateEmailTemplate(reservation: ReservationDetails): string {
   return `
     <h1>Reservation Confirmation</h1>
     <p>Dear ${reservation.userName},</p>
