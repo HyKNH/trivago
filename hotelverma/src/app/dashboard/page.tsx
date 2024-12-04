@@ -407,7 +407,7 @@ const ProfilePage: React.FC = () => {
                       <p>Price: ${hotel.price}</p>
                       <p>Room Type: {hotel.roomType}</p>
                       <p>Rating: {hotel.rating} stars</p>
-                      <Image src={hotel.image} alt={hotel.title} width={200}></Image>
+                      <Image src={hotel.image} alt={hotel.title} width={400} height={250}></Image>
                     </div>
                     <Spacer y={4} />
                     <Button onClick={() => setEditHotel(hotel)} color="secondary" variant="bordered" startContent={<FaRegEdit />}>

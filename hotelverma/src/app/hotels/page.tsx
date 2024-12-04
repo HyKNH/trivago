@@ -111,7 +111,7 @@ export default function Content() {
                 <div className="flex flex-col md:flex-row gap-x-4">
                   {/* Image */}
                   <div className="w-full md:w-2/5">
-                    <Image width={400} src={hotel.image || "/default-image.jpg"} alt={hotel.title} />
+                    <Image width={400} height={275}src={hotel.image || "/default-image.jpg"} alt={hotel.title} />
                   </div>
                   {/* Details */}
                   <div className="w-full md:w-3/5 relative">
