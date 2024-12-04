@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@/app/reservation/utils/db";
 import Reservation from '../../reservation/models/Reservations';
-import {NextRequest, NextResponse} from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Review from '../../Reviews/models/Review';
 
 export async function GET(req: Request) {
@@ -31,8 +31,9 @@ export async function POST(req: NextRequest) {
     try {
         await connectToDatabase();
         const body = await req.json();
-        const {hotelId, firstname, lastname, message} = body;
-        if (!hotelId || !firstname || !lastname || !message) {
+        const { hotelId, firstname, lastname, message, rating } = body;
+
+        if (!hotelId || !firstname || !lastname || !message || rating === undefined) {
             return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
         }
 
@@ -40,12 +41,14 @@ export async function POST(req: NextRequest) {
             hotelId,
             firstname,
             lastname,
-            message
-        })
+            message,
+            rating,
+        });
 
         const savedReview = await newReview.save();
-        return NextResponse.json({review: savedReview}, {status: 200})
+        return NextResponse.json({ review: savedReview }, { status: 200 });
     } catch (error) {
         console.error("Error submitting:", error);
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

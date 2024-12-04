@@ -255,8 +255,9 @@ const ProfilePage: React.FC = () => {
                     >
                       Cancel Reservation
                     </Button>
+                    <Spacer x={4} />
                     <Button
-                        color="danger"
+                        color="primary"
                         variant="bordered"
                         onClick={() => location.href=`/MakeReview?reservation=${reservation._id}`}
                         startContent={<MdRateReview />}

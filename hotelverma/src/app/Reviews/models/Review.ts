@@ -5,6 +5,7 @@ interface IReview extends Document {
     firstname: string;
     lastname: string;
     message: string;
+    rating: number;
 }
 
 const reviewSchema = new Schema<IReview>({
@@ -23,6 +24,12 @@ const reviewSchema = new Schema<IReview>({
     message: {
         type: String,
         required: true,
+    },
+    rating: { 
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5,
     },
 });
 
