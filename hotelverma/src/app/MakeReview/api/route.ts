@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/app/reservation/utils/db";
+import { connectToDatabase } from "../../lib/db";
 import Reservation from '../../reservation/models/Reservations';
 import { NextRequest, NextResponse } from "next/server";
 import Review from '../../Reviews/models/Review';

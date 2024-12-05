@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../hotels/utils/db'
+import { connectToDatabase } from '../../lib/db'
 import Review from "@/app/Reviews/models/Review";
 
 
