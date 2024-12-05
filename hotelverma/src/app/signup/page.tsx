@@ -36,7 +36,7 @@ const SignupPage: React.FC = () => {
         const { confirmPassword, ...dataToSend } = formData;
 
         try {
-            const response = await axios.post('signup/api/auth', dataToSend);
+            const response = await axios.post('/api/signupRoute', dataToSend);
             setMessage(response.data.message);
         } catch (error: any) {
             setMessage(error.response?.data?.message || 'An error occurred');

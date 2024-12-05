@@ -26,7 +26,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('login/api/auth', formData);
+            const response = await axios.post('/api/loginRoute', formData);
             setMessage(response.data.message);
 
             if (response.data.token) {
