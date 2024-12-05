@@ -71,7 +71,7 @@ export default function Reservation() {
       const fetchroom = async () => {
         try {
           if (reservationId) {
-            const response = await axios.get(`/reservation/api?id=${reservationId}`);
+            const response = await axios.get(`/api/reservationRoute?id=${reservationId}`);
             const data = response.data;
             setHotel(data.hotel);
           } else {
@@ -121,7 +121,7 @@ export default function Reservation() {
       }
      try {
         const response = await axios.post(
-          "/reservation/api",
+          "/api/reservationRoute",
           payload,
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
