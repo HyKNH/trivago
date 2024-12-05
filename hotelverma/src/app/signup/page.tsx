@@ -5,15 +5,21 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import axios from 'axios';
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const SignupPage: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
     const [message, setMessage] = useState<string | null>(null);
+    const [isVisible, setIsVisible] = React.useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,8 +27,16 @@ const SignupPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (formData.password !== formData.confirmPassword) {
+            setMessage("Passwords do not match");
+            return;
+        }
+
+        const { confirmPassword, ...dataToSend } = formData;
+
         try {
-            const response = await axios.post('signup/api/auth', formData);
+            const response = await axios.post('signup/api/auth', dataToSend);
             setMessage(response.data.message);
         } catch (error: any) {
             setMessage(error.response?.data?.message || 'An error occurred');
@@ -66,12 +80,41 @@ const SignupPage: React.FC = () => {
                         isRequired
                         label="Password"
                         name="password"
-                        type="password"
                         placeholder="Enter your password"
                         required
                         fullWidth
                         aria-label="Password"
                         onChange={handleChange}
+                        endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                              {isVisible ? (
+                                <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none"/>
+                              ) : (
+                                <FaRegEye className="text-2xl text-default-400 pointer-events-none"/>
+                              )}
+                            </button>
+                        }
+                        type={isVisible ? "text" : "password"}
+                    />
+                    <Input
+                        isRequired
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                        fullWidth
+                        aria-label="Confirm Password"
+                        onChange={handleChange}
+                        endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                              {isVisible ? (
+                                <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none"/>
+                              ) : (
+                                <FaRegEye className="text-2xl text-default-400 pointer-events-none"/>
+                              )}
+                            </button>
+                        }
+                        type={isVisible ? "text" : "password"}
                     />
                     <Button
                         type="submit"
