@@ -5,7 +5,8 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; 
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -14,7 +15,9 @@ const LoginPage = () => {
     });
 
     const [message, setMessage] = useState<string | null>(null);
-    const router = useRouter();
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -66,12 +69,21 @@ const LoginPage = () => {
                         isRequired
                         label="Password"
                         name="password"
-                        type="password"
                         placeholder="Enter your password"
                         required
                         fullWidth
                         aria-label="Password"
                         onChange={handleChange}
+                        endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                              {isVisible ? (
+                                <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none"/>
+                              ) : (
+                                <FaRegEye className="text-2xl text-default-400 pointer-events-none"/>
+                              )}
+                            </button>
+                        }
+                        type={isVisible ? "text" : "password"}
                     />
                     <Button
                         type="submit"
