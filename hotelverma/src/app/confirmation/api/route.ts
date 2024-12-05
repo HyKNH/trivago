@@ -1,7 +1,7 @@
 // Import necessary modules
 import nodemailer from 'nodemailer';
 import Reservation from "../model/Reservation";
-import { connectToDatabase } from "../utils/db";
+import { connectToDatabase } from "../../lib/db";
 
 interface ReservationDetails {
   _id: string;

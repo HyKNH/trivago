@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../signup/utils/db';
+import { connectToDatabase } from '../../../lib/db';
 import Hotel from './../../models/Hotels';
 import { getSession } from '../../utils/auth';
 
