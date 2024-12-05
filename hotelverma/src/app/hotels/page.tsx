@@ -30,7 +30,7 @@ export default function Content() {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await fetch("/hotels/api");
+        const response = await fetch("/api/hotelRoute");
         const data = await response.json();
         if (data.hotels) {
           setHotels(data.hotels);
