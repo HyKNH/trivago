@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../lib/db'; 
-import User from '../../../signup/models/User'; 
+import User from '../../../lib/models/User'; 
 import { getSession } from '../../utils/auth';
 
 export const runtime = 'nodejs';

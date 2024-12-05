@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../../lib/db";
-import Reservation from '../../reservation/models/Reservations';
+import Reservation from '../../lib/models/Reservations';
 import { NextRequest, NextResponse } from "next/server";
-import Review from '../../Reviews/models/Review';
+import Review from '../../lib/models/Review';
 
 export async function GET(req: Request) {
     const url = new URL(req.url);

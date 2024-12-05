@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../lib/db';
 import { getSession } from '../../../utils/auth';
-import Reservation from '../../../models/Reservations';
-import Hotel from '../../../models/Hotels';
+import Reservation from '../../../../lib/models/Reservations';
+import Hotel from '../../../../lib/models/Hotels';
 import nodemailer from "nodemailer";
 
 interface ReservationDetails {

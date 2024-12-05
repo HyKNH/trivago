@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../lib/db';
-import Hotel from './../../models/Hotels';
+import Hotel from '../../../lib/models/Hotels';
 import { getSession } from '../../utils/auth';
 
 const checkAdmin = (session: any) => {

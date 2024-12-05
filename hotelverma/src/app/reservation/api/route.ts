@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Reservation from '../models/Reservations';
+import Reservation from '../../lib/models/Reservations';
 import { connectToDatabase } from "../../lib/db";
 import Hotel from "../../lib/models/Hotels";
 import { getSession } from "@/app/dashboard/utils/auth";

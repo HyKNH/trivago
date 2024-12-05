@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '../../lib/db'
-import Review from "@/app/Reviews/models/Review";
+import Review from "../../lib/models/Review";
 
 
 export async function GET(req: NextRequest) {
