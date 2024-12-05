@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { DateRangePicker, Image, Input, Card, Divider, Button, Spacer } from "@nextui-org/react";
 import { DateValue, getLocalTimeZone, today } from "@internationalized/date";
 
-const BIN = ['434256', '481592', '483312'];
 
 type Hotel = {
   _id: string;
@@ -75,7 +74,6 @@ export default function Reservation() {
             const response = await axios.get(`/reservation/api?id=${reservationId}`);
             const data = response.data;
             setHotel(data.hotel);
-            console.log("Fetched hotel data:", data.hotel);
           } else {
             console.error("Reservation ID not found in the URL");
           }
@@ -88,6 +86,16 @@ export default function Reservation() {
     }
   }, []);
 
+  const isValidCardNumber = (cardNumber: string): boolean => {
+    const digits = cardNumber.split("").map(Number);
+    const temp = digits
+    .map((e,i,arr) => (i % 2 === 0 && i !== arr.length-1) ? e * 2 : e)
+    .reduce((a,e) => (e > 9) ? (Math.floor(e/10) + e%10) + a: e +a)
+    return temp % 10 === 0;
+  };
+
+
+
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -97,10 +105,9 @@ export default function Reservation() {
       return;
     }
 
-    const cardNumberWithoutSpaces = cardNumber.replace(/\s+/g, '');
-
-    const firstSixDigits = cardNumberWithoutSpaces.slice(0, 6);
-    if (BIN.includes(firstSixDigits)) {
+    const cardNumberWithoutSpaces = cardNumber.split(' ').join('');
+    
+    if (isValidCardNumber(cardNumberWithoutSpaces)) {
       const formData = new FormData(e.target as HTMLFormElement);
       const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
 
@@ -112,7 +119,7 @@ export default function Reservation() {
         payload.checkInDate = dateRange.start.toDate(getLocalTimeZone()).toISOString();
         payload.checkOutDate = dateRange.end.toDate(getLocalTimeZone()).toISOString();
       }
-      try {
+     try {
         const response = await axios.post(
           "/reservation/api",
           payload,
@@ -123,7 +130,7 @@ export default function Reservation() {
         console.log("error:", e);
       }
 
-      router.push(`/confirmation?confirmationNumber=${conFirNum}`);
+     router.push(`/confirmation?confirmationNumber=${conFirNum}`);
     } else {
       setMessage("Sorry BIN number is invalid");
       setShowMessage(true);
