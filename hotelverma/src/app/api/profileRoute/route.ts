@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../lib/db'; 
-import User from '../../../lib/models/User'; 
-import { getSession } from '../../utils/auth';
+import { connectToDatabase } from '../../lib/db'; 
+import User from '../../lib/models/User'; 
+import { getSession } from '../../lib/auth';
 
 export const runtime = 'nodejs';
 

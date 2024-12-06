@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '../../utils/auth';
-import Reservation from '../../../lib/models/Reservations';
-import Hotel from '../../../lib/models/Hotels'; 
-import { connectToDatabase } from '../../../lib/db';
+import { getSession } from '../../lib/auth';
+import Reservation from '../../lib/models/Reservations';
+import Hotel from '../../lib/models/Hotels'; 
+import { connectToDatabase } from '../../lib/db';
 
 export async function GET(req: Request) {
   try {

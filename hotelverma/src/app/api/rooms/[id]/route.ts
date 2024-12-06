@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../../lib/db';
-import Hotel from '../../../../lib/models/Hotels';
-import { getSession } from '../../../utils/auth';
+import { connectToDatabase } from '../../../lib/db';
+import Hotel from '../../../lib/models/Hotels';
+import { getSession } from '../../../lib/auth';
 
 const checkAdmin = (session: any) => {
   return session?.user?.role === 'admin';

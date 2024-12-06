@@ -36,7 +36,7 @@ const ProfilePage: React.FC = () => {
           return;
         }
 
-        const profileResponse = await axios.get('dashboard/api/profile', {
+        const profileResponse = await axios.get('/api/profileRoute', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +45,7 @@ const ProfilePage: React.FC = () => {
         setRole(profileResponse.data.role);
 
         if (profileResponse.data.role === 'user') {
-          const reservationsResponse = await axios.get('dashboard/api/reservations', {
+          const reservationsResponse = await axios.get('/api/reservations', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -53,13 +53,13 @@ const ProfilePage: React.FC = () => {
           setReservations(reservationsResponse.data.reservations);
           console.log(reservations)
         } else if (profileResponse.data.role === 'admin') {
-          const hotelsResponse = await axios.get('dashboard/api/rooms', {
+          const hotelsResponse = await axios.get('/api/rooms', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           setHotels(hotelsResponse.data.hotels);
-          const reservationResponse = await axios.get('dashboard/api/all-reservations', {
+          const reservationResponse = await axios.get('/api/all-reservationsRoute', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -83,7 +83,7 @@ const ProfilePage: React.FC = () => {
     }
 
     try {
-      await axios.delete(`dashboard/api/reservations/${reservationId}`, {
+      await axios.delete(`/api/reservations/${reservationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setReservations(reservations.filter((res) => res._id !== reservationId));
@@ -100,11 +100,9 @@ const ProfilePage: React.FC = () => {
       return;
     }
 
-     
-
     try {
       const response = await axios.post(
-        'dashboard/api/rooms',
+        '/api/rooms',
         newHotel,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -141,7 +139,7 @@ const ProfilePage: React.FC = () => {
   
     try {
       const response = await axios.put(
-        `/dashboard/api/rooms/${editHotel._id}`,
+        `/api/rooms/${editHotel._id}`,
         editHotel,
         { headers: { Authorization: `Bearer ${token}` } }
       );

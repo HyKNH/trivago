@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Reservation from '../../lib/models/Reservations';
 import { connectToDatabase } from "../../lib/db";
 import Hotel from "../../lib/models/Hotels";
-import { getSession } from "../../dashboard/utils/auth";
+import { getSession } from "../../lib/auth";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
