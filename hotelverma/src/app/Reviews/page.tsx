@@ -26,8 +26,8 @@ export default function GetReviews() {
       const fetchroom = async () => {
         try {
           if (reservationId) {
-            const response = await axios.get(`/reservation/api?id=${reservationId}`);
-            const reviewresponse = await axios.get(`/Reviews/api?id=${reservationId}`);
+            const response = await axios.get(`/api/reservationRoute?id=${reservationId}`);
+            const reviewresponse = await axios.get(`/api/reviewRoute?id=${reservationId}`);
             const data = response.data;
             const reviewdata = reviewresponse.data;
 

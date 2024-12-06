@@ -25,7 +25,7 @@ export default function MakeReview() {
       const fetchroom = async () => {
         try {
           if (reservationid) {
-            const response = await axios.get(`/MakeReview/api?reservation=${reservationid}`);
+            const response = await axios.get(`/api/makeReviewRoute?reservation=${reservationid}`);
             const data = response.data;
             setReservation(data.reservation);
             setReview({
@@ -49,7 +49,7 @@ export default function MakeReview() {
   const createReview = async (e: any) => {
     e.preventDefault();
     try {
-      const send = await axios.post("/MakeReview/api", review);
+      const send = await axios.post("/api/makeReviewRoute", review);
       setFeedback({ success: true, message: "Review added successfully!" });
       setReview((prev) => ({ ...prev, message: "", rating: 0 })); // Clear message and rating
     } catch (e) {
