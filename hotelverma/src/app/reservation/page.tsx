@@ -132,7 +132,7 @@ export default function Reservation() {
 
      router.push(`/confirmation?confirmationNumber=${conFirNum}`);
     } else {
-      setMessage("Sorry BIN number is invalid");
+      setMessage("Invalid Card Number");
       setShowMessage(true);
       return;
     }

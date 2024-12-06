@@ -6,6 +6,7 @@ import PriceSlider from "../components/priceFil";
 import SearchBar from "../components/serchbar";
 import { useState, useEffect } from "react";
 import RoomType from "../components/roomtype"
+import { GrPowerReset } from "react-icons/gr";
 
 type Hotel = {
   _id: string;
@@ -22,7 +23,7 @@ type Hotel = {
 export default function Content() {
   const [hotels, setHotels] = useState<Hotel[] | undefined>(undefined);
   const [filteredHotels, setFilteredHotels] = useState<Hotel[] | undefined>(undefined);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
   const [locationQuery, setLocationQuery] = useState("");
   const [roomTypeQuery, setRoomTypeQuery] = useState("");
@@ -43,6 +44,17 @@ export default function Content() {
 
     fetchHotels();
   }, []);
+
+
+  const resetFil = () => {
+    if (!hotels) return;
+
+    setPriceRange([0, 500]);
+    setSelectedRatings(new Set<number>());
+    setLocationQuery("");
+    setRoomTypeQuery("");
+    setFilteredHotels(hotels);
+  };
 
   const handlePriceChange = (newRange: [number, number]) => {
     setPriceRange(newRange);
@@ -95,11 +107,12 @@ export default function Content() {
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 py-3">Rating</h1>
         <span className="flex justify-center w-full"><Checkbox selectedRatings={selectedRatings} onChange={handleRatingChange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
-        <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} /></span>
+        <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} value={priceRange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
         <span className="flex justify-center w-full"><SearchBar onSearch={handleLocationSearch} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for room type</h1>
         <span className="flex justify-center w-full"><RoomType onSearch={handleRoomTypeSearch} /></span>
+        <button onClick={resetFil} className="rounded-full border-2 p-2 shadow-xlg border-yellow-500"><GrPowerReset/></button>
       </div>
 
       {/* Cards Listing */}
