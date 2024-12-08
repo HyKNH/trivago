@@ -171,7 +171,7 @@ const ProfilePage: React.FC = () => {
     }
 
     try {
-      await axios.delete('dashboard/api/rooms', {
+      await axios.delete('/api/rooms', {
         headers: { Authorization: `Bearer ${token}` },
         data: { hotelId },
       });
