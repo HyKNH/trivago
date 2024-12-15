@@ -58,12 +58,6 @@ func sendConfirmation
 func changeReservation
 	- change reservation date
 
-
-
-
-
-
-
 Databases:
 	rooms:
 		- String roomtype(single, double)
