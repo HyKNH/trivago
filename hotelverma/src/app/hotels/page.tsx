@@ -73,11 +73,11 @@ export default function Content() {
   };
 
   const handleLocationSearch = (query: string) => {
-    setLocationQuery(query.toLowerCase());
+    setLocationQuery(query);
   };
 
   const handleRoomTypeSearch = (query: string) => {
-    setRoomTypeQuery(query.toLowerCase());
+    setRoomTypeQuery(query);
   };
   
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function Content() {
         .filter(hotel => {
           const isInPriceRange = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
           const matchesRating = selectedRatings.size === 0 || selectedRatings.has(hotel.rating);
-          const matchesLocation = hotel.location.toLowerCase().includes(locationQuery);
-          const matchesRoomType = hotel.roomType.toLowerCase().includes(roomTypeQuery);
+          const matchesLocation = hotel.location.toLowerCase().includes(locationQuery.toLowerCase());
+          const matchesRoomType = hotel.roomType.toLowerCase().includes(roomTypeQuery.toLowerCase());
           return isInPriceRange && matchesRating && matchesLocation && matchesRoomType;
         });
 
@@ -109,9 +109,9 @@ export default function Content() {
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2">Price</h1>
         <span className="flex justify-center w-full"><PriceSlider onChange={handlePriceChange} value={priceRange} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for location</h1>
-        <span className="flex justify-center w-full"><SearchBar onSearch={handleLocationSearch} /></span>
+        <span className="flex justify-center w-full"><SearchBar value={locationQuery}onSearch={handleLocationSearch} /></span>
         <h1 className="flex items-center justify-center w-full font-semibold text-lg mb-2 mt-2">Search for room type</h1>
-        <span className="flex justify-center w-full"><RoomType onSearch={handleRoomTypeSearch} /></span>
+        <span className="flex justify-center w-full"><RoomType value={roomTypeQuery} onSearch={handleRoomTypeSearch} /></span>
         <button onClick={resetFil} className="rounded-full border-2 p-2 shadow-xlg border-yellow-500"><GrPowerReset/></button>
       </div>
 
