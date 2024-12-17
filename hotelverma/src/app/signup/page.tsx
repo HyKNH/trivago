@@ -8,6 +8,32 @@ import axios from 'axios';
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 
+/**
+ * # Module: signup
+ *
+ * ## Date:
+ * November 10, 2024
+ *
+ * ## Programmer:
+ * Francis Nguyen
+ *
+ * ## Description:
+ * `SignupPage` is a page component allowing for users to create their account 
+ *
+ * ## Important Functions:
+ * - **SignupPage** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Displays a signup form for the user to fill out their information and create their own account.
+ *
+ * ## Data Structures:
+ * - formdata, contains name, email, password, confirmPassword
+ *
+ * ## Algorithms Used:
+ * - **None**:
+ */
+
 const SignupPage: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',

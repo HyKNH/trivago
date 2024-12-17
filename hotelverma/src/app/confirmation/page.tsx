@@ -18,6 +18,32 @@ type Reservation = {
   confirmationNumber: string;
 };
 
+/**
+ * # Module: confirmation
+ *
+ * ## Date:
+ * November 25, 2024
+ *
+ * ## Programmer:
+ * Joshua Guzman
+ *
+ * ## Description:
+ * `confirmation` is a page component which displays a message confirming the reservation was successful.
+ *
+ * ## Important Functions:
+ * - **Confirmation** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Displays a card thanking the user for their reservation using Hotel Verma.
+ *
+ * ## Data Structures:
+ * - none
+ *
+ * ## Algorithms Used:
+ * - **None**:
+ */
+
 export default function Confirmation() {
   const router = useRouter();
   const [reservation, setReservation] = useState<Reservation | null>(null);

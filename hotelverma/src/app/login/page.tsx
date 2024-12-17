@@ -8,6 +8,32 @@ import axios from 'axios';
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 
+/**
+ * # Module: login
+ *
+ * ## Date:
+ * November 10, 2024
+ *
+ * ## Programmer:
+ * Francis Nguyen
+ *
+ * ## Description:
+ * `login` is a page component which displays a message confirming the reservation was successful.
+ *
+ * ## Important Functions:
+ * - **LoginPage** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Displays a login form for the user to access their account if they have the right credentials.
+ *
+ * ## Data Structures:
+ * - formData, containing email and password
+ *
+ * ## Algorithms Used:
+ * - **None**:
+ */
+
 const LoginPage = () => {
     const [formData, setFormData] = useState({
         email: '',

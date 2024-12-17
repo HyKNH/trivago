@@ -20,6 +20,42 @@ type Hotel = {
 
 type Range = { start: DateValue; end: DateValue };
 
+/**
+ * # Module: Reservation 
+ *
+ * ## Date:
+ * November 25, 2024
+ *
+ * ## Programmer:
+ * Joshua guzman
+ *
+ * ## Description:
+ * `Reservation` is a page that will have a form and details for hotel this page is for users to fill out form and 
+ * then submit form and if successful make reservation for user
+ *
+ * ## Important Functions:
+ * - **Reservation** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Creates a responsive layout with two main sections:
+ *     1. A **form section**:
+ *        - requires: date, First name, Last name, email, phone number, card infomation.
+ *     2. A **Pricing details**:
+ *        - Displays the price per night, tax, then total for stay .
+ *
+ * ## Data Structures:
+ * - **Dictionary**: 
+ *   - objects in js implement dictionaries.
+ *    - payload 
+ *    - form
+ *
+ * ## Algorithms Used:
+ * - **Luhn**:
+ *   - takes digits doubles every ohther except last digit then adds them and if sum is a multiple of 10 then card valid
+ *   - **Reason**: choose it as its a common algorithm used in the industry for checking user card input
+ */
+
 export default function Reservation() {
   const [cardNumber, setCardNumber] = useState("");
   const [message, setMessage] = useState("");
@@ -29,9 +65,9 @@ export default function Reservation() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const router = useRouter();
-
+  // Memoized array of stars based on the hotel's rating.
   const stars = useMemo(() => Array(hotel?.rating || 0).fill(<RiStarSFill className="text-yellow-400" />), [hotel?.rating]);
-
+  // separates digits into groups of 4 for user 
   const handleCardInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.replace(/\D/g, ''); 
     if (input.length <= 16) {
@@ -40,7 +76,7 @@ export default function Reservation() {
     setCardNumber(input);
     setMessage("");
   };
-
+ //adds the "/"" to date after user type in the fist two number
   const handleExpirationDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, '');
 
@@ -50,10 +86,9 @@ export default function Reservation() {
 
     setExpirationDate(value);
   };
-
+  // format the phone number to 111 1111 111
   const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, '');
-
     if (value.length > 3 && value.length <= 6) {
       value = value.replace(/(\d{3})(\d{1,3})/, '$1 $2');
     } else if (value.length > 6) {
@@ -62,7 +97,7 @@ export default function Reservation() {
 
     setPhoneNumber(value);
   };
-
+// use effect to get hotel info
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -85,7 +120,7 @@ export default function Reservation() {
       fetchroom();
     }
   }, []);
-
+// fucntion that implements luhn algorithm
   const isValidCardNumber = (cardNumber: string): boolean => {
     const digits = cardNumber.split("").map(Number);
     const temp = digits
@@ -93,33 +128,31 @@ export default function Reservation() {
     .reduce((a,e) => (e > 9) ? (Math.floor(e/10) + e%10) + a: e +a)
     return temp % 10 === 0;
   };
-
-
-
+//handler function for form submmision
   const submitForm =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    // check if user is logged in if not send to log in page
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
       router.push('/login');
       return;
     }
 
-    const cardNumberWithoutSpaces = cardNumber.split(' ').join('');
-    
+    const cardNumberWithoutSpaces = cardNumber.split(' ').join('');//remove white space from card input
+    //check  user input using luhn algo
     if (isValidCardNumber(cardNumberWithoutSpaces)) {
-      const formData = new FormData(e.target as HTMLFormElement);
-      const payload = Object.fromEntries(formData) as Record<string, string |undefined>;
+      const formData = new FormData(e.target as HTMLFormElement);// get form inputs 
+      const payload = Object.fromEntries(formData) as Record<string, string |undefined>;//create payload object to hold reservation details
 
-      const conFirNum = Math.floor(Math.random() * 90000) + 10000;
-      payload.confirmationNumber = conFirNum.toString()
-      payload.hotelId = hotel?._id;
-
+      const conFirNum = Math.floor(Math.random() * 90000) + 10000;//generate confimation number
+      payload.confirmationNumber = conFirNum.toString() //convert to string as payload is of type string
+      payload.hotelId = hotel?._id;// add hotel id to payload
+      // change dats to ISO(Year, month, day , hour,min, sec, ms)
       if (dateRange) {
         payload.checkInDate = dateRange.start.toDate(getLocalTimeZone()).toISOString();
         payload.checkOutDate = dateRange.end.toDate(getLocalTimeZone()).toISOString();
       }
-       
+       // http post req to make reservation for user 
      try {
         const response = await axios.post(
           "/api/reservationRoute",
@@ -138,7 +171,7 @@ export default function Reservation() {
       return;
     }
   }
-
+// a useMemo for dynamically changing the price for stay
   const calculateNumOfNights = useMemo(() => {
     if (dateRange) {
       const { start, end } = dateRange;
@@ -148,16 +181,16 @@ export default function Reservation() {
     }
     return 1;
   }, [dateRange]);
-  
+  //calulate tax
   const totalBeforeTax = useMemo(() => {
     return calculateNumOfNights * (hotel?.price || 1);
   },[calculateNumOfNights, hotel?.price]);
-
+// calculated tax to dispaly 
   const taxes = useMemo (() => {
     const totaltax = totalBeforeTax * 0.12;
     return Math.floor(totaltax)
   },[totalBeforeTax]);
-
+//calculate total with taxes 
   const completeTotal = useMemo(() => {
     const total = totalBeforeTax + taxes;
     return Math.floor(total);

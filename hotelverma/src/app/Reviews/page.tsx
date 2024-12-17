@@ -14,6 +14,44 @@ type Review = {
   rating: number;
 };
 
+/**
+ * # Module: Reviews
+ *
+ * ## Date:
+ * November 15, 2024
+ *
+ * ## Programmer:
+ * Angel Rosales
+ *
+ * ## Description:
+ * `Reviews` is a page which displays all reviews for a given hotel room
+ *
+ * ## Important Functions:
+ * - **GetReviews** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Creates a responsive layout with two main sections:
+ *     1. A **Review Section**:
+ *        - Contains a list of all reviews for the given hotel
+ *     2. A **Hotel Section**:
+ *        - Displays the chosen hotels information
+ *
+ * ## Data Structures:
+ * - hotel, contains image, title, location, amenities, rating
+ * - reviews, contains firstname, lastname, rating, message
+ *
+ * ## Algorithms Used:
+ * - **Array.map**:
+ *   - map is used to dynamically display all reviews
+ *   - **Reason**: It is unknown how many reviews there is for a given hotel, with map we don't have to worry about it.
+ */
+
+
+
+
+
+
 export default function GetReviews() {
   const [hotel, setHotel] = useState<any>();
   const [reviews, setReviews] = useState<Review[] | undefined>(undefined);

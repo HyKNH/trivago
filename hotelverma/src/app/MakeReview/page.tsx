@@ -6,6 +6,34 @@ import { Button, Spacer, Card, CardHeader, CardBody, Textarea, Input } from "@ne
 import { MdPostAdd } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 
+
+/**
+ * # Module: MakeReview
+ *
+ * ## Date:
+ * November 18, 2024
+ *
+ * ## Programmer:
+ * Angel Rosales
+ *
+ * ## Description:
+ * `MakeReview` is a page component allowing for the creation of reviews.
+ *
+ * ## Important Functions:
+ * - **MakeReview** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Displays a review form for the user to fill out which contains the message to submit and their rating of the hotel.
+ *
+ * ## Data Structures:
+ * - hotel, contains image, title, location, amenities, rating
+ * - reviews, contains firstname, lastname, rating, message
+ *
+ * ## Algorithms Used:
+ * - **None**:
+ */
+
 export default function MakeReview() {
   const [reservation, setReservation] = useState<any>();
   const [review, setReview] = useState({

@@ -7,6 +7,33 @@ import { Spinner, Spacer, Button, Divider, Image, Input } from '@nextui-org/reac
 import {MdPostAdd, MdFreeCancellation, MdRateReview} from "react-icons/md";
 import { FaHotel, FaDownload, FaRegEdit } from "react-icons/fa";
 
+
+/**
+ * # Module: ProfilePage
+ *
+ * ## Date:
+ * December 5, 2024
+ *
+ * ## Programmer:
+ * Francis Nguyen
+ *
+ * ## Description:
+ * `ProfilePage` is a page component which displays a  dashboard dynamically based on type of user.
+ *
+ * ## Important Functions:
+ * - **ProfilePage** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Displays a diffrent dashboard with diffrent functionality based on the type of user
+ *
+ * ## Data Structures:
+ * - objects which implement dictionaries
+ *
+ * ## Algorithms Used:
+ * - **None**:
+ */
+
 const ProfilePage: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
   const [reservations, setReservations] = useState<any[]>([]);

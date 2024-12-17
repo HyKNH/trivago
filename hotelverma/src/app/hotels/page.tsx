@@ -20,6 +20,36 @@ type Hotel = {
   roomType: string;
 };
 
+
+/**
+ * # Module: Content
+ *
+ * ## Date:
+ * November 12, 2024
+ *
+ * ## Programmer:
+ * Yu Long
+ *
+ * ## Description:
+ * `Content` is a the page that will dynamically display our hotels for us.
+ *
+ * ## Important Functions:
+ * - **Content** (default export):
+ *   - **Input**: None
+ *   - **Output**: JSX.Element
+ *   - **Description**:
+ *     Creates a responsive layout which dynamically displays all hotels.
+ *     1. A **Filter menu**:
+ *        -contains 4 filters: price, rating, location, roomtype.
+ *     2. A **hotels**:
+ *        - displys all hotels initialy then removes them according to filters
+ * ## Data Structures:
+ * - None
+ *
+ * ## Algorithms Used:
+ * - None
+ */
+
 export default function Content() {
   const [hotels, setHotels] = useState<Hotel[] | undefined>(undefined);
   const [filteredHotels, setFilteredHotels] = useState<Hotel[] | undefined>(undefined);
@@ -27,7 +57,7 @@ export default function Content() {
   const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
   const [locationQuery, setLocationQuery] = useState("");
   const [roomTypeQuery, setRoomTypeQuery] = useState("");
-
+// use effect to get all hotels from db
   useEffect(() => {
     const fetchHotels = async () => {
       try {
@@ -45,7 +75,7 @@ export default function Content() {
     fetchHotels();
   }, []);
 
-
+// function that will reset filters back to normal 
   const resetFil = () => {
     if (!hotels) return;
 
@@ -55,11 +85,11 @@ export default function Content() {
     setRoomTypeQuery("");
     setFilteredHotels(hotels);
   };
-
+// function that will re reder page for every new price rage set by user 
   const handlePriceChange = (newRange: [number, number]) => {
     setPriceRange(newRange);
   };
-
+//function that will re reder page every time we pick a rating
   const handleRatingChange = (newRating: number) => {
     setSelectedRatings(prevRatings => {
       const updatedRatings = new Set(prevRatings);
@@ -71,15 +101,15 @@ export default function Content() {
       return updatedRatings;
     });
   };
-
+// function will call a re reder when querying for location
   const handleLocationSearch = (query: string) => {
     setLocationQuery(query);
   };
-
+//function will call a re reder when querying for rooom type
   const handleRoomTypeSearch = (query: string) => {
     setRoomTypeQuery(query);
   };
-  
+  // user effect to re reder once one filters is chaged 
   useEffect(() => {
     if (hotels) {
       const filtered = hotels
@@ -95,7 +125,7 @@ export default function Content() {
       setFilteredHotels(filtered);
     }
   }, [priceRange, selectedRatings, locationQuery, hotels, roomTypeQuery]);
-
+// spinner for when hotels are loading 
   if (filteredHotels === undefined) {
     return <Spinner className="flex items-center justify-center w-full py-35" color="warning" />;
   }
